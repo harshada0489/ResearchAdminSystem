@@ -79,6 +79,10 @@ class CreateStudy extends React.Component {
                             <label htmlFor="NoOfHumanRequired">No Of Humans Required</label>
                             <input type="text" name="NoOfHumanRequired" value={this.state.NoOfHumanRequired}  onChange={this.handleChange} placeholder="No of Human Required"/>
                         </div>
+                        <div className="form-group">
+                            <label htmlFor="NoOfHumanRequired">Page 1 Complete</label>
+                            <input type="text" name="NoOfHumanRequired" value={this.state.NoOfHumanRequired}  onChange={this.handleChange} placeholder="No of Human Required"/>
+                        </div>
                     </div>
                 )
                     
