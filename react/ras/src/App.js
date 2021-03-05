@@ -18,7 +18,7 @@ import  AdminCreateForm  from './components/afterLogin/AdminCreateForm';
 import  AdminCreateFormAttributes  from './components/afterLogin/AdminCreateFormAttributes';
 import UserLabelDetails from "./components/afterLogin/UserLabelDetails";
 import SystemForm from "./components/admin/SystemForm";
-
+import CreateForm from "./components/admin/CreateForm";
 class App extends Component {
   constructor(props) {
     super(props);
@@ -135,6 +135,7 @@ class App extends Component {
             <Route path="/createAttribute" component={AdminCreateFormAttributes} />
             <Route path="/nextPage" component={UserLabelDetails} />
             <Route path="/systemForm" component={SystemForm} />
+            <Route path="/createForm" component={CreateForm} />
             
           </Switch>
         </div>

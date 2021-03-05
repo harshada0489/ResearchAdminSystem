@@ -31,17 +31,17 @@
 //    return courseManagementService.findAll();
 //  }
 //  
-////  @DeleteMapping("/instructors/{username}/courses/{id}")
-////  public ResponseEntity<Void> deleteCourse(@PathVariable String username, @PathVariable long id) {
-////
-////    Course course = courseManagementService.deleteById(id);
-////
-////    if (course != null) {
-////      return ResponseEntity.noContent().build();
-////    }
-////
-////    return ResponseEntity.notFound().build();
-////  }
+//  @DeleteMapping("/instructors/{username}/courses/{id}")
+//  public ResponseEntity<Void> deleteCourse(@PathVariable String username, @PathVariable long id) {
+//
+//    Course course = courseManagementService.deleteById(id);
+//
+//    if (course != null) {
+//      return ResponseEntity.noContent().build();
+//    }
+//
+//    return ResponseEntity.notFound().build();
+//  }
 ////  
 ////  @GetMapping("/instructors/{username}/courses/{id}")
 ////  public Course getCourse(@PathVariable String username, @PathVariable long id) {

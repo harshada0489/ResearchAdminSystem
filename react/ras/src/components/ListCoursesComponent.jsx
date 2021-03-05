@@ -23,30 +23,30 @@
 //         this.refreshCourses();
 //      }
 
-//      refreshCourses(){
-//          CourseDataService.retrieveAllCourses(INSTRUCTOR)
-//          .then(
-//              response => {
-//                 console.log(response);
-//                 this.setState({ courses: response.data})
-//          })
-//      }
+    //  refreshCourses(){
+    //      CourseDataService.retrieveAllCourses(INSTRUCTOR)
+    //      .then(
+    //          response => {
+    //             console.log(response);
+    //             this.setState({ courses: response.data})
+    //      })
+    //  }
 
-//     //  deleteCourseClicked(id) {
-//     //     CourseDataService.deleteCourse(INSTRUCTOR, id)
-//     //         .then(
-//     //             response => {
-//     //                 this.setState({ message: `Delete of course ${id} Successful` })
-//     //                 this.refreshCourses()
-//     //             }
-//     //         )
+    //  deleteCourseClicked(id) {
+    //     CourseDataService.deleteCourse(INSTRUCTOR, id)
+    //         .then(
+    //             response => {
+    //                 this.setState({ message: `Delete of course ${id} Successful` })
+    //                 this.refreshCourses()
+    //             }
+    //         )
     
-//     // }
+    // }
 
-//     // updateCourseClicked(id) {
-//     //     console.log('update ' + id)
-//     //     this.props.history.push(`/courses/${id}`)
-//     // }
+    // updateCourseClicked(id) {
+    //     console.log('update ' + id)
+    //     this.props.history.push(`/courses/${id}`)
+    // }
 
 //     // addCourseClicked() {
 //     //     this.props.history.push(`/courses/-1`)
