@@ -26,7 +26,7 @@ class SystemForm extends React.Component{
         console.log('render')
         return (
             <div className="container">
-                <h3>All System Form </h3>
+                <h3>All System Form</h3>
                 {this.state.message && <div class="alert alert-success">{this.state.message}</div>}
                 <div className="container">
                     <table className="table">
