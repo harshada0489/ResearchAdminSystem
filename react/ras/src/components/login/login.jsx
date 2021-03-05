@@ -6,6 +6,7 @@ import { render } from '@testing-library/react';
 import Dashboard from '../afterLogin/dashboard';
 import { Route } from 'react-router-dom'; 
 import { BrowserRouter, Router, Switch, Redirect, Link } from "react-router-dom";
+import ReactSession from 'react-client-session';
 
  export class Login extends React.Component {
     constructor(props) {
@@ -13,6 +14,8 @@ import { BrowserRouter, Router, Switch, Redirect, Link } from "react-router-dom"
       this.state ={
         email : '',
         pwd : '',
+        firstName : '',
+        loginType : '',
         isAuth: 'false'
       };
 
@@ -28,15 +31,12 @@ import { BrowserRouter, Router, Switch, Redirect, Link } from "react-router-dom"
 
  clickHandler(event){
     event.preventDefault();
-       axios.get('http://localhost:8080/ras/loginRequest?email=' + this.state.email + '&' + 'pwd=' + this.state.pwd)
+    axios.post('http://localhost:8080/ras/loginAuth' ,this.state)
+      //  axios.get('http://localhost:8080/ras/loginRequest?email=' + this.state.email + '&' + 'pwd=' + this.state.pwd)
         .then(function (response){
           console.log(response);
 
-
           if(response.data==='Successful'){
-            // this.setState ({ 
-            //   isAuth: "true" 
-            // });
             ReactDOM.render(<Dashboard />, document.getElementById('root'));
 
           }

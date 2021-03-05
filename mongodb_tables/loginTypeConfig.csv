@@ -1,0 +1,4 @@
+_id,loginType,_class
+1,admin,com.ras.model.LoginTypeConfig
+2,researcher,com.ras.model.LoginTypeConfig
+3,reviewer,com.ras.model.LoginTypeConfig

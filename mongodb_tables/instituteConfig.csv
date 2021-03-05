@@ -1,0 +1,3 @@
+_id,instituteName,_class
+1,CSUF_cancer,com.ras.model.InstituteConfig
+2,CSUF_diabetes,com.ras.model.InstituteConfig

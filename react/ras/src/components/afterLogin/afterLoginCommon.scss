@@ -1,0 +1,70 @@
+
+.horizontal-bar{
+    display: block;
+    padding: 8px;
+    background-color: #dddddd;
+    .headerimage{
+        width: 500px;
+        img {
+          margin-top: 10px;
+          width: 30%;
+          height: 30%;
+          display: flex;
+        }
+    }
+    .welcome{
+        
+        // background: #fff;
+        display: flex;
+        // border: 1px solid #72ca1f;
+        box-shadow: none;
+        width: 400px;
+        border-radius: 18px;
+        z-index: 3;
+        height: 45px;
+        // margin-top: 200px;
+        margin: 0 auto;
+        text-align: center;
+        
+    }
+    
+    ul{
+        position: fixed;
+        top: 0;
+        width: 100%;
+    
+        li{
+            // border-right: 1px solid #bbb;
+            float: right;
+            display: inline;
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 14px 16px;
+            margin-top: 25px;
+            text-decoration: none;
+            
+        }
+        li :hover{
+            background-color: #white ;
+        }
+    }
+    
+}
+
+.vertical-bar{
+
+    ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 5em;
+        width: 18%;
+        background-color: #97434379;
+        height: 100%; /* Full height */
+        position: fixed; /* Make it stick, even on scroll */
+        overflow: auto; /* Enable scrolling if the sidenav has too much content */
+      }
+      li{
+          margin-top: 2 em;
+      }
+}
