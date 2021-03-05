@@ -16,9 +16,9 @@
 //         // return axios.get(`${INSTRUCTOR_API_URL}/courses`);
 //     }
 
-//     // deleteCourse(name, id) {
-//     //     return axios.delete(`${INSTRUCTOR_API_URL}/courses/${id}`);
-//     // }
+    // deleteCourse(name, id) {
+        // return axios.delete(`${INSTRUCTOR_API_URL}/courses/${id}`);
+    // }
 
 //     // retrieveCourse(name, id) {
 //     //     return axios.get(`${INSTRUCTOR_API_URL}/courses/${id}`);
