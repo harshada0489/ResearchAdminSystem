@@ -1,0 +1,7 @@
+_id,departmentName,instituteId,_class
+1,blood,1,com.ras.model.DepartmentConfig
+2,bone,1,com.ras.model.DepartmentConfig
+3,brain,1,com.ras.model.DepartmentConfig
+4,type1,2,com.ras.model.DepartmentConfig
+5,type2,2,com.ras.model.DepartmentConfig
+6,gestational,2,com.ras.model.DepartmentConfig

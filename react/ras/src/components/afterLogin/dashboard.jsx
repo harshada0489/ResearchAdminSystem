@@ -5,45 +5,56 @@ import ReactDOM from 'react-dom';
 import axios from 'axios';
 import  CreateStudy  from './createStudy';
 import App from '../../App';
-
-
+import HorizontaHeaderBar from './horizontalHeaderBar';
+import VerticalBar from './verticalBar';
+import "./afterLoginCommon.scss";
+import "./dashboard.scss";
+import ReactSession from 'react-client-session';
 
  class Dashboard extends React.Component {
     constructor(props) {
         super(props);
-
+        this.state ={
+            isAuth: 'true'
+          };
         this.createStudyHandler = this.createStudyHandler.bind(this);
-        this.logoutHandler = this.logoutHandler.bind(this);
-      }
+
+        
+          }   
       
       createStudyHandler(event){
         event.preventDefault();
+
                 ReactDOM.render(<CreateStudy />, document.getElementById('root'));
                 console.log(event);
             }  
-
-        logoutHandler(event){
-        event.preventDefault();
-                ReactDOM.render(<App />, document.getElementById('root'));
-
-            }  
+  
+      componentDidMount(){
+                axios.get('http://localhost:8080/ras/loginAuth/setValues')
+                .then(function (response){
+                console.log("session login params response =  ",response);
+            })
+            }
 
     render(){
-        
+
         return(
             // ReactDOM.render(<Dashboard />, document.getElementById('root'))
             <div>
-                 <h1>Welcome to Dasboard</h1>
-                 <div className="footer">
+                <div > <HorizontaHeaderBar /></div>
+                <div > <VerticalBar /></div> 
+                 <div className="diff-action">
                     <button type="button" onClick={this.createStudyHandler} className="btn">
                     Create Study
                     </button>
                 </div>
-                <div className="footer">
-                    <button type="button" onClick={this.logoutHandler} className="btn">
-                    Logout
+
+                <div className="diff-action">
+                    <button type="button" onClick={this.createStudyHandler} className="btn">
+                    Submitted Study Status
                     </button>
                 </div>
+                
              </div>
         )
     }

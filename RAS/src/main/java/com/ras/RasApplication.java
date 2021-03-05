@@ -11,15 +11,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ras.model.DepartmentConfig;
 import com.ras.model.InstituteConfig;
-import com.ras.model.LoginRequest;
 import com.ras.model.LoginTypeConfig;
+import com.ras.model.payload.request.LoginRequest;
 import com.ras.resource.DepartmentConfigRepository;
 import com.ras.resource.InstituteConfigRepository;
-import com.ras.resource.LoginRequestRepository;
+//import com.ras.resource.LoginRequestRepository;
 import com.ras.resource.LoginTypeConfigRepository;
 import com.ras.resource.ResearchRepository;
 import com.ras.resource.UserAccountRepository;
-
 
 
 
@@ -38,8 +37,8 @@ public class RasApplication implements CommandLineRunner{
 	@Autowired
 	private DepartmentConfigRepository departmentConfigRepository;
 	
-	@Autowired
-	private LoginRequestRepository loginRequestRepository;
+//	@Autowired
+//	private LoginRequestRepository loginRequestRepository;
 	
 	@Autowired
 	private UserAccountRepository userAccountRepository;

@@ -2,7 +2,9 @@ package com.ras.model;
 
 import javax.persistence.GeneratedValue;
 
+import org.springframework.context.annotation.Scope;
 import org.springframework.data.annotation.Id;
+import org.springframework.stereotype.Component;
 
 import java.util.Date;
 
@@ -13,6 +15,8 @@ import javax.persistence.GeneratedValue;
 import org.springframework.data.annotation.Id;
 
 @Entity
+@Component
+@Scope("session")
 public class UserAccount {
 
 	
