@@ -1,0 +1,29 @@
+.ui.menu.fixed.side-nav {
+    background-color: #f5f5f5;
+    margin-top: 64px;
+    overflow-y: auto;
+    padding-bottom: 64px;
+  
+    .sidebar-item:hover {
+      background: #ebebeb;
+    }
+  }
+  
+  .side-nav.ui.vertical.menu {
+    width: 17rem;
+  }
+
+$grey: #888888;
+$red: #ff0002;
+$header-nav-height: 64px;
+$sidebar-left-width: 17rem;
+
+$sidebar-hover-color: #ebebeb;
+.ui.menu.fixed.side-nav {
+  /* ... */
+  margin-top: $header-nav-height;
+  padding-bottom: $header-nav-height;
+  /*...*/
+}
+
+/* rest unchanged*/

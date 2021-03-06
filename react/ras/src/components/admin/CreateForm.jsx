@@ -146,6 +146,36 @@ class CreateForm extends React.Component{
                 </div>
 
                 <div className="form-group">
+                <div className="row">
+                        <div className="col-25">
+                        <label htmlFor="typeOfStudy">Type Of Study : </label>
+                        {/* </div>
+                        <div className="col-75"> */}
+                        <input type="radio" name="typeOfStudy" value="Human" checked={this.state.selectedStudyOption === "Human"}
+                            onChange={this.onChangeValue}/> Human
+                        <input type="radio" name="typeOfStudy" value="Animal" checked={this.state.selectedStudyOption === "Animal"}
+                            onChange={this.onChangeValue} /> Animal
+                        </div>
+                    </div>
+
+                    </div>
+
+
+                    <div className="form-group">
+                      <div className="row">
+                              <div className="col-25">
+                                  <label htmlFor="gender">FieldOfStudy : </label>
+                              {/* </div>
+                              <div className="col-75"> */}
+                              <input type="radio" name="cancer" value="Cancer" checked={this.state.selectedStudyField === "Cancer"}
+                                  onChange={this.onChangeStudyFieldValue}/> Cancer
+                              <input type="radio" name="diabeties" value="Diabeties" checked={this.state.selectedStudyField === "Diabeties"}
+                                  onChange={this.onChangeStudyFieldValue} /> Diabeties
+                              </div>
+                          </div>
+                      </div>
+
+                <div className="form-group">
                   <button className="btn btn-primary btn-block">Create System Form</button>
                 </div>
             </div>

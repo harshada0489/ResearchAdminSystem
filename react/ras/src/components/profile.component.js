@@ -3,6 +3,8 @@ import AuthService from "../services/auth.service";
 import ReactDOM from 'react-dom';
 import  CreateStudy  from './afterLogin/createStudy';
 
+import {SideBar} from './SideBar/SideBar';
+
 export default class Profile extends Component {
   constructor(props) {
     super(props);
@@ -38,12 +40,15 @@ export default class Profile extends Component {
     if (currentUser.roles.includes('ROLE_ADMIN')) {
       return (
         <div className="container">
+          
+
           <header className="jumbotron">
             <h3>
               Welcome <strong> {currentUser.username}</strong> 
             </h3>
           </header>
   
+
               <div>
                   <div className="diff-action">
                      <button type="button" onClick={this.systemFormHandler} className="btn">
@@ -53,13 +58,13 @@ export default class Profile extends Component {
 
   
 
-                  {/* <div className="diff-action">
+                  <div className="diff-action">
                      <button type="button" onClick={this.createStudyHandler} className="btn">
                      Create Form
                      </button>
                  </div>
   
-                 <div className="diff-action">
+                 {/* <div className="diff-action">
                      <button type="button" onClick={this.createStudyHandler} className="btn">
                      Check User Status
                      </button>
@@ -98,14 +103,21 @@ export default class Profile extends Component {
       );
     }
     if (this.state.currentUser.roles.includes('ROLE_USER')) {
-    // else  {
       return (
-        <div className="container">
+        
+<div>
+
+
+    <div className="container">
+  
           <header className="jumbotron">
             <h3>
               Welcome <strong> {currentUser.username}</strong> 
             </h3>
           </header>
+
+          {/* <SideBar/> */}
+
                  <div>
                   <div className="diff-action">
                      <button type="button" onClick={this.createStudyHandler} className="btn">
@@ -120,6 +132,8 @@ export default class Profile extends Component {
                  </div>
                  
               </div> 
+        </div>
+
         </div>
       );
     }
