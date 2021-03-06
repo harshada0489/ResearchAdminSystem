@@ -20,20 +20,33 @@ public class SystemFormService {
 	
 	public List<SystemForm> getAllDBForms(){
 		System.out.println("Inside class: SystemFormService and method: getAllDBForms() ");
-		List<SystemForm> dbAllForms = repository.findAll();
+		List<SystemForm> dbAllForms = repository.findByIsDeleted(false);
 		return dbAllForms;
 	}
 	
 	  public Optional<SystemForm> deleteById(String id) {
 		  Optional<SystemForm> form = repository.findById(id);
-		  System.out.println(form.toString());
-		    if (form == null)
-		      return null;
-
-		    else {
-		    	repository.deleteById(id);
+		  
+		  if(form.isPresent()) {
+			  SystemForm dbForm = form.get();
+			  dbForm.setDeleted(true);
+			  repository.save(dbForm);
+			} else {
+			    return null;
+			}
+		  
+		  
+		  
+//		  System.out.println("form = " + form.));
+//		  System.out.println(form.toString());
+//		    if (form == null)
+//		      return null;
+//
+//		    else {
+//		    	form.toString()
+//		    	repository.deleteById(id);
 		    	return form;
-		    }
+//		    }
 			    
 		    
 		  }
@@ -52,6 +65,11 @@ public class SystemFormService {
 		  Optional<SystemForm> dbForm = repository.findByFormName(form.getFormName());
 		  System.out.println("dbForm = "+ dbForm.isPresent());
 		  if(!(dbForm.isPresent())) {
+			  
+			  form.setDeleted(false);
+			  form.setCreatedDate(new java.util.Date());
+			  form.setModifiedDate(new java.util.Date());
+			  
 			  repository.save(form);
 			  System.out.println("Saved Successfully  ");
 			  return "Successfully Inserted";

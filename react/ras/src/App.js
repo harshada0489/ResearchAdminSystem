@@ -19,6 +19,11 @@ import  AdminCreateFormAttributes  from './components/afterLogin/AdminCreateForm
 import UserLabelDetails from "./components/afterLogin/UserLabelDetails";
 import SystemForm from "./components/admin/SystemForm";
 import CreateForm from "./components/admin/CreateForm";
+import FormDetailsEdit from "./components/admin/FormDetailsEdit";
+import FormDetailsView from "./components/admin/FormDetailsView";
+
+import {SideBar} from './components/SideBar/SideBar';
+
 class App extends Component {
   constructor(props) {
     super(props);
@@ -84,6 +89,7 @@ class App extends Component {
 
             {currentUser && (
               <li className="nav-item">
+                
                 <Link to={"/user"} className="nav-link">
                   User
                 </Link>
@@ -93,6 +99,7 @@ class App extends Component {
 
           {currentUser ? (
             <div className="navbar-nav ml-auto">
+              
               <li className="nav-item">
                 <Link to={"/profile"} className="nav-link">
                   {currentUser.username}
@@ -121,7 +128,10 @@ class App extends Component {
           )}
         </nav>
 
+
+
         <div className="container mt-3">
+          
           <Switch>
             <Route exact path={["/", "/home"]} component={Home} />
             <Route exact path="/login" component={Login} />
@@ -136,10 +146,13 @@ class App extends Component {
             <Route path="/nextPage" component={UserLabelDetails} />
             <Route path="/systemForm" component={SystemForm} />
             <Route path="/createForm" component={CreateForm} />
-            
+            <Route path="/form/edit/:id" component={FormDetailsEdit} />
+            <Route path="/form/view/:id" component={FormDetailsView} />
           </Switch>
         </div>
-      </div>
+
+</div>
+
     );
   }
 }

@@ -41,6 +41,7 @@ public class SystemFormResource {
 	  @DeleteMapping("/systemForm/{id}")
 	  public ResponseEntity<Void> deleteForm(@PathVariable String id) {
 
+		  System.out.println("id = " + id);
 	    Optional<SystemForm> form = (Optional<SystemForm>) service.deleteById(id);
 
 	    if (form != null) {
@@ -58,13 +59,26 @@ public class SystemFormResource {
 			return "Successful" ;
 	  }
 	  
+	  @GetMapping("/systemForm/view/{id}")
+	  public String viewFormDetails(@PathVariable String id){
+		  System.out.println("Inside class: SystemFormResource and method: viewFormDetails() , id = " + id);
+			
+			return "Successful" ;
+	  }
+	  
+	  
 	  @PostMapping("/systemForm/create")
 	  public ResponseEntity<MessageResponse> createForm(@RequestBody SystemForm systemform){
+		  // change table name SystemForm to StudyFormConnector Table
+		  // add columns (1. filter => comma separated typeOfStudy and FieldOfStudy, 
+		  //			  2. status => active)
+		  //insert new row in StudyFormConnector Table
+		  
 		  System.out.println("Inside class: SystemFormResource and method: createForm() = " + systemform.toString());
 			String message = service.addNewSystemForm(systemform);
 			return ResponseEntity.ok(new MessageResponse(message));
 	  }
 	
-	
+//	--------------------------------------------------------------------------------------------------------------------------
 
 }

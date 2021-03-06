@@ -214,8 +214,8 @@ class CreateStudy extends React.Component {
             
 
              <div>
-                <div > <HorizontaHeaderBar /></div>
-                <div > <VerticalBar /></div> 
+                {/* <div > <HorizontaHeaderBar /></div> */}
+                {/* <div > <VerticalBar /></div>  */}
                
                 
 

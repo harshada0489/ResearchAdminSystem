@@ -1,5 +1,9 @@
 package com.ras.model;
 
+
+
+import java.util.Date;
+
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
@@ -18,13 +22,35 @@ public class SystemForm {
 
 	  private String formDescription;
 
+	  private boolean isDeleted;
 	  
+	  private Date createdDate;
+	  
+	  private Date modifiedDate;
 	  
 	public SystemForm(@NotBlank String formName, String formDescription) {
 		super();
 		this.formName = formName;
 		this.formDescription = formDescription;
 	}
+	
+	
+	
+	
+
+//	public SystemForm(@NotBlank String formName, String formDescription, boolean isDeleted, Date createdDate,
+//			Date modifiedDate) {
+//		super();
+//		this.formName = formName;
+//		this.formDescription = formDescription;
+//		this.isDeleted = isDeleted;
+//		this.createdDate = createdDate;
+//		this.modifiedDate = modifiedDate;
+//	}
+
+
+
+
 
 	public String getId() {
 		return id;
@@ -48,6 +74,30 @@ public class SystemForm {
 
 	public void setFormDescription(String formDescription) {
 		this.formDescription = formDescription;
+	}
+
+	public boolean isDeleted() {
+		return isDeleted;
+	}
+
+	public void setDeleted(boolean isDeleted) {
+		this.isDeleted = isDeleted;
+	}
+
+	public Date getCreatedDate() {
+		return createdDate;
+	}
+
+	public void setCreatedDate(Date createdDate) {
+		this.createdDate = createdDate;
+	}
+
+	public Date getModifiedDate() {
+		return modifiedDate;
+	}
+
+	public void setModifiedDate(Date modifiedDate) {
+		this.modifiedDate = modifiedDate;
 	}
 
 	  
