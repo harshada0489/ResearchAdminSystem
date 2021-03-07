@@ -18,38 +18,40 @@ public class SystemForm {
 	  private String id;
 
 	  @NotBlank
+	  private String filterList;
+	   
+	  private String status;
+	  
+	  @NotBlank
 	  private String formName;
 
 	  private String formDescription;
 
-	  private boolean isDeleted;
-	  
+	  	  
 	  private Date createdDate;
 	  
 	  private Date modifiedDate;
 	  
-	public SystemForm(@NotBlank String formName, String formDescription) {
+	
+	public SystemForm(@NotBlank String filterList, @NotBlank String formName, String formDescription) {
 		super();
+		this.filterList = filterList;
 		this.formName = formName;
 		this.formDescription = formDescription;
 	}
-	
-	
-	
-	
 
-//	public SystemForm(@NotBlank String formName, String formDescription, boolean isDeleted, Date createdDate,
-//			Date modifiedDate) {
+
+//	public SystemForm(String id, @NotBlank String filterList, String status, @NotBlank String formName,
+//			String formDescription, Date createdDate, Date modifiedDate) {
 //		super();
+//		this.id = id;
+//		this.filterList = filterList;
+//		this.status = status;
 //		this.formName = formName;
 //		this.formDescription = formDescription;
-//		this.isDeleted = isDeleted;
 //		this.createdDate = createdDate;
 //		this.modifiedDate = modifiedDate;
 //	}
-
-
-
 
 
 	public String getId() {
@@ -76,13 +78,6 @@ public class SystemForm {
 		this.formDescription = formDescription;
 	}
 
-	public boolean isDeleted() {
-		return isDeleted;
-	}
-
-	public void setDeleted(boolean isDeleted) {
-		this.isDeleted = isDeleted;
-	}
 
 	public Date getCreatedDate() {
 		return createdDate;
@@ -98,6 +93,28 @@ public class SystemForm {
 
 	public void setModifiedDate(Date modifiedDate) {
 		this.modifiedDate = modifiedDate;
+	}
+
+
+	public String getFilterList() {
+		return filterList;
+	}
+
+
+
+	public void setFilterList(String filterList) {
+		this.filterList = filterList;
+	}
+
+
+
+	public String getStatus() {
+		return status;
+	}
+
+
+	public void setStatus(String status) {
+		this.status = status;
 	}
 
 	  

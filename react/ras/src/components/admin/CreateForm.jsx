@@ -16,6 +16,7 @@ const required = value => {
       );
     }
   };
+  
 
 const formName = value => {
     if (value.length < 3 ) {
@@ -43,16 +44,34 @@ class CreateForm extends React.Component{
         this.state = {
             systemFormList: [],
             message: null,
+            questionDetail: [],
             formName : '',
-            formDescription : ''
+            formDescription : '',
+            filter1: '',
+            filter2:'',
+            filterList:'undefined'
         }
 
         this.onChangeFormName = this.onChangeFormName.bind(this);
         this.onChangeFormDescription = this.onChangeFormDescription.bind(this);
         this.handleRegister = this.handleRegister.bind(this);
+        this.onChangeFilter1 = this.onChangeFilter1.bind(this);
+        this.onChangeFilter2 = this.onChangeFilter2.bind(this);
+        
         
     }
+    onChangeFilter2(e){
+      this.setState({
+        filter2: e.target.value
+    });
+    }
 
+    onChangeFilter1(e){
+      this.setState({
+        filter1: e.target.value,
+        filter2: ''
+    });
+    }
 
     onChangeFormName(e) {
         this.setState({
@@ -69,11 +88,18 @@ class CreateForm extends React.Component{
       handleRegister(e){
         e.preventDefault();
 
+        var sortFilter = this.state.filter1 + "," + this.state.filter2;
+        // var sortedFilter = sortFilter.split(",").sort().join(",");
+       
+        console.log("sortFilter = ", sortFilter.split(",").sort().join(","));
+
         this.setState({
           message: "",
-          successful: false
+          successful: false,
+          filterList : sortFilter.split(",").sort().join(",")
         });
-    
+        
+
         this.form.validateAll();
         if (this.checkBtn.context._errors.length === 0) {
             console.log(this.state);
@@ -81,9 +107,24 @@ class CreateForm extends React.Component{
             .then(
               response => {
                 this.setState({
-                  message: response.data.message,
+                  // message: response.data,
+                  questionDetail :response.data,
                   successful: true
                 });
+                console.log("this.state.questionDetail = ",this.state.questionDetail);
+                console.log("this.state.questionDetail.formId = ",this.state.questionDetail.formId);
+                console.log("this.state.questionDetail.pageId = ",this.state.questionDetail.pageId);
+                console.log("this.state.questionDetail.pageNumber = ",this.state.questionDetail.pageNumber);
+                // console.log("response.data====> id=", this.state.questionDetail[0], "page =",this.state.questionDetail[1]);
+                let {formId} = this.state.questionDetail.formId;
+                let {pageId} = this.state.questionDetail.pageId;
+                let {pageNumber} = this.state.questionDetail.pageNumber;
+
+                console.log("formId = " , formId, " pageId = ",  pageId, "  pageNumber=" , pageNumber );
+                this.props.history.push({
+                  pathname: "/"+ this.state.questionDetail.formId + "/createQuestion/Page/" + this.state.questionDetail.pageNumber ,
+                  state: { detail : this.state.questionDetail}
+                })
               },
               error => {
                 const resMessage =
@@ -105,6 +146,49 @@ class CreateForm extends React.Component{
 
       }
     render(){
+
+      console.log("filter1=",this.state.filter1, " filter2 = ", this.state.filter2);
+
+      const showFilter2 = () => {
+        if (this.state.filter1 === "human"){
+
+            return (
+                <div>
+                    <div className="row">
+                        <div className="col-25">
+                            <label htmlFor="filter2">Filter 2 : </label>
+                        {/* </div>
+                        <div className="col-75"> */}
+                        <input type="radio" name="filter2" value="cancer" checked={this.state.filter2 === "cancer"}
+                            onChange={this.onChangeFilter2}/> Cancer
+                        <input type="radio" name="filter2" value="diabeties" checked={this.state.filter2 === "diabeties"}
+                            onChange={this.onChangeFilter2} /> Diabeties
+                        </div>
+                    </div>
+
+                </div>
+            )
+                
+        }else if (this.state.filter1 ==="animal"){
+
+            return (
+                <div>
+                    <div className="row">
+                        <div className="col-25">
+                            <label htmlFor="filter2">Filter 2 : </label>
+                        {/* </div>
+                        <div className="col-75"> */}
+                        <input type="radio" name="filter2" value="embryogenesis" checked={this.state.filter2 === "embryogenesis"}
+                            onChange={this.onChangeFilter2}/> Embryogenesis
+                        <input type="radio" name="filter2" value="developmentalBiology" checked={this.state.filter2 === "developmentalBiology"}
+                            onChange={this.onChangeFilter2} /> Developmental Biology
+                        </div>
+                    </div>
+                </div>
+            )
+        }
+    }
+
         return(
         <div className="col-md-12">
         {/* <div className="card card-container"> */}
@@ -148,33 +232,22 @@ class CreateForm extends React.Component{
                 <div className="form-group">
                 <div className="row">
                         <div className="col-25">
-                        <label htmlFor="typeOfStudy">Type Of Study : </label>
+                        <label htmlFor="filter1">Filter 1 : </label>
                         {/* </div>
                         <div className="col-75"> */}
-                        <input type="radio" name="typeOfStudy" value="Human" checked={this.state.selectedStudyOption === "Human"}
-                            onChange={this.onChangeValue}/> Human
-                        <input type="radio" name="typeOfStudy" value="Animal" checked={this.state.selectedStudyOption === "Animal"}
-                            onChange={this.onChangeValue} /> Animal
+                        <input type="radio" name="filter1" value="human" checked={this.state.filter1 === "human"}
+                            onChange={this.onChangeFilter1} /> Human
+                        <input type="radio" name="filter1" value="animal" checked={this.state.filter1 === "animal"}
+                            onChange={this.onChangeFilter1}/> Animal
                         </div>
                     </div>
 
                     </div>
 
-
                     <div className="form-group">
-                      <div className="row">
-                              <div className="col-25">
-                                  <label htmlFor="gender">FieldOfStudy : </label>
-                              {/* </div>
-                              <div className="col-75"> */}
-                              <input type="radio" name="cancer" value="Cancer" checked={this.state.selectedStudyField === "Cancer"}
-                                  onChange={this.onChangeStudyFieldValue}/> Cancer
-                              <input type="radio" name="diabeties" value="Diabeties" checked={this.state.selectedStudyField === "Diabeties"}
-                                  onChange={this.onChangeStudyFieldValue} /> Diabeties
-                              </div>
-                          </div>
-                      </div>
-
+                    {showFilter2()}
+                    </div>
+                    
                 <div className="form-group">
                   <button className="btn btn-primary btn-block">Create System Form</button>
                 </div>

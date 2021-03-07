@@ -1,6 +1,8 @@
 package com.ras.resource;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ras.model.SystemForm;
 import com.ras.model.payload.response.MessageResponse;
 import com.ras.repository.SystemFormRepository;
+import com.ras.service.PageService;
 import com.ras.service.SystemFormService;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -28,6 +31,9 @@ public class SystemFormResource {
 
 	@Autowired
 	SystemFormService service; 
+	
+	@Autowired
+	PageService pageService;
 	
 	@GetMapping("/systemForm")
 	public List<SystemForm> getAllSystemForm() {
@@ -54,6 +60,7 @@ public class SystemFormResource {
 	  
 	  @GetMapping("/systemForm/edit/{id}")
 	  public String editFormDetails(@PathVariable String id){
+		  // SystemForm edit page 
 		  System.out.println("Inside class: SystemFormResource and method: editFormDetails() , id = " + id);
 			
 			return "Successful" ;
@@ -68,7 +75,10 @@ public class SystemFormResource {
 	  
 	  
 	  @PostMapping("/systemForm/create")
-	  public ResponseEntity<MessageResponse> createForm(@RequestBody SystemForm systemform){
+	  public Map<String, String> createForm(@RequestBody SystemForm systemform){
+		  
+		  HashMap <String, String> map = new HashMap<String, String>();
+		  
 		  // change table name SystemForm to StudyFormConnector Table
 		  // add columns (1. filter => comma separated typeOfStudy and FieldOfStudy, 
 		  //			  2. status => active)
@@ -76,9 +86,57 @@ public class SystemFormResource {
 		  
 		  System.out.println("Inside class: SystemFormResource and method: createForm() = " + systemform.toString());
 			String message = service.addNewSystemForm(systemform);
-			return ResponseEntity.ok(new MessageResponse(message));
+			
+			String formId = "";
+			int pageNumber = 1; 
+			String pageId ="";
+			if(message.equals("Successfully Inserted")) {
+				
+				String formname = systemform.getFormName();
+				if(!(formname.isEmpty())) {
+					 formId = service.searchByFormName(formname);
+					if(!(formId.isEmpty())) {
+						String pageCreation = pageService.pageOneCreation(1,formId);
+						if(pageCreation.equals("Successful")) {
+							pageId = pageService.findPageId(formId, pageNumber);
+							if(!(pageId.isEmpty())) {
+								map.put("formId", formId);
+								map.put("pageId", pageId);
+								map.put("pageNumber", pageNumber+"");
+								return map;
+							}
+							
+							
+//							return ResponseEntity.ok(new MessageResponse(formId + "," + pageNumber));
+							
+						}
+					}
+					
+				}
+			
+				
+			}
+			//return newly created SystemForm Id and Page number
+			return map;
+			 
 	  }
+	  
+	  
 	
 //	--------------------------------------------------------------------------------------------------------------------------
+	  
+	 
+//	  end Points
+//	  1. Create Page( ip - form Id, Questions in json)
+//	  
+//		   - Insert Entry in page table
+//		   = Insert Questions received in i/p in Question Table( using id generated for page above)
+//		   
+//	  2. Update Page(ip- formId, pageNumber, Questions in Json )
+//	  		= for each question : 
+//	  				if QuestionId present for a question then update
+//	  				else ie. Quesion id not present then insert the question
+//	  
+	  
 
 }

@@ -14,6 +14,6 @@ public interface SystemFormRepository extends MongoRepository<SystemForm, String
 	
 	Optional<SystemForm> findByFormName(String formName);
 	
-	List<SystemForm> findByIsDeleted(boolean isDeleted);
+	List<SystemForm> findByStatus(String status);
 	
 }
