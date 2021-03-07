@@ -226,7 +226,7 @@ class CreateStudy extends React.Component {
                  <div className="form">
                     <div className="row">
                         <div className="col-25">
-                            <label htmlFor="studyTitle">Study Tile</label>
+                            <label htmlFor="studyTitle">Study Title</label>
                         </div>
                         <div className="col-75">
                             <input type="text" name="studyTitle" value={this.state.studyTitle}  onChange={this.handleChange} placeholder="Study Title"/>

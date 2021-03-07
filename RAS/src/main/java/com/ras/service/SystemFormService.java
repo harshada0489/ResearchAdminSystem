@@ -20,7 +20,7 @@ public class SystemFormService {
 	
 	public List<SystemForm> getAllDBForms(){
 		System.out.println("Inside class: SystemFormService and method: getAllDBForms() ");
-		List<SystemForm> dbAllForms = repository.findByIsDeleted(false);
+		List<SystemForm> dbAllForms = repository.findByStatus("active");
 		return dbAllForms;
 	}
 	
@@ -29,7 +29,7 @@ public class SystemFormService {
 		  
 		  if(form.isPresent()) {
 			  SystemForm dbForm = form.get();
-			  dbForm.setDeleted(true);
+			  dbForm.setStatus("inactive");
 			  repository.save(dbForm);
 			} else {
 			    return null;
@@ -62,11 +62,12 @@ public class SystemFormService {
 		}
 	  
 	  public String addNewSystemForm(SystemForm form) {
+		  System.out.println("Inside class : SystemFormService  and method : addNewSystemForm()");
 		  Optional<SystemForm> dbForm = repository.findByFormName(form.getFormName());
 		  System.out.println("dbForm = "+ dbForm.isPresent());
 		  if(!(dbForm.isPresent())) {
 			  
-			  form.setDeleted(false);
+			  form.setStatus("active");
 			  form.setCreatedDate(new java.util.Date());
 			  form.setModifiedDate(new java.util.Date());
 			  
@@ -78,6 +79,20 @@ public class SystemFormService {
 			  System.out.println("Already Exist");
 			  return "Form Name Already Exist";
 		  }
+	  }
+	  
+	  public String searchByFormName(String formName) {
+		  System.out.println("Inside class : SystemFormService  and method : searchByFormName()" );
+		  System.out.println("formName = " + formName );
+		  Optional<SystemForm> db = repository.findByFormName(formName);
+		  String formId = "";
+		  	if(db.isPresent()) {
+		  		SystemForm dbForm = db.get();
+		  		formId = dbForm.getId();
+		  		System.out.println("formId = " + formId );
+		  	}
+		  		
+		  return formId;
 	  }
 
 }

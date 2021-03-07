@@ -15,7 +15,7 @@ import BoardAdmin from "./components/board-admin.component";
 
 import  CreateStudy  from './components/afterLogin/createStudy';
 import  AdminCreateForm  from './components/afterLogin/AdminCreateForm';
-import  AdminCreateFormAttributes  from './components/afterLogin/AdminCreateFormAttributes';
+import  QuestionPage  from './components/admin/QuestionPage';
 import UserLabelDetails from "./components/afterLogin/UserLabelDetails";
 import SystemForm from "./components/admin/SystemForm";
 import CreateForm from "./components/admin/CreateForm";
@@ -142,7 +142,8 @@ class App extends Component {
             {/* <Route path="/admin" component={BoardAdmin} /> */}
             <Route path="/createStudy" component={CreateStudy} />
             <Route path="/adminCreateStudyForm" component={AdminCreateForm} />
-            <Route path="/createAttribute" component={AdminCreateFormAttributes} />
+            <Route path="/:sysId/createQuestion/Page/:pageNum" component={QuestionPage} />
+            {/* <Route path="/createAttribute" component={AdminCreateFormAttributes} /> */}
             <Route path="/nextPage" component={UserLabelDetails} />
             <Route path="/systemForm" component={SystemForm} />
             <Route path="/createForm" component={CreateForm} />
