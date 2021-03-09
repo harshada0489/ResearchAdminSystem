@@ -87,14 +87,6 @@ class SystemForm extends React.Component{
 
     componentDidMount(){
         this.refreshCourses();
-    //   event.preventDefault();
-    // axios.get(API_URL).then(response => {
-    //     console.log("response= ",response.data);
-    //     this.setState({
-    //         systemFormList : response.data
-    //     });
-    //     console.log("systemFormList=",this.state.systemFormList);
-    // });
     }
 
     render() {

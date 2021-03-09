@@ -1,14 +1,20 @@
 package com.ras.service;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.ras.model.FormDetails;
 import com.ras.model.SystemForm;
 import com.ras.repository.SystemFormRepository;
+
+import io.jsonwebtoken.lang.Arrays;
+import io.jsonwebtoken.lang.Collections;
 
 @Service
 public class SystemFormService {
@@ -61,17 +67,34 @@ public class SystemFormService {
 		  return null;
 		}
 	  
-	  public String addNewSystemForm(SystemForm form) {
+	  public String addNewSystemForm(FormDetails form) {
 		  System.out.println("Inside class : SystemFormService  and method : addNewSystemForm()");
 		  Optional<SystemForm> dbForm = repository.findByFormName(form.getFormName());
 		  System.out.println("dbForm = "+ dbForm.isPresent());
 		  if(!(dbForm.isPresent())) {
+//			  this.filterList = filterList;
+//				this.formName = formName;
+//				this.formDescription = formDescription;
+		  
+		  
+			  SystemForm sysForm = new SystemForm(form.getFormName(), form.getFormDescription());
 			  
-			  form.setStatus("active");
-			  form.setCreatedDate(new java.util.Date());
-			  form.setModifiedDate(new java.util.Date());
 			  
-			  repository.save(form);
+			  
+			  
+			  String filter1 = form.getFilter1();
+			  String filter2 = form.getFilter2();
+			  
+			  String filterCombo = createFilterList(filter1, filter2);
+			 
+			  
+			  sysForm.setFilterList(filterCombo);
+
+			  sysForm.setStatus("active");
+			  sysForm.setCreatedDate(new java.util.Date());
+			  sysForm.setModifiedDate(new java.util.Date());
+			  
+			  repository.save(sysForm);
 			  System.out.println("Saved Successfully  ");
 			  return "Successfully Inserted";
 		  }
@@ -81,6 +104,21 @@ public class SystemFormService {
 		  }
 	  }
 	  
+	  
+	  public String createFilterList(String filter1, String filter2) {
+		  String filterList = "";
+		  
+		  List<String> list = new ArrayList<String>(); 
+		  list.add(filter1);
+		  list.add(filter2);
+		  java.util.Collections.sort(list);
+		  for(String order: list){
+			  filterList = filterList.concat(order) + ",";
+			}
+		  filterList= filterList.substring(0, filterList.length() - 1);
+		  
+		  return filterList;
+	  }
 	  public String searchByFormName(String formName) {
 		  System.out.println("Inside class : SystemFormService  and method : searchByFormName()" );
 		  System.out.println("formName = " + formName );

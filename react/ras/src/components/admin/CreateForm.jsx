@@ -5,7 +5,7 @@ import Form from "react-validation/build/form";
 import Input from "react-validation/build/input";
 import CheckButton from "react-validation/build/button";
 
-const API_URL = "http://localhost:8080/ras/systemForm/create"
+var API_URL = "http://localhost:8080/ras/systemForm/create"
 
 const required = value => {
     if (!value) {
@@ -48,8 +48,7 @@ class CreateForm extends React.Component{
             formName : '',
             formDescription : '',
             filter1: '',
-            filter2:'',
-            filterList:'undefined'
+            filter2:''
         }
 
         this.onChangeFormName = this.onChangeFormName.bind(this);
@@ -58,12 +57,16 @@ class CreateForm extends React.Component{
         this.onChangeFilter1 = this.onChangeFilter1.bind(this);
         this.onChangeFilter2 = this.onChangeFilter2.bind(this);
         
-        
-    }
+      }
+    
     onChangeFilter2(e){
+
       this.setState({
         filter2: e.target.value
     });
+
+    
+
     }
 
     onChangeFilter1(e){
@@ -85,20 +88,30 @@ class CreateForm extends React.Component{
         });
       }
 
+      
+
       handleRegister(e){
         e.preventDefault();
 
-        var sortFilter = this.state.filter1 + "," + this.state.filter2;
+        
         // var sortedFilter = sortFilter.split(",").sort().join(",");
+
+      //   let sortFilter = this.state.filter1 + "," + this.state.filter2;
+
+      // this.setState({
+      //     filterList: sortFilter.split(",").sort().join(",")
+      // });
+        
+
        
-        console.log("sortFilter = ", sortFilter.split(",").sort().join(","));
 
         this.setState({
           message: "",
-          successful: false,
-          filterList : sortFilter.split(",").sort().join(",")
+          successful: false
         });
-        
+
+
+        console.log(" state after filterList update = " , this.state.filterList);
 
         this.form.validateAll();
         if (this.checkBtn.context._errors.length === 0) {
