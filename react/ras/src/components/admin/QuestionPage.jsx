@@ -14,44 +14,94 @@ import AuthService from "../../services/auth.service";
 import TaskList from "../afterLogin/taskList"
 import { NotificationContainer, NotificationManager } from 'react-notifications';
 
- const API_URL= "http://localhost:8080/ras/questionDetails"
+ var API_URL= "http://localhost:8080/ras/questionDetails"
+ var GO_TO_BACK_PAGE_URL = "http://localhost:8080/ras/questionDetails/goToBackPage"
+ var API_URL_ENDFORM = "http://localhost:8080/ras/questionDetails/endForm"
  const camelCase = require('camelcase');
 
 export default class QuestionPage extends React.Component {
     constructor(props){
         super(props);
         this.state = {
-            taskList: [{ index: Math.random(), question: "", questionNumber: "", answerType: "", dbColumnName:""}],
+            taskList: [{ index: Math.random(), questionText: "", questionNumber: "", answerType: "", dbColumnName:"", formId:"", pageId:"", pageNumber:""}],
             systemFormDetails : [],
-            pageNumber : []
+            questionDetail: []
         }
         this.handleChange = this.handleChange.bind(this);
         this.addNewRow = this.addNewRow.bind(this);
         this.deteteRow = this.deteteRow.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.clickOnDelete = this.clickOnDelete.bind(this);
-        
+
+        this.goToPrevPage = this.goToPrevPage.bind(this);
+        this.endOfForm = this.endOfForm.bind(this);
+
     }
     // state = {
-    //     taskList: [{ index: Math.random(), question: "", questionNumber: "", answerType: "", dbColumnName: ""}]
+    //     taskList: [{ index: Math.random(), questionText: "", questionNumber: "", answerType: "", dbColumnName: ""}]
     // }
-  
+    goToPrevPage(e) {
 
+        axios.post(GO_TO_BACK_PAGE_URL, this.state.taskList).then(response =>{
+            console.log(response);
+
+            // this.props.history.push({
+            //     pathname: "/"+ this.state.questionDetail.formId + "/createQuestion/Page/" + this.state.questionDetail.pageNumber ,
+            //     state: { detail : this.state.questionDetail}
+            //   })
+            //   window.location.reload();
+
+        })
+        .catch(error =>{
+          console.log(error)
+        })
+
+    }
+
+    endOfForm(e) {
+        
+        for(var i=0; i<this.state.taskList.length; i++)
+        {
+                if(this.state.taskList[i].questionText === '' || this.state.taskList[i].questionNumber ==='' || this.state.taskList[i].answerType ==='' || this.state.taskList[i].dbColumnName ==='')
+                {
+                    NotificationManager.warning("Please Fill up Required Field.Please Check Label name , Question Number Field and Input Type Field");
+                    return false;
+                }
+        }
+        axios.post(API_URL_ENDFORM + "/" + this.state.systemFormDetails.formId +"/Page/" + this.state.systemFormDetails.pageNumber, this.state.taskList).then(response =>{
+            console.log(response);
+            // this.props.history.push({
+            //     pathname: "/nextPage",
+            //     state: { detail: response.data }
+            // })
+        })
+        .catch(error =>{
+          console.log(error)
+        })
+
+    }
 
 
 
     handleChange = (e) => {
-        if (["question", "questionNumber", "answerType" , "dbColumnName"].includes(e.target.name)) {
+        if (["questionText", "questionNumber", "answerType" , "dbColumnName"].includes(e.target.name)) {
             let taskList = [...this.state.taskList]
             taskList[e.target.dataset.id][e.target.name] = e.target.value;
         }
         else {
+            
             this.setState({ [e.target.name]: e.target.value })
         }
+
+        let taskList = [...this.state.taskList];
+            taskList[e.target.dataset.id]["formId"] = this.state.systemFormDetails.formId;
+            taskList[e.target.dataset.id]["pageId"] = this.state.systemFormDetails.pageId;
+            taskList[e.target.dataset.id]["pageNumber"] = this.state.systemFormDetails.pageNumber;
+
     }
     addNewRow = () => {
         this.setState((prevState) => ({
-            taskList: [...prevState.taskList, { index: Math.random(), question: "", questionNumber: "", answerType: "", dbColumnName:""}]
+            taskList: [...prevState.taskList, { index: Math.random(), questionText: "", questionNumber: "", answerType: "", dbColumnName:""}]
         }));
     }
 
@@ -71,45 +121,43 @@ export default class QuestionPage extends React.Component {
         e.preventDefault();
         console.log("this.state.taskList = ",this.state.taskList);
         console.log("this.state.taskList.length = ", this.state.taskList.length)
-        console.log("this.state.taskList[0].question = ", this.state.taskList[0].question === '');
+        console.log("this.state.taskList[0].questionText = ", this.state.taskList[0].questionText === '');
         console.log("this.state.taskList[0].questionNumber = ", this.state.taskList[0].questionNumber=== '');
         console.log("this.state.taskList[0].answerType = ", this.state.taskList[0].answerType=== '');
         // console.log("this.state.taskList[0] has blank value? = ", this.state.taskList[i].question === '' || this.state.taskList[i].questionNumber ==='' || this.state.taskList[i].answerType ==='' || this.state.tasklist[i].dbColumnName ==='');
         
         for(var i=0; i<this.state.taskList.length; i++)
         {
-                if(this.state.taskList[i].question === '' || this.state.taskList[i].questionNumber ==='' || this.state.taskList[i].answerType ==='' || this.state.taskList[i].dbColumnName ==='')
+                if(this.state.taskList[i].questionText === '' || this.state.taskList[i].questionNumber ==='' || this.state.taskList[i].answerType ==='' || this.state.taskList[i].dbColumnName ==='')
                 {
                     NotificationManager.warning("Please Fill up Required Field.Please Check Label name , Question Number Field and Input Type Field");
                     return false;
                 }
-               
-                
-                // console.log("Is white space present in database column name ? " , /\s/g.test(this.state.tasklist[i].dbColumnName));
-                 
-                // let str = this.state.tasklist[i].dbColumnName;
-
-                
-
-
-                // return );
-
-                // if(this.state.tasklist[i].dbColumnName.indexOf(' ') >= 0 )
-                // {
-                //     NotificationManager.warning(" Please remove spaces in Database Column");
-                //     return false;
-                // }
-
-
         }
 
-        let data = { formData: this.state.taskList }
+        // let data = { formData: this.state.taskList }
+
         console.log("this.state.taskList =", this.state.taskList);
         console.log("this.state.systemFormDetails =", this.state.systemFormDetails);
         // axios.defaults.headers.common["Authorization"] = localStorage.getItem('token');
-        axios.post(API_URL +"/" + this.state.systemFormDetails.formId +"/Page/" + this.state.systemFormDetails.pageNumber, this.state.taskList).then(res => {
-            console.log(res);
-            if(res.data ==="success") NotificationManager.success("Successfully Created Questions");
+        axios.post(API_URL +"/" + this.state.systemFormDetails.formId +"/Page/" + this.state.systemFormDetails.pageNumber, this.state.taskList).then(response => {
+            console.log(response);
+            if(response.data.message ==="success"){
+                console.log(response.data);
+                console.log("response path = ",response.data.path);
+                NotificationManager.success("Successfully Created Questions");
+                this.setState({
+                    // message: response.data,
+                    questionDetail :response.data,
+                    successful: true
+                  });
+
+                this.props.history.push({
+                    pathname: "/"+ this.state.questionDetail.formId + "/createQuestion/Page/" + this.state.questionDetail.pageNumber ,
+                    state: { detail : this.state.questionDetail}
+                  })
+                  window.location.reload();
+            } 
             else{
                 NotificationManager.success("Something went Wrong. Please try to create lbels again.");
             }
@@ -131,7 +179,8 @@ getData(){
 }
 
 componentDidMount(){
-    this.getData()
+    this.getData();
+    
 }      
     
     render() {
@@ -175,9 +224,9 @@ componentDidMount(){
                                     </table>
                                 </div>
                                 <div className="card-footer text-center"> 
-                                <button type="button" onClick={this.addNewRow} className="btn btn-primary text-center"> Go Back </button>
-                                <button type="button" onClick={this.addNewRow} className="btn btn-primary text-center">End Form </button>
-                                <button type="submit" className="btn btn-primary text-center"> Save & go to Next Page </button>
+                                 <button type="button" onClick={this.goToPrevPage} className="btn btn-primary text-center"> Go Back </button>
+                                 &nbsp; &nbsp; <button type="button" onClick={this.endOfForm} className="btn btn-primary text-center">End Form </button>
+                                 &nbsp; &nbsp; <button type="submit" className="btn btn-primary text-center"> Save & go to Next Page </button>
                                 </div>
                             </div>
                         </div>

@@ -36,8 +36,8 @@ public class Question {
 	  private String pageNumber;
 
 	  @NotBlank
-	  @JsonProperty(value = "questionNum")
-	  private String questionNum;
+	  @JsonProperty(value = "questionNumber")
+	  private String questionNumber;
 	  
 	  @NotBlank
 	  @JsonProperty(value = "questionText")
@@ -51,10 +51,11 @@ public class Question {
 	  @JsonProperty(value = "dbColumnName")
 	  private String dbColumnName;
 	  
-//	  @NotBlank
-//	  @JsonProperty(value = "lengthOfAnswer")
 	  private String lengthOfAnswer;
 	  
+	  @NotBlank
+	  @JsonProperty(value = "pageId")
+	  private String pageId;
 	  
 	  private String createdByUserId;
 	  
@@ -81,24 +82,28 @@ public class Question {
 //		this.answerType = answerType;
 //	}
 	
-	
+		public Question(@NotBlank String formId, @NotBlank String pageNumber, @NotBlank String questionNumber,
+				@NotBlank String questionText, @NotBlank String answerType, @NotBlank String dbColumnName,
+				String lengthOfAnswer, @NotBlank String pageId) {
+			super();
+			this.formId = formId;
+			this.pageNumber = pageNumber;
+			this.questionNumber = questionNumber;
+			this.questionText = questionText;
+			this.answerType = answerType;
+			this.dbColumnName = dbColumnName;
+			this.lengthOfAnswer = lengthOfAnswer;
+			this.pageId = pageId;
+		}
 
-	public Question(@NotBlank String formId, @NotBlank String pageNumber, @NotBlank String questionNum,
-			@NotBlank String questionText, @NotBlank String answerType, @NotBlank String dbColumnName) {
-		super();
-		this.formId = formId;
-		this.pageNumber = pageNumber;
-		this.questionNum = questionNum;
-		this.questionText = questionText;
-		this.answerType = answerType;
-		this.dbColumnName = dbColumnName;
-	}
 
 
 
 	public String getId() {
 		return id;
 	}
+
+
 
 	public void setId(String id) {
 		this.id = id;
@@ -118,14 +123,6 @@ public class Question {
 
 	public void setPageNumber(String pageNumber) {
 		this.pageNumber = pageNumber;
-	}
-
-	public String getQuestionNum() {
-		return questionNum;
-	}
-
-	public void setQuestionNum(String questionNum) {
-		this.questionNum = questionNum;
 	}
 
 	public String getAnswerType() {
@@ -199,6 +196,34 @@ public class Question {
 	public void setModifiedByUserId(String modifiedByUserId) {
 		this.modifiedByUserId = modifiedByUserId;
 	}
+
+
+
+	public String getPageId() {
+		return pageId;
+	}
+
+
+
+	public void setPageId(String pageId) {
+		this.pageId = pageId;
+	}
+
+
+
+	public String getQuestionNumber() {
+		return questionNumber;
+	}
+
+
+
+	public void setQuestionNumber(String questionNumber) {
+		this.questionNumber = questionNumber;
+	}
+
+
+
+
 
 
 }

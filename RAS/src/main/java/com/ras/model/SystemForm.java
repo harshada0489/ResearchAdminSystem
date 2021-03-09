@@ -17,29 +17,32 @@ public class SystemForm {
 	  @Id
 	  private String id;
 
+	  
 	  @NotBlank
 	  private String filterList;
 	   
-	  private String status;
-	  
+
 	  @NotBlank
 	  private String formName;
 
+	  @NotBlank
 	  private String formDescription;
 
-	  	  
+	  
+	  private String status;
+  
 	  private Date createdDate;
 	  
 	  private Date modifiedDate;
 	  
 	
-	public SystemForm(@NotBlank String filterList, @NotBlank String formName, String formDescription) {
+
+
+public SystemForm(@NotBlank String formName,@NotBlank String formDescription) {
 		super();
-		this.filterList = filterList;
 		this.formName = formName;
 		this.formDescription = formDescription;
 	}
-
 
 //	public SystemForm(String id, @NotBlank String filterList, String status, @NotBlank String formName,
 //			String formDescription, Date createdDate, Date modifiedDate) {

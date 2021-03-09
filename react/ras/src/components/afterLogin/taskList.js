@@ -2,12 +2,12 @@ import React from "react"
 const TaskList = (props) => {
   return (
     props.taskList.map((val, idx) => {
-      let question = `question-${idx}`, questionNumber = `questionNumber-${idx}`, answerType = `answerType-${idx}` , dbColumnName = `dbColumnName-${idx}`
+      let questionText = `questionText-${idx}`, questionNumber = `questionNumber-${idx}`, answerType = `answerType-${idx}` , dbColumnName = `dbColumnName-${idx}`
       return (
         <tr key={val.index}>
 
           <td>
-            <input type="text"  name="question" data-id={idx} id={question} className="form-control " />
+            <input type="text"  name="questionText" data-id={idx} id={questionText} className="form-control " />
           </td>
           <td>
             <input type="text"  name="questionNumber" id={questionNumber} data-id={idx} className="form-control " />

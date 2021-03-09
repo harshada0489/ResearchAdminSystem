@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ras.model.FormDetails;
 import com.ras.model.SystemForm;
 import com.ras.model.payload.response.MessageResponse;
 import com.ras.repository.SystemFormRepository;
@@ -29,11 +30,14 @@ import com.ras.service.SystemFormService;
 @RequestMapping("/ras")
 public class SystemFormResource {
 
+	
 	@Autowired
 	SystemFormService service; 
 	
 	@Autowired
 	PageService pageService;
+	
+	
 	
 	@GetMapping("/systemForm")
 	public List<SystemForm> getAllSystemForm() {
@@ -75,7 +79,7 @@ public class SystemFormResource {
 	  
 	  
 	  @PostMapping("/systemForm/create")
-	  public Map<String, String> createForm(@RequestBody SystemForm systemform){
+	  public Map<String, String> createForm(@RequestBody FormDetails formDetails){
 		  
 		  HashMap <String, String> map = new HashMap<String, String>();
 		  
@@ -84,15 +88,16 @@ public class SystemFormResource {
 		  //			  2. status => active)
 		  //insert new row in StudyFormConnector Table
 		  
-		  System.out.println("Inside class: SystemFormResource and method: createForm() = " + systemform.toString());
-			String message = service.addNewSystemForm(systemform);
+		  System.out.println("Inside class: SystemFormResource and method: createForm() = " + formDetails.toString());
+		  
+			String message = service.addNewSystemForm(formDetails);
 			
 			String formId = "";
 			int pageNumber = 1; 
 			String pageId ="";
 			if(message.equals("Successfully Inserted")) {
 				
-				String formname = systemform.getFormName();
+				String formname = formDetails.getFormName();
 				if(!(formname.isEmpty())) {
 					 formId = service.searchByFormName(formname);
 					if(!(formId.isEmpty())) {
