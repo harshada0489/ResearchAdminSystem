@@ -9,13 +9,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ras.model.DepartmentConfig;
-import com.ras.model.InstituteConfig;
-import com.ras.model.LoginTypeConfig;
-import com.ras.model.payload.request.LoginRequest;
 import com.ras.resource.DepartmentConfigRepository;
 import com.ras.resource.InstituteConfigRepository;
-//import com.ras.resource.LoginRequestRepository;
 import com.ras.resource.LoginTypeConfigRepository;
 import com.ras.resource.ResearchRepository;
 import com.ras.resource.UserAccountRepository;
@@ -44,14 +39,15 @@ public class RasApplication implements CommandLineRunner{
 	private UserAccountRepository userAccountRepository;
 	
 	
-	
 //	@GetMapping("RAS")
 //	public String RAS() {
 //		return "Application Deployed";
 //	}
 
-	public static void main(String[] args) {
+	public static void main(String[] args){
+		
 		SpringApplication.run(RasApplication.class, args);
+			    
 	}
 
 	@Override
@@ -101,6 +97,9 @@ public class RasApplication implements CommandLineRunner{
 //		departmentConfigRepository.save(d4);
 //		departmentConfigRepository.save(d5);
 //		departmentConfigRepository.save(d6);
+		
+		
+		
 		
 	}
 
