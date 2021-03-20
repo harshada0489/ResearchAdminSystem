@@ -30,6 +30,7 @@ import com.ras.model.payload.request.LoginRequest;
 import com.ras.model.payload.response.JwtResponse;
 import com.ras.repository.UserRepository;
 import com.ras.service.MongoListCollections;
+import com.ras.service.PageService;
 import com.ras.service.QuestionService;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoDatabase;
@@ -56,32 +57,65 @@ public class QuestionResource {
 	@Autowired
 	QuestionService service;
 	
+	@Autowired
+	PageService pageService;
+	
 	boolean isEndForm= false;
 	
 	@PostMapping("/questionDetails/{formId}/Page/{pageNumber}")
 	public ResponseEntity<?> addQuestionDetails(@RequestBody List<Question> question ,@PathVariable String formId , @PathVariable int pageNumber, boolean isEndForm) {
 		
 		HashMap<String, String> returnMap = new HashMap<String,String>();
+		String pageId ="";
 		
 		System.out.println("Inside class: QuestionResource , && method: addQuestionDetails()");
 		System.out.println("question ====== " + question.toString());
+		for(int i=0; i<question.size(); i++) {
+			
+			pageId = pageService.findPageId(formId, pageNumber);
+			if(!(pageId.isEmpty())) {
+				question.get(i).setPageId(pageId);
+				
+			}
+			
+			System.out.println("question pageId=="+question.get(i).getPageId());
+		}
 
 		String msg = service.addQuestionDetails(question);
 		if(msg.equalsIgnoreCase("Successful")) {
 			returnMap.put("message", "success");
-			returnMap.put("formId", formId);
-			returnMap.put("pageId", "102");
+
 			
 			if(!(isEndForm)) {
+				System.out.println("not of end form=================" + isEndForm);
 				int updatePagenumber = pageNumber + 1;
+				 
 				
+				String pageCreation = pageService.pageOneCreation(updatePagenumber,formId);
+				
+				if(pageCreation.equals("Successful")) {
+					pageId = pageService.findPageId(formId, pageNumber);
+					if(!(pageId.isEmpty())) {
+						returnMap.put("formId", formId);
+						returnMap.put("pageId", pageId);
+						returnMap.put("pageNumber", updatePagenumber+"");
+					}
+	
+				}
+
 				returnMap.put("path", "/"+formId + "/cre"
 						+ "ateQuestion/Page/"+updatePagenumber);
 				returnMap.put("pageNumber", updatePagenumber+"");
 				
 			}else {
+				System.out.println("end form=================" + isEndForm);
+				
+				pageId = pageService.findPageId(formId, pageNumber);
+				
 				returnMap.put("path", "/"+formId + "/createQuestion/Page/"+pageNumber);
 				returnMap.put("pageNumber", pageNumber+"");
+				returnMap.put("formId", formId);
+//				returnMap.put("pageId", pageId);
 			}
 		}
 		
@@ -93,6 +127,9 @@ public class QuestionResource {
 	@PostMapping("/questionDetails/endForm/{formId}/Page/{pageNumber}")
 	public ResponseEntity<?> endQuestionDetails(@RequestBody List<Question> question, @PathVariable String formId , @PathVariable int pageNumber) {
 		System.out.println("Inside class: QuestionResource , && method: endQuestionDetails()");
+		
+		
+		
 		ResponseEntity<?> reponse = addQuestionDetails(question, formId, pageNumber, true);
 		System.out.println("reponse = "+ reponse);
 		System.out.println("question ====== " + question.toString());
@@ -103,7 +140,7 @@ public class QuestionResource {
 		System.out.println("-----------------After Monngo db collection---------------- " );
 //		service.addQuestionDetails(question);		
 		
-		return ResponseEntity.ok("success from end form");
+		return ResponseEntity.ok("success");
 		
 	}
 	

@@ -8,10 +8,10 @@ import VerticalBar from './verticalBar';
 import "./afterLoginCommon.scss";
 import "./createStudy.scss";
 import AuthService from "../../services/auth.service";
-import UserLabelDetails from "./UserLabelDetails";
+import StudySideQuesionPage from "./StudySideQuesionPage";
 
 const API_URL = 'http://localhost:8080/ras/studyForm'
-const API_NEXT_PAGE_URL = 'http://localhost:8080/ras/nextPage'
+// const API_NEXT_PAGE_URL = 'http://localhost:8080/ras/nextPage'
 
 class CreateStudy extends React.Component {
     constructor(props) {
@@ -19,8 +19,6 @@ class CreateStudy extends React.Component {
         this.state ={
             studyTitle : '',
             oneWordIdentifier : '',
-            selectedStudyOption : '',
-            selectedStudyField : '',
             selectedGender : '',
             age : '',
             NoOfHumanRequired : '',
@@ -28,33 +26,52 @@ class CreateStudy extends React.Component {
             NoOfAnimalRequired : '',
             researcherId: '',
             typeOfStudy : '',
+
+            filter1: '',
+            filter2:'',
+
             currentUser: AuthService.getCurrentUser()
           };
 
         this.studyFormHandler = this.studyFormHandler.bind(this);
         this.handleChange = this.handleChange.bind(this);
-        this.onChangeValue = this.onChangeValue.bind(this);
         this.onChangeGenderValue = this.onChangeGenderValue.bind(this);
-        this.onChangeStudyFieldValue = this.onChangeStudyFieldValue.bind(this);
-        
+
+        this.onChangeFilter1 = this.onChangeFilter1.bind(this);
+        this.onChangeFilter2 = this.onChangeFilter2.bind(this);
         
       }
+
+
+      onChangeFilter2(e){
+
+        this.setState({
+          filter2: e.target.value
+      });
+      }
+  
+      onChangeFilter1(e){
+        this.setState({
+          filter1: e.target.value,
+          filter2: ''
+      });
+      }
+
 
       studyFormHandler(event){
 
         event.preventDefault();
-        // let loginRequest ={studySubject: this.state.studySubject};
         console.log(this.state.currentUser.id);
         this.state.researcherId = this.state.currentUser.id;
-        if(this.state.selectedStudyOption==="Human"){
-            console.log("Selected Study option1 = Human ");
+        if(this.state.filter1==="human"){
+            console.log("Selected filter1 = human ");
             this.state.typeOfAnimal = "";
             this.state.NoOfAnimalRequired = "";
         
               console.log(this.state);
         }
-        else if (this.state.selectedStudyOption==="Animal"){
-            console.log("Selected Study option1 = Animal ");
+        else if (this.state.filter2==="animal"){
+            console.log("Selected Study option1 = animal ");
             this.state.NoOfHumanRequired = "";
             this.state.age = "";
             this.state.selectedGender = "";
@@ -62,29 +79,27 @@ class CreateStudy extends React.Component {
               console.log(this.state);
         }
         else{
-            console.log('selected study is not Human nor Animal.');
+            console.log('selected study is not human nor animal.');
         }
 
 
 
         axios.post(API_URL,this.state).then(response =>{
-
-        // const {labelRes } = this.state.labelRes;
+            console.log("response.data =", response.data);
           
             this.props.history.push({
-                pathname: "/nextPage",
+                pathname: "/study/" + response.data.studyId + "/" + response.data.filterFormId+ "/" + response.data.systemFormId + "/" + response.data.page,
+                // pathname: "/nextPage",
                 state: { detail: response.data }
             })
-            
-          
+            window.location.reload();
         })
         .catch(error =>{
           console.log(error)
         })
 
             }   
-    
-    
+
     handleChange(event){
           
         this.setState({
@@ -92,60 +107,43 @@ class CreateStudy extends React.Component {
          });
        }
 
-    onChangeValue(event){
-        this.setState({
-            selectedStudyOption: event.target.value
-        });
-        
-    }
-
     onChangeGenderValue(event){
         this.setState({
             selectedGender: event.target.value
         });
-
-        // console.log(event.taget.value);
     }
 
-    onChangeStudyFieldValue(event){
-        this.setState({
-            selectedStudyField : event.target.value
-        });
-    }
     render(){
         
         let { currentUser } = this.state;
 
-        let {radioOption} = this.state.selectedStudyOption;
-        console.log(radioOption);
+        console.log("filter1=",this.state.filter1, " filter2 = ", this.state.filter2);
 
-        
+        const showFilter2 = () => {
+          if (this.state.filter1 === "human"){
+  
+              return (
+                  <div>
+                      <div className="row">
+                          <div className="col-25">
+                              <label htmlFor="filter2">Filter 2 : </label>
+                          </div>
+                          <div className="col-75">
+                          <input type="radio" name="filter2" value="cancer" checked={this.state.filter2 === "cancer"}
+                              onChange={this.onChangeFilter2}/> Cancer
+                          <input type="radio" name="filter2" value="diabeties" checked={this.state.filter2 === "diabeties"}
+                              onChange={this.onChangeFilter2} /> Diabeties
+                          </div>
+                      </div>
 
-        const typeOfStudy = () => {
-            if (this.state.selectedStudyOption ==="Human"){
-
-                return (
-                    <div>
-                        <div className="row">
-                            <div className="col-25">
-                                <label htmlFor="gender">FieldOfStudy : </label>
-                            </div>
-                            <div className="col-75">
-                            <input type="radio" name="cancer" value="Cancer" checked={this.state.selectedStudyField === "Cancer"}
-                                onChange={this.onChangeStudyFieldValue}/> Cancer
-                            <input type="radio" name="diabeties" value="Diabeties" checked={this.state.selectedStudyField === "Diabeties"}
-                                onChange={this.onChangeStudyFieldValue} /> Diabeties
-                            </div>
-                        </div>
-
-                        <div className="row">
-                            <div className="col-25">
-                                <label htmlFor="gender">Gender : </label>
-                            </div>
-                            <div className="col-75">
-                            <input type="radio" name="gender" value="Male" checked={this.state.selectedGender === "Male"}
-                                onChange={this.onChangeGenderValue}/> Male
-                            <input type="radio" name="gender" value="Female" checked={this.state.selectedGender === "Female"}
+                         <div className="row">
+                             <div className="col-25">
+                                 <label htmlFor="gender">Gender : </label>
+                             </div>
+                             <div className="col-75">
+                             <input type="radio" name="gender" value="Male" checked={this.state.selectedGender === "Male"}
+                                 onChange={this.onChangeGenderValue}/> Male
+                             <input type="radio" name="gender" value="Female" checked={this.state.selectedGender === "Female"}
                                 onChange={this.onChangeGenderValue} /> Female
                             </div>
                         </div>
@@ -162,39 +160,39 @@ class CreateStudy extends React.Component {
 
                         <div className="row">
                             <div className="col-25">
-                            <label htmlFor="NoOfHumanRequired">No of Humans Required</label>   
-                        </div> 
-                        <div className="col-75">
-                            <input type="text" name="NoOfHumanRequired" value={this.state.NoOfHumanRequired}  onChange={this.handleChange} placeholder="No of Human Required"/>
-                            </div>
-                        </div>
-    
-                    </div>
-                )
-                    
-            }else if (this.state.selectedStudyOption ==="Animal"){
-
-                return (
-                    <div>
-                        <div className="row">
-                            <div className="col-25">
-                                <label htmlFor="gender">FieldOfStudy : </label>
-                            </div>
-                            <div className="col-75">
-                            <input type="radio" name="embryogenesis" value="Embryogenesis" checked={this.state.selectedStudyField === "Embryogenesis"}
-                                onChange={this.onChangeStudyFieldValue}/> Embryogenesis
-                            <input type="radio" name="developmentalBiology" value="developmentalBiology" checked={this.state.selectedStudyField === "DevelopmentalBiology"}
-                                onChange={this.onChangeStudyFieldValue} /> Developmental Biology
+                                 <label htmlFor="NoOfHumanRequired">No of Humans Required</label>   
+                             </div> 
+                             <div className="col-75">
+                                 <input type="text" name="NoOfHumanRequired" value={this.state.NoOfHumanRequired}  onChange={this.handleChange} placeholder="No of Human Required"/>
                             </div>
                         </div>
 
+                  </div>
+              )
+                  
+          }else if (this.state.filter1 ==="animal"){
+  
+              return (
+                  <div>
+                      <div className="row">
+                          <div className="col-25">
+                              <label htmlFor="filter2">Filter 2 : </label>
+                          </div>
+                          <div className="col-75">
+                          <input type="radio" name="filter2" value="embryogenesis" checked={this.state.filter2 === "embryogenesis"}
+                              onChange={this.onChangeFilter2}/> Embryogenesis
+                          <input type="radio" name="filter2" value="developmentalBiology" checked={this.state.filter2 === "developmentalBiology"}
+                              onChange={this.onChangeFilter2} /> Developmental Biology
+                          </div>
+                      </div>
+
                         <div className="row">
-                            <div className="col-25">
+                             <div className="col-25">
                                 <label htmlFor="typeOfAnimal">Which type of Animal</label>
-                            </div> 
-                            <div className="col-75">
+                             </div> 
+                             <div className="col-75">
                                 <input type="text" name="typeOfAnimal" value={this.state.typeOfAnimal}  onChange={this.handleChange} placeholder="Type Of Animal"/>
-                            </div>   
+                             </div>   
                         </div>
 
                         <div className="row">
@@ -202,27 +200,22 @@ class CreateStudy extends React.Component {
                                 <label htmlFor="NoOfAnimalRequired">No Of Animals Required</label>
                             </div> 
                             <div className="col-75">
-                            <input type="text" name="NoOfAnimalRequired" value={this.state.NoOfAnimalRequired}  onChange={this.handleChange} placeholder="No of Animals Required"/>
+                                <input type="text" name="NoOfAnimalRequired" value={this.state.NoOfAnimalRequired}  onChange={this.handleChange} placeholder="No of Animals Required"/>
                             </div>   
                         </div>
-                    </div>
-                )
-            }
-        }
+
+                  </div>
+              )
+          }
+      }
 
         return(
             
 
              <div>
-                {/* <div > <HorizontaHeaderBar /></div> */}
-                {/* <div > <VerticalBar /></div>  */}
-               
-                
-
 
                 <div className="container">
 
-                  
                  <div className="form">
                     <div className="row">
                         <div className="col-25">
@@ -243,19 +236,19 @@ class CreateStudy extends React.Component {
                         </div>
                     </div>
 
-                    <div className="row">
+                <div className="row">
                         <div className="col-25">
-                        <label htmlFor="typeOfStudy">Type Of Study : </label>
+                        <label htmlFor="filter1">Filter 1 : </label>
                         </div>
                         <div className="col-75">
-                        <input type="radio" name="typeOfStudy" value="Human" checked={this.state.selectedStudyOption === "Human"}
-                            onChange={this.onChangeValue}/> Human
-                        <input type="radio" name="typeOfStudy" value="Animal" checked={this.state.selectedStudyOption === "Animal"}
-                            onChange={this.onChangeValue} /> Animal
+                        <input type="radio" name="filter1" value="human" checked={this.state.filter1 === "human"}
+                            onChange={this.onChangeFilter1} /> Human
+                        <input type="radio" name="filter1" value="animal" checked={this.state.filter1 === "animal"}
+                            onChange={this.onChangeFilter1}/> Animal
                         </div>
                     </div>
 
-                    {typeOfStudy()}
+                    {showFilter2()}
                     
                     <div className="form-submit">
                         <button type="button" onClick={this.studyFormHandler} className="btn"> Next / Submit</button>

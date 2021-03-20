@@ -21,6 +21,7 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Filters;
+import com.ras.model.Question;
 
 import static com.mongodb.client.model.Filters.and;
 import static com.mongodb.client.model.Filters.gt;
@@ -31,6 +32,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -119,7 +121,10 @@ public class MongoListCollections {
     	Collections.sort(sortedDBNames);
     	
     	System.out.println("sorted List = " + sortedDBNames);
-    	System.out.println("last element of the sorted List = " + sortedDBNames.get(sortedDBNames.size()-1));
+    	if(sortedDBNames.size()>0) {
+    		System.out.println("last element of the sorted List = " + sortedDBNames.get(sortedDBNames.size()-1));
+    	}
+    	
     	
     	if(sortedDBNames.isEmpty()) {
     		int counter  = 1;
@@ -240,6 +245,92 @@ public class MongoListCollections {
     	
     	return hmap;
     	
+    }
+    
+    
+    public static HashMap<String, String> getSystemFormByFilters(String filterCombo) {
+    		ArrayList<String> sortedDBNames = new ArrayList<>();
+    		HashMap<String, String> hmap = new HashMap<>();
+    		
+    		Logger mongoLogger = Logger.getLogger("org.mongodb.driver");
+            mongoLogger.setLevel(Level.SEVERE);
+
+            try (MongoClient mongoClient = MongoClients.create("mongodb://localhost:27017")) {
+
+                MongoDatabase database = mongoClient.getDatabase("test");
+                
+                for (String name : database.listCollectionNames()) {
+    	    		if(name.contains(filterCombo)) {
+    	    			sortedDBNames.add(name);
+    	    		}
+    	    		
+    	        }
+    	    	Collections.sort(sortedDBNames);
+    	    	
+    	    	System.out.println("sorted List = " + sortedDBNames);
+    	    	
+    	    	System.out.println("last element of the sorted List = " + sortedDBNames.get(sortedDBNames.size()-1));
+                
+    	    	String latestSystemForm= sortedDBNames.get(sortedDBNames.size()-1);
+    	    	
+    	    	MongoCollection<Document> collection = database.getCollection(latestSystemForm);
+    	    	System.out.println("latest System Form found in db =" + collection);
+
+    	    	
+    	    	
+    	    	FindIterable<Document> fit = collection.find();
+
+                for (Document docs : fit) {
+       					
+       					for(String key : docs.keySet()) {
+       						if(key.contains("_id")) {
+       							String value = docs.get(key).toString();
+           						System.out.println("filterForm Id = "+ value);
+           						hmap.put("filterFormId",value );
+       						}
+       						
+       						if(key.contains("systemFormId")) {
+       							String value = docs.get(key).toString();
+           						System.out.println("filterForm Id = "+ value);
+           						hmap.put("systemFormId",value );
+       						}
+       						
+       					}
+                }
+                
+                
+    	    	return hmap;
+            }
+
+    }
+
+    public static List<Document> getQuestionSet(String systemFormId, String pageNumber) {
+    	
+    	List<Document> list = new ArrayList<>();
+    	
+    	
+    	Logger mongoLogger = Logger.getLogger("org.mongodb.driver");
+        mongoLogger.setLevel(Level.SEVERE);
+
+        try (MongoClient mongoClient = MongoClients.create("mongodb://localhost:27017")) {
+
+            MongoDatabase database = mongoClient.getDatabase("test");
+            
+            MongoCollection<Document> collection = database.getCollection("question");
+            
+            FindIterable<Document> fit = collection.find(and(eq("formId", systemFormId), eq("pageNumber", pageNumber)));
+
+            for (Document docs : fit) {
+            	
+            	System.out.println("docs = " + docs);
+                
+            	list.add(docs);
+            } 
+        }
+    	
+    	
+    	
+    	return list;
     }
     
 }
