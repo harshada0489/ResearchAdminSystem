@@ -70,10 +70,13 @@ export default class QuestionPage extends React.Component {
         }
         axios.post(API_URL_ENDFORM + "/" + this.state.systemFormDetails.formId +"/Page/" + this.state.systemFormDetails.pageNumber, this.state.taskList).then(response =>{
             console.log(response);
-            // this.props.history.push({
-            //     pathname: "/nextPage",
-            //     state: { detail: response.data }
-            // })
+            if(response.data === 'success'){
+                this.props.history.push({
+                    pathname: "/systemForm",
+                    state: { detail: response.data }
+                })
+            }
+            
         })
         .catch(error =>{
           console.log(error)

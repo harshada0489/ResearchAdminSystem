@@ -64,9 +64,6 @@ class CreateForm extends React.Component{
       this.setState({
         filter2: e.target.value
     });
-
-    
-
     }
 
     onChangeFilter1(e){
