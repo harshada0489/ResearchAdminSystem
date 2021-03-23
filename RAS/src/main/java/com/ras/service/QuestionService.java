@@ -5,11 +5,9 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.ras.model.CreateStudy;
 
 import com.ras.model.Question;
 import com.ras.repository.QuestionRepository;
-import com.ras.resource.CreateStudyRepository;
 
 @Service
 public class QuestionService {

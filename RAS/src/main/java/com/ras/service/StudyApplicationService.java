@@ -1,6 +1,7 @@
 package com.ras.service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
@@ -11,28 +12,36 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.mongodb.client.MongoCollection;
-import com.ras.model.CreateStudy;
 import com.ras.model.Question;
+import com.ras.model.StudyApplication;
+import com.ras.model.StudyDataForm;
 import com.ras.model.SystemForm;
 import com.ras.model.payload.request.LoginRequest;
 import com.ras.repository.QuestionRepository;
-import com.ras.resource.CreateStudyRepository;
+import com.ras.repository.StudyDataFormRepository;
+import com.ras.resource.StudyApplicationRepository;
 //import com.ras.resource.LoginRequestRepository;
 
 @Service
-public class CreateStudyService {
+public class StudyApplicationService {
 
 	@Autowired
-	CreateStudyRepository createStudyRepository;
+	StudyApplicationRepository studyApplicationRepository;
 	
-//	@Autowired
-//	QuestionRepository repository;
+	@Autowired
+	QuestionRepository qrepository;
 	
-	public CreateStudyService() {
+	
+	@Autowired
+	StudyDataFormRepository studyDataFormRepository;
+	
+	
+	
+	public StudyApplicationService() {
 		// TODO Auto-generated constructor stub
 	}
 
-	public String addCreateStudyDefaultValues(CreateStudy createStudy) {
+	public String addCreateStudyDefaultValues(StudyApplication createStudy) {
 		MongoCollection<Document> collection = null;
 		
 		HashMap<String, String> hmap = new HashMap<>();
@@ -42,7 +51,7 @@ public class CreateStudyService {
 		System.out.println("Calling from addCreateStudyDefaultValues()" + createStudy);
 		
 		
-		createStudyRepository.save(createStudy);
+		studyApplicationRepository.save(createStudy);
 		
 		return "success";
 		
@@ -71,12 +80,12 @@ public class CreateStudyService {
 		String returnVal="";
 		System.out.println("studyTitle=" + studyTitle + " oneWordIdentifier = " + oneWordIdentifier);
 		
-		Optional<CreateStudy> db = createStudyRepository.findByStudyTitle(studyTitle);
+		Optional<StudyApplication> db = studyApplicationRepository.findByStudyTitle(studyTitle);
 		
 		System.out.println("db.isPresent() =" + db.isPresent());
 
 		if(db.isPresent()) {
-			CreateStudy study = db.get();
+			StudyApplication study = db.get();
 	  		
 	  		String filter1 = study.getFilter1();
 			String filter2 =  study.getFilter2();
@@ -87,6 +96,27 @@ public class CreateStudyService {
 			System.out.println("filterCombo = "  + filterCombo);
 			
 			hmap= MongoListCollections.getSystemFormByFilters(filterCombo);
+			
+			if(hmap.containsKey("systemFormId")) {
+				
+				
+				
+				String systemFormId  = hmap.get("systemFormId");
+				
+				String filterFormId  = hmap.get("filterFormId");
+				
+				
+				StudyDataForm studyMapForm = new StudyDataForm(studyId,systemFormId,filterFormId);
+
+				studyMapForm.setCreatedDate(new Date());
+				studyMapForm.setModifiedDate(new Date());
+				studyMapForm.setStatus("active");
+				
+				studyDataFormRepository.save(studyMapForm);
+
+			}
+			
+			
 			hmap.put("studyId", studyId);
 			hmap.put("page", "1");
 			
@@ -107,6 +137,26 @@ public class CreateStudyService {
 		}
 
 		return hmap;
+	}
+	
+	
+	
+	public void findQuestionForPage(String systemFormId, String page) {
+		System.out.println(" Inside class CreateStudyService & method: findQuestionForPage()");
+		
+		List<Question> qList = new ArrayList<>();
+		
+		
+		System.out.println("systemFormId = " + systemFormId);
+		
+		System.out.println("page = " + page);
+		
+		qList = qrepository.findByFormIdAndPageNumber(systemFormId, page);
+		
+		System.out.println("qList size = " + qList.size());
+		System.out.println("qList to String = " + qList.toString());
+		
+		
 	}
 	
 }
