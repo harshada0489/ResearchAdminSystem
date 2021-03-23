@@ -37,9 +37,7 @@ export default class QuestionPage extends React.Component {
         this.endOfForm = this.endOfForm.bind(this);
 
     }
-    // state = {
-    //     taskList: [{ index: Math.random(), questionText: "", questionNumber: "", answerType: "", dbColumnName: ""}]
-    // }
+
     goToPrevPage(e) {
 
         axios.post(GO_TO_BACK_PAGE_URL, this.state.taskList).then(response =>{

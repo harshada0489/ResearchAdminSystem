@@ -85,11 +85,11 @@ class CreateStudy extends React.Component {
 
 
         axios.post(API_URL,this.state).then(response =>{
-            console.log("response.data =", response.data);
+            var resdata = response.data.questionList[0];
+            console.log(" rresponse ========= ", response.data.questionList[0]);
           
             this.props.history.push({
-                pathname: "/study/" + response.data.studyId + "/" + response.data.filterFormId+ "/" + response.data.systemFormId + "/" + response.data.page,
-                // pathname: "/nextPage",
+                pathname: "/study/" + resdata.studyId + "/" + resdata.studyDataId+ "/" + resdata.systemFormId + "/" + resdata.page,
                 state: { detail: response.data }
             })
             window.location.reload();

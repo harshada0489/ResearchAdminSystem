@@ -9,6 +9,6 @@ import com.ras.model.Question;
 import com.ras.model.User;
 
 public interface QuestionRepository extends MongoRepository<Question, String> {
-//	List<Question> findByStudyTypeAndStudyField(String studyType, String studyField);
+	List<Question> findByFormIdAndPageNumber(String formId, String pageNumber);
 	
 }

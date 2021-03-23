@@ -6,10 +6,11 @@ import java.util.Optional;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
-import com.ras.model.CreateStudy;
 
-public interface CreateStudyRepository extends MongoRepository<CreateStudy, String> {
+import com.ras.model.StudyApplication;
 
-	Optional<CreateStudy> findByStudyTitle(String studyTitle);
+public interface StudyApplicationRepository extends MongoRepository<StudyApplication, String> {
+
+	Optional<StudyApplication> findByStudyTitle(String studyTitle);
 	
 }

@@ -11,8 +11,8 @@ import org.springframework.data.mongodb.core.mapping.MongoId;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 //@Entity
-@Document(collection = "createStudy")
-public class CreateStudy {
+@Document(collection = "studyApplication")
+public class StudyApplication {
 
 	@Id
 	private String id;
@@ -56,12 +56,12 @@ public class CreateStudy {
 	private Date modifiedDate;
 
 	
-	public CreateStudy() {
+	public StudyApplication() {
 		// TODO Auto-generated constructor stub
 	}
 
 
-	public CreateStudy(String id, String studyTitle, String oneWordIdentifier, String gender, int age,
+	public StudyApplication(String id, String studyTitle, String oneWordIdentifier, String gender, int age,
 			int noOfHumanRequired, String typeOfAnimal, int noOfAnimalRequired, String filter1, String filter2,
 			String researcherID, String status, Date createdDate, Date modifiedDate) {
 		super();
