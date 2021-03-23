@@ -83,7 +83,7 @@ public class StudyApplicationResource {
 
 		
 		
-		int countOfQuestionPages = 5;
+		int countOfQuestionPages = 1;
 		
 		
 		
