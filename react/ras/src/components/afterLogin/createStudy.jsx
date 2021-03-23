@@ -251,7 +251,7 @@ class CreateStudy extends React.Component {
                     {showFilter2()}
                     
                     <div className="form-submit">
-                        <button type="button" onClick={this.studyFormHandler} className="btn"> Next / Submit</button>
+                        <button type="button" onClick={this.studyFormHandler} className="btn"> Next </button>
                     </div>
                 </div>
                 </div>

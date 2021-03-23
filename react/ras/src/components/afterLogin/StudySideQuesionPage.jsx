@@ -10,17 +10,27 @@ class StudySideQuesionPage extends React.Component {
             questionList : [],
             countOfPage : [],
             currentPage : "",
-            answerMapList  : []
+            // answerMapList  : [],
+            items : []
         }
-
-        // this.handleChange = this.state.handleChange.bind(this);
+        this.handleChange = this.handleChange.bind(this);
+        this.endOfForm = this.endOfForm.bind(this);
     }
 
-    // handleChange(e){
-    //     this.setState({
-    //         answerMapList : e.target.value
-    //     });
-    // }
+    handleChange = (e) => {
+ 
+            this.setState(prevState => ({
+                items: {
+                    ...prevState.items,
+                    [e.target.id]: e.target.value,
+                },
+            }));
+            // console.log("items in this state = ", this.state.items);
+    }
+
+    endOfForm(){
+        console.log("items in this state = ", this.state.items);
+    }
 
     getData(){
         console.log(" Inside method getData() ");
@@ -61,9 +71,9 @@ class StudySideQuesionPage extends React.Component {
       }
 
     render(){
-        console.log("question List in this state = ", this.state.questionList);
-        console.log("count of Pages in this state = ", this.state.countOfPage);
-        console.log("current Pages in this state = ", this.state.currentPage)
+        // console.log("question List in this state = ", this.state.questionList);
+        // console.log("count of Pages in this state = ", this.state.countOfPage);
+        // console.log("current Pages in this state = ", this.state.currentPage);
         
        let currPage = this.state.currentPage;
        let totalPages = this.state.countOfPage;
@@ -71,7 +81,7 @@ class StudySideQuesionPage extends React.Component {
         console.log("currPage= ", currPage)
 
         
-       const myExample = () => {
+       const currPageComponent = () => {
         let myArray = []
         for(let i = 0; i<totalPages;i++) {
             let curr_i = i + 1 ;
@@ -86,6 +96,33 @@ class StudySideQuesionPage extends React.Component {
         return myArray
     } 
 
+
+    const showSubmitOrNextButton = () => {
+
+            if(currPage == totalPages){
+                console.log("Inside if condition")
+                return (
+
+                    <div className="card-footer text-center">          
+                                 <button type="button" onClick={this.endOfForm} className="btn btn-primary text-center">End Form </button>                              
+                    </div>
+                )
+
+
+            }else{
+                console.log("Inside else condition")
+                return (
+
+                    <div className="card-footer text-center">          
+                                 <button type="submit" className="btn btn-primary text-center"> Save & go to Next Page </button>
+                    </div>
+
+                    
+                )
+            }
+    } 
+
+
         return(
             <div>
   
@@ -94,34 +131,22 @@ class StudySideQuesionPage extends React.Component {
                    
                         <tr>
                             <td style={{ border: "2px solid lightgrey "}}>
-                                <div className="container" >{myExample()}</div>
-                            </td>
+                                <div className="container" >{currPageComponent()}</div>
+                            </td>                          
 
 
-
-                            {/* <div className="row">
-                                    <div className="col-25">
-                                        <label htmlFor="labelsToShowPerPage">No of labels to show on each page :</label>
-                                    </div>
-                                    <div className="col-75">
-                                        <input type="text" name="labelsToShowPerPage" value={this.state.labelsToShowPerPage}  onChange={this.handleChange} placeholder="Enter Number of labels to be shown on each page"/>
-                                    </div>
-                            </div> */}
-                            
-                            
-                            
                             <td  style={{width: "60%"}}>
                                 <div className="container" >
                                 <h4>Please fill the below details</h4>
                                             {this.state.questionList.map(d => (
-                                            <div key={d.id}>          
+                                            <div key={d.questionNumber}>          
                                                 <div className="qform">
-                                                    <div className="row">
+                                                    <div className="row">                                                
                                                         <div className="col-25">
                                                             <label htmlFor={d.dbColumnName}>{d.questionText}</label>
                                                         </div>
                                                         <div className="col-75">
-                                                            <input type={d.answerType} name={d.dbColumnName} onChange={this.handleChange} placeholder="Enter the value"/>
+                                                            <input type={d.answerType} name={d.dbColumnName}  id={d.dbColumnName} onChange={this.handleChange} placeholder="Enter the value"/>
                                                         </div>
                                                     </div>
 
@@ -135,9 +160,13 @@ class StudySideQuesionPage extends React.Component {
                         </tr> 
                     </tbody>
                 </table>
-                                <div className="form-submit">
+                    <div>
+                    {showSubmitOrNextButton()}
+                    </div>
+                    
+                                {/* <div className="form-submit">
                                     <button type="button" onClick={this.studyFormHandler} className="btn"> Submit</button>
-                                </div>
+                                </div> */}
                     {/* </div> */}
             </div>
         )

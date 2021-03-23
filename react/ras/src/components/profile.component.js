@@ -55,14 +55,6 @@ export default class Profile extends Component {
                      System Form
                      </button>
                  </div>
-
-  
-
-                  <div className="diff-action">
-                     <button type="button" onClick={this.createStudyHandler} className="btn">
-                     Create Form
-                     </button>
-                 </div>
   
                  {/* <div className="diff-action">
                      <button type="button" onClick={this.createStudyHandler} className="btn">
@@ -75,7 +67,7 @@ export default class Profile extends Component {
       );
 
     }
-    if (this.state.currentUser.roles.includes('ROLE_MODERATOR')) {
+    if (this.state.currentUser.roles.includes('ROLE_REVIEWER')) {
       return (
         <div className="container">
           <header className="jumbotron">
@@ -87,13 +79,13 @@ export default class Profile extends Component {
   
                  <div>
                   <div className="diff-action">
-                     <button type="button" onClick={this.createStudyHandler} className="btn">
+                     <button type="button" onClick={null} className="btn">
                      Review Study
                      </button>
                  </div>
   
                  <div className="diff-action">
-                     <button type="button" onClick={this.createStudyHandler} className="btn">
+                     <button type="button" onClick={null} className="btn">
                      Reviewed Study Status
                      </button>
                  </div>
