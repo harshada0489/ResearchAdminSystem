@@ -32,6 +32,7 @@ import com.ras.repository.UserRepository;
 import com.ras.service.MongoListCollections;
 import com.ras.service.PageService;
 import com.ras.service.QuestionService;
+import com.ras.service.SystemFormService;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.MongoClient;
@@ -60,20 +61,23 @@ public class QuestionResource {
 	@Autowired
 	PageService pageService;
 	
+	@Autowired
+	SystemFormService systemFormService;
+	
 	boolean isEndForm= false;
 	
 	@PostMapping("/questionDetails/{formId}/Page/{pageNumber}")
-	public ResponseEntity<?> addQuestionDetails(@RequestBody List<Question> question ,@PathVariable String formId , @PathVariable int pageNumber, boolean isEndForm) {
+	public ResponseEntity<?> addQuestionDetails(@RequestBody List<Question> question ,@PathVariable Integer formId , @PathVariable int pageNumber, boolean isEndForm) {
 		
 		HashMap<String, String> returnMap = new HashMap<String,String>();
-		String pageId ="";
+		Integer pageId =0;
 		
 		System.out.println("Inside class: QuestionResource , && method: addQuestionDetails()");
 		System.out.println("question ====== " + question.toString());
 		for(int i=0; i<question.size(); i++) {
 			
 			pageId = pageService.findPageId(formId, pageNumber);
-			if(!(pageId.isEmpty())) {
+			if(pageId != 0){
 				question.get(i).setPageId(pageId);
 				
 			}
@@ -95,9 +99,9 @@ public class QuestionResource {
 				
 				if(pageCreation.equals("Successful")) {
 					pageId = pageService.findPageId(formId, pageNumber);
-					if(!(pageId.isEmpty())) {
-						returnMap.put("formId", formId);
-						returnMap.put("pageId", pageId);
+					if(pageId != 0) {
+						returnMap.put("formId", formId.toString());
+						returnMap.put("pageId", pageId.toString());
 						returnMap.put("pageNumber", updatePagenumber+"");
 					}
 	
@@ -114,7 +118,7 @@ public class QuestionResource {
 				
 				returnMap.put("path", "/"+formId + "/createQuestion/Page/"+pageNumber);
 				returnMap.put("pageNumber", pageNumber+"");
-				returnMap.put("formId", formId);
+				returnMap.put("formId", formId.toString());
 //				returnMap.put("pageId", pageId);
 			}
 		}
@@ -125,7 +129,7 @@ public class QuestionResource {
 
 	
 	@PostMapping("/questionDetails/endForm/{formId}/Page/{pageNumber}")
-	public ResponseEntity<?> endQuestionDetails(@RequestBody List<Question> question, @PathVariable String formId , @PathVariable int pageNumber) {
+	public ResponseEntity<?> endQuestionDetails(@RequestBody List<Question> question, @PathVariable Integer formId , @PathVariable int pageNumber) {
 		System.out.println("Inside class: QuestionResource , && method: endQuestionDetails()");
 		
 		
@@ -136,7 +140,9 @@ public class QuestionResource {
 
 		System.out.println("-----------------Before Monngo db collection---------------- " );
 		
-		MongoListCollections.createCollection(formId);
+		String dynamicTableName = MongoListCollections.createCollection(formId);
+		systemFormService.updatedynamicTableNameInSystemFormTable(formId,dynamicTableName);
+		
 		System.out.println("-----------------After Monngo db collection---------------- " );
 //		service.addQuestionDetails(question);		
 		

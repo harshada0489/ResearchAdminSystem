@@ -5,6 +5,6 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import com.ras.model.StudyDataForm;
 import com.ras.model.SystemForm;
 
-public interface StudyDataFormRepository extends MongoRepository<StudyDataForm, String> {
+public interface StudyDataFormRepository extends MongoRepository<StudyDataForm, Integer> {
 
 }

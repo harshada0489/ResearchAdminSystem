@@ -6,6 +6,8 @@ import javax.persistence.Entity;
 import javax.validation.constraints.NotBlank;
 
 import org.springframework.context.annotation.Scope;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.MongoId;
 import org.springframework.stereotype.Component;
 
@@ -14,10 +16,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Entity
 @Component
 @Scope("session")
+@Document(collection = "page")
 public class Page {
 
-	@MongoId
-	  private String id;
+	@Id
+	  private int id;
 
 	  
 	  @NotBlank
@@ -27,8 +30,9 @@ public class Page {
 	  
 	  @NotBlank
 	  @JsonProperty(value = "formId")
-	  private String formId;
+	  private int formId;
 	  
+	  private String formVersion;
 	 
 	  private String status;
 	  
@@ -38,21 +42,32 @@ public class Page {
 	  
 	  
 	
-	public Page(@NotBlank int pageNumber, @NotBlank String formId) {
+	public Page(@NotBlank int pageNumber, @NotBlank int formId) {
 		super();
 		this.pageNumber = pageNumber;
 		this.formId = formId;
 	}
 
-
-
-	public String getId() {
+	public int getId() {
 		return id;
 	}
 
-	public void setId(String id) {
+
+	public void setId(int id) {
 		this.id = id;
 	}
+
+
+	public String getFormVersion() {
+		return formVersion;
+	}
+
+
+	public void setFormVersion(String formVersion) {
+		this.formVersion = formVersion;
+	}
+
+
 
 	public int getPageNumber() {
 		return pageNumber;
@@ -62,11 +77,13 @@ public class Page {
 		this.pageNumber = pageNumber;
 	}
 
-	public String getFormId() {
+
+
+	public int getFormId() {
 		return formId;
 	}
 
-	public void setFormId(String formId) {
+	public void setFormId(int formId) {
 		this.formId = formId;
 	}
 

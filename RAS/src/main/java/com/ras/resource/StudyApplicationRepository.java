@@ -9,8 +9,9 @@ import org.springframework.stereotype.Repository;
 
 import com.ras.model.StudyApplication;
 
-public interface StudyApplicationRepository extends MongoRepository<StudyApplication, String> {
+public interface StudyApplicationRepository extends MongoRepository<StudyApplication, Integer> {
 
 	Optional<StudyApplication> findByStudyTitle(String studyTitle);
+	
 	
 }

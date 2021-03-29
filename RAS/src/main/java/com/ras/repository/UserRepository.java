@@ -7,7 +7,7 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import com.ras.model.User;
 
 
-public interface UserRepository extends MongoRepository<User, String> {
+public interface UserRepository extends MongoRepository<User, Integer> {
   Optional<User> findByUsername(String username);
 
   Boolean existsByUsername(String username);

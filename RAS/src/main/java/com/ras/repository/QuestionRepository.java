@@ -8,7 +8,9 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import com.ras.model.Question;
 import com.ras.model.User;
 
-public interface QuestionRepository extends MongoRepository<Question, String> {
-	List<Question> findByFormIdAndPageNumber(String formId, String pageNumber);
+public interface QuestionRepository extends MongoRepository<Question, Integer> {
+	List<Question> findByFormIdAndPageNumber(Integer formId, String pageNumber);
+	
+	List<Question> findByFormId(Integer formId);
 	
 }

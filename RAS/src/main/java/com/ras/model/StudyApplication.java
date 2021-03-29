@@ -15,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class StudyApplication {
 
 	@Id
-	private String id;
+	private int id;
 	
 //	@JsonProperty(value = "studyTitle")
 	private String studyTitle;
@@ -61,7 +61,7 @@ public class StudyApplication {
 	}
 
 
-	public StudyApplication(String id, String studyTitle, String oneWordIdentifier, String gender, int age,
+	public StudyApplication(int id, String studyTitle, String oneWordIdentifier, String gender, int age,
 			int noOfHumanRequired, String typeOfAnimal, int noOfAnimalRequired, String filter1, String filter2,
 			String researcherID, String status, Date createdDate, Date modifiedDate) {
 		super();
@@ -82,13 +82,12 @@ public class StudyApplication {
 	}
 
 
-	public String getId() {
+	public int getId() {
 		return id;
 	}
 
-
-	public void setId(String id) {
-		this.id = id;
+	public void setId(int seq) {
+		this.id = seq;
 	}
 
 

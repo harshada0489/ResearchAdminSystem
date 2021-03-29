@@ -15,6 +15,7 @@ class StudySideQuesionPage extends React.Component {
         }
         this.handleChange = this.handleChange.bind(this);
         this.endOfForm = this.endOfForm.bind(this);
+        this.nextForm = this.nextForm.bind(this);
     }
 
     handleChange = (e) => {
@@ -29,35 +30,86 @@ class StudySideQuesionPage extends React.Component {
     }
 
     endOfForm(){
-        console.log("items in this state = ", this.state.items);
+        console.log("end form items in this state = ", this.state.items);
+
+        axios.post(API_URL + this.state.currentPage +"/endPage"
+            ,this.state.items).then(response =>{
+            console.log("response.data =", response.data);
+
+            if(response.data === 'Successful'){
+                console.log("Data inserted Successfully");
+                this.props.history.push({
+                    pathname: "/profile"
+                })
+                window.location.reload();
+            }
+            // var resdata = response.data.questionList[0];
+
+            
+        })
+        .catch(error =>{
+          console.log(error)
+        })
+
+
     }
 
+    nextForm(){
+        console.log("next form button items in this state = ", this.state.items);
+
+        axios.post(API_URL + this.state.currentPage +"/goToNextPage"
+            ,this.state.items).then(response =>{
+            console.log("response.data =", response.data);
+            var resdata = response.data.questionList[0];
+
+            this.props.history.push({
+                pathname: "/study/" + resdata.studyId + "/" + resdata.studyDataId+ "/" + resdata.systemFormId + "/" + resdata.page,
+                state: { detail: response.data }
+            })
+            window.location.reload();
+        })
+        .catch(error =>{
+          console.log(error)
+        })
+
+
+    }
     getData(){
         console.log(" Inside method getData() ");
 
             this.setState({questionList : this.props.location.state.detail.questionList,
                 countOfPage : this.props.location.state.detail.pageList,
-                currentPage : this.props.location.state.detail.questionList[0].page
+                currentPage : this.props.location.state.detail.questionList[0].page,
             });
-            // window.location.reload();
+
+            this.setState(prevState => ({
+                items: {
+                    ...prevState.items,
+                    "studyId" : this.props.location.state.detail.questionList[0].studyId,
+                    "studyAppDataId" : this.props.location.state.detail.questionList[0].studyAppDataId,
+                    
+                    // "page" : this.props.location.state.detail.questionList[0].page,
+                },
+            }));
+
       }
 
     // getQuestionList(){
     //     console.log(" Inside method getQuestionList() ");
     //     console.log("states systemFormId ", this.state.questionPageDetails.systemFormId);
-    //     axios.get(API_URL + this.state.questionPageDetails.studyId + "/" + this.state.questionPageDetails.filterFormId+ "/" + this.state.questionPageDetails.systemFormId + "/" + this.state.questionPageDetails.page
-    //         ,this.state).then(response =>{
-    //         console.log("response.data =", response.data);
+        // axios.get(API_URL + this.state.questionPageDetails.studyId + "/" + this.state.questionPageDetails.filterFormId+ "/" + this.state.questionPageDetails.systemFormId + "/" + this.state.questionPageDetails.page
+        //     ,this.state).then(response =>{
+        //     console.log("response.data =", response.data);
           
-    //         // this.props.history.push({
-    //         //     pathname: "/study/" + questionPageDetails.studyId + "/" + questionPageDetails.filterFormId+ "/" + questionPageDetails.systemFormId + "/" + questionPageDetails.page,
-    //         //     state: { detail: response.data }
-    //         // })
-    //         // window.location.reload();
-    //     })
-    //     .catch(error =>{
-    //       console.log(error)
-    //     })
+        //     // this.props.history.push({
+        //     //     pathname: "/study/" + questionPageDetails.studyId + "/" + questionPageDetails.filterFormId+ "/" + questionPageDetails.systemFormId + "/" + questionPageDetails.page,
+        //     //     state: { detail: response.data }
+        //     // })
+        //     // window.location.reload();
+        // })
+        // .catch(error =>{
+        //   console.log(error)
+        // })
     // }
 
     componentDidMount(){
@@ -114,7 +166,7 @@ class StudySideQuesionPage extends React.Component {
                 return (
 
                     <div className="card-footer text-center">          
-                                 <button type="submit" className="btn btn-primary text-center"> Save & go to Next Page </button>
+                                 <button type="submit" onClick={this.nextForm} className="btn btn-primary text-center"> Save & go to Next Page </button>
                     </div>
 
                     

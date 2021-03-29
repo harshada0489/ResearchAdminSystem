@@ -55,12 +55,7 @@ export default class Profile extends Component {
                      System Form
                      </button>
                  </div>
-  
-                 {/* <div className="diff-action">
-                     <button type="button" onClick={this.createStudyHandler} className="btn">
-                     Check User Status
-                     </button>
-                 </div> */}
+
                  
               </div> 
         </div>
@@ -117,11 +112,11 @@ export default class Profile extends Component {
                      </button>
                  </div>
   
-                 <div className="diff-action">
+                 {/* <div className="diff-action">
                      <button type="button" onClick={this.createStudyHandler} className="btn">
                      Submitted Study Status
                      </button>
-                 </div>
+                 </div> */}
                  
               </div> 
         </div>
