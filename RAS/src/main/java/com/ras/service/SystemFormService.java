@@ -1,17 +1,20 @@
 package com.ras.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.ras.model.FormDetails;
 import com.ras.model.SystemForm;
 import com.ras.repository.SystemFormRepository;
+import com.ras.service.mongodbOperations.NextSequenceService;
 
 import io.jsonwebtoken.lang.Arrays;
 import io.jsonwebtoken.lang.Collections;
@@ -21,6 +24,9 @@ public class SystemFormService {
 
 	@Autowired
 	SystemFormRepository repository;
+	
+	@Autowired
+	NextSequenceService nextSequenceService;
 	
 	private static List<SystemForm> forms = new ArrayList<>();
 	
@@ -72,16 +78,12 @@ public class SystemFormService {
 		  Optional<SystemForm> dbForm = repository.findByFormName(form.getFormName());
 		  System.out.println("dbForm = "+ dbForm.isPresent());
 		  if(!(dbForm.isPresent())) {
-//			  this.filterList = filterList;
-//				this.formName = formName;
-//				this.formDescription = formDescription;
-		  
-		  
-			  SystemForm sysForm = new SystemForm(form.getFormName(), form.getFormDescription());
+			  SystemForm sysForm = new SystemForm(form.getFormName(), form.getFormDescription());			  
 			  
+			  int seq = nextSequenceService.getNextSequenceForSystemFormId("customSequences");
 			  
-			  
-			  
+			  System.out.println("seq generated = " + seq);
+			  sysForm.setId(seq);
 			  String filter1 = form.getFilter1();
 			  String filter2 = form.getFilter2();
 			  
@@ -119,11 +121,11 @@ public class SystemFormService {
 		  
 		  return filterList;
 	  }
-	  public String searchByFormName(String formName) {
+	  public Integer searchByFormName(String formName) {
 		  System.out.println("Inside class : SystemFormService  and method : searchByFormName()" );
 		  System.out.println("formName = " + formName );
 		  Optional<SystemForm> db = repository.findByFormName(formName);
-		  String formId = "";
+		  Integer formId = 0;
 		  	if(db.isPresent()) {
 		  		SystemForm dbForm = db.get();
 		  		formId = dbForm.getId();
@@ -133,4 +135,48 @@ public class SystemFormService {
 		  return formId;
 	  }
 
+	  
+	  public void updatedynamicTableNameInSystemFormTable(Integer formId,String dynamicTableName) {
+		  System.out.println("Inside class : SystemFormService  and method : updatedynamicTableNameInSystemFormTable()" );
+		  Optional<SystemForm> db = repository.findById(formId);
+		  if(db.isPresent()) {
+		  		SystemForm dbForm = db.get();
+		  		dbForm.setDynamicTableName(dynamicTableName);
+		  		repository.save(dbForm);
+		  		System.out.println("formId = " + formId );
+		  	}
+		  
+	  }
+	  
+	  public HashMap<String, String> searchSystemFormOnBasisOffilterList(String filter1, String filter2) {
+		  System.out.println("Inside class : SystemFormService  and method : searchSystemFormOnBasisOffilterList()" );
+		  
+		  HashMap<String, String> hmap = new HashMap<>();
+		  String filterList= createFilterList(filter1,filter2);
+		  System.out.println("filterList = " + filterList);
+		  
+		  int version = 1;
+		  String dynamicTableName ="";
+		  List<SystemForm> sysFormList = repository.findByFilterListOrderByIdDesc(filterList);
+		   
+		  
+		  if(sysFormList.size()>0) {
+			  System.out.println("sysFormList size = "+ sysFormList.size() );
+			   dynamicTableName = sysFormList.get(0).getDynamicTableName();
+			   version = sysFormList.get(0).getVersion();
+			   int systemFormId = sysFormList.get(0).getId();
+				 System.out.println("dynamicTableName=" + dynamicTableName);
+				 System.out.println("version=" + version+"");
+				 hmap.put("dynamicTableName", dynamicTableName);
+				 hmap.put("version", version+"");
+				 hmap.put("systemFormId", systemFormId+"");
+		  }
+		  
+
+		 
+		  return hmap;
+	  }
+	  
+
+	  
 }

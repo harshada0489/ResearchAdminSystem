@@ -22,14 +22,15 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Entity
 @Component
 @Scope("session")
+@Document(collection = "question")
 public class Question {
 
-	@MongoId
-	  private String id;
+	  @Id
+	  private int id;
 
 	@NotBlank
 	  @JsonProperty(value = "formId")
-	  private String formId;
+	  private int formId;
 	
 	  @NotBlank
 	  @JsonProperty(value = "pageNumber")
@@ -55,7 +56,7 @@ public class Question {
 	  
 	  @NotBlank
 	  @JsonProperty(value = "pageId")
-	  private String pageId;
+	  private int pageId;
 	  
 	  private String createdByUserId;
 	  
@@ -82,9 +83,9 @@ public class Question {
 //		this.answerType = answerType;
 //	}
 	
-		public Question(@NotBlank String formId, @NotBlank String pageNumber, @NotBlank String questionNumber,
+		public Question(@NotBlank int formId, @NotBlank String pageNumber, @NotBlank String questionNumber,
 				@NotBlank String questionText, @NotBlank String answerType, @NotBlank String dbColumnName,
-				String lengthOfAnswer, @NotBlank String pageId) {
+				String lengthOfAnswer, @NotBlank int pageId) {
 			super();
 			this.formId = formId;
 			this.pageNumber = pageNumber;
@@ -99,21 +100,19 @@ public class Question {
 
 
 
-	public String getId() {
-		return id;
-	}
+		public int getId() {
+			return id;
+		}
 
-
-
-	public void setId(String id) {
-		this.id = id;
-	}
-
-	public String getFormId() {
+		public void setId(int seq) {
+			this.id = seq;
+		}
+		
+	public int getFormId() {
 		return formId;
 	}
 
-	public void setFormId(String formId) {
+	public void setFormId(int formId) {
 		this.formId = formId;
 	}
 
@@ -199,15 +198,20 @@ public class Question {
 
 
 
-	public String getPageId() {
+
+
+
+	public int getPageId() {
 		return pageId;
 	}
 
 
 
-	public void setPageId(String pageId) {
+
+	public void setPageId(int pageId) {
 		this.pageId = pageId;
 	}
+
 
 
 

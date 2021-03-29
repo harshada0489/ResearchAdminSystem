@@ -92,21 +92,21 @@ public class SystemFormResource {
 		  
 			String message = service.addNewSystemForm(formDetails);
 			
-			String formId = "";
+			Integer formId = 0;
 			int pageNumber = 1; 
-			String pageId ="";
+			Integer pageId =0;
 			if(message.equals("Successfully Inserted")) {
 				
 				String formname = formDetails.getFormName();
 				if(!(formname.isEmpty())) {
 					 formId = service.searchByFormName(formname);
-					if(!(formId.isEmpty())) {
+					if(formId != 0) {
 						String pageCreation = pageService.pageOneCreation(1,formId);
 						if(pageCreation.equals("Successful")) {
 							pageId = pageService.findPageId(formId, pageNumber);
-							if(!(pageId.isEmpty())) {
-								map.put("formId", formId);
-								map.put("pageId", pageId);
+							if(pageId != 0) {
+								map.put("formId", formId.toString());
+								map.put("pageId", pageId.toString());
 								map.put("pageNumber", pageNumber+"");
 								return map;
 							}

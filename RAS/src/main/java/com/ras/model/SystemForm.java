@@ -15,7 +15,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class SystemForm {
 	 
 	  @Id
-	  private String id;
+	  private int id;
 
 	  
 	  @NotBlank
@@ -27,7 +27,11 @@ public class SystemForm {
 
 	  @NotBlank
 	  private String formDescription;
+	  
+	  
+	  private String dynamicTableName;
 
+	  private int version;
 	  
 	  private String status;
   
@@ -57,12 +61,12 @@ public SystemForm(@NotBlank String formName,@NotBlank String formDescription) {
 //	}
 
 
-	public String getId() {
+	public int getId() {
 		return id;
 	}
 
-	public void setId(String id) {
-		this.id = id;
+	public void setId(int seq) {
+		this.id = seq;
 	}
 
 	public String getFormName() {
@@ -118,6 +122,22 @@ public SystemForm(@NotBlank String formName,@NotBlank String formDescription) {
 
 	public void setStatus(String status) {
 		this.status = status;
+	}
+
+	public String getDynamicTableName() {
+		return dynamicTableName;
+	}
+
+	public void setDynamicTableName(String dynamicTableName) {
+		this.dynamicTableName = dynamicTableName;
+	}
+
+	public int getVersion() {
+		return version;
+	}
+
+	public void setVersion(int version) {
+		this.version = version;
 	}
 
 	  

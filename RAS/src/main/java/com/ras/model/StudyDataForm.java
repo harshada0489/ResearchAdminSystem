@@ -9,17 +9,20 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class StudyDataForm {
 
 	@Id
-	private String id;	
+	private int id;	
 
-	private String studyId;
+	private int studyAppId;
 	
-	private String systemFormId;
+	private int systemFormId;
 	
-	private String studyAppDataId;
+	private int dynamicTableDataId;
 
-	private String systemFormName;
+	private String dynamicTableName;
 	
-
+	private String dynamicTableFormVersion;
+	
+	private String round;
+	
 	private String status;
 	
 	private Date createdDate;
@@ -29,53 +32,68 @@ public class StudyDataForm {
 	
 
 
-	public StudyDataForm(String studyId, String systemFormId, String studyAppDataId) {
+	public StudyDataForm(int studyAppId, int systemFormId, String dynamicTableName) {
 		super();
-		this.studyId = studyId;
+		this.studyAppId = studyAppId;
 		this.systemFormId = systemFormId;
-		this.studyAppDataId = studyAppDataId;
+		this.dynamicTableName = dynamicTableName;
 	}
 
-	public String getId() {
+	public int getId() {
 		return id;
 	}
 
-	public void setId(String id) {
-		this.id = id;
+	public void setId(int seq) {
+		this.id = seq;
 	}
 
-	public String getStudyId() {
-		return studyId;
+
+	public int getStudyAppId() {
+		return studyAppId;
 	}
 
-	public void setStudyId(String studyId) {
-		this.studyId = studyId;
+	public void setStudyAppId(int studyAppId) {
+		this.studyAppId = studyAppId;
 	}
 
-	public String getSystemFormId() {
+	public int getSystemFormId() {
 		return systemFormId;
 	}
 
-	public void setSystemFormId(String systemFormId) {
+	public void setSystemFormId(int systemFormId) {
 		this.systemFormId = systemFormId;
 	}
 
-	public String getSystemFormName() {
-		return systemFormName;
+	public int getDynamicTableDataId() {
+		return dynamicTableDataId;
 	}
 
-	public void setSystemFormName(String systemFormName) {
-		this.systemFormName = systemFormName;
-	}
-	
-	
-
-	public String getStudyAppDataId() {
-		return studyAppDataId;
+	public void setDynamicTableDataId(int dynamicTableDataId) {
+		this.dynamicTableDataId = dynamicTableDataId;
 	}
 
-	public void setStudyAppDataId(String studyAppDataId) {
-		this.studyAppDataId = studyAppDataId;
+	public String getDynamicTableName() {
+		return dynamicTableName;
+	}
+
+	public void setDynamicTableName(String dynamicTableName) {
+		this.dynamicTableName = dynamicTableName;
+	}
+
+	public String getDynamicTableFormVersion() {
+		return dynamicTableFormVersion;
+	}
+
+	public void setDynamicTableFormVersion(String dynamicTableFormVersion) {
+		this.dynamicTableFormVersion = dynamicTableFormVersion;
+	}
+
+	public String getRound() {
+		return round;
+	}
+
+	public void setRound(String round) {
+		this.round = round;
 	}
 
 	public String getStatus() {

@@ -8,12 +8,17 @@ import org.springframework.stereotype.Service;
 
 import com.ras.model.Question;
 import com.ras.repository.QuestionRepository;
+import com.ras.service.mongodbOperations.NextSequenceService;
 
 @Service
 public class QuestionService {
 
 	@Autowired
 	QuestionRepository repository;
+	
+	@Autowired
+	NextSequenceService nextSequenceService;
+
 	
 	public QuestionService() {
 		// TODO Auto-generated constructor stub
@@ -35,6 +40,12 @@ public class QuestionService {
 				q.setCreatedDate(new java.util.Date());
 				q.setModifiedDate(new java.util.Date());
 
+				int seq = nextSequenceService.getNextSequenceForQuestionId("customSequences");
+				System.out.println("dynamicTableId generated" + seq);
+				q.setId(seq);
+
+				
+				
 				repository.save(q);
 			}
 		
