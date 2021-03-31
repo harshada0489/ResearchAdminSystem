@@ -23,6 +23,7 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Filters;
+import com.mongodb.client.model.Updates;
 import com.ras.model.Question;
 import com.ras.service.mongodbOperations.NextSequenceService;
 
@@ -380,7 +381,42 @@ public class MongoListCollections {
         }
     }
     
+    public static void insertdbColumnNamesInDynamicTable(String dynamicTableName, Integer dynamicTableDataId, Map<String, Object> dbColumnNamesAnswerList) {
+    	
+    	System.out.println("Inside class : MongoListCollections and method : insertdbColumnNamesInDynamicTable()");
+    	Logger mongoLogger = Logger.getLogger("org.mongodb.driver");
+        mongoLogger.setLevel(Level.SEVERE);
+
+        try (MongoClient mongoClient = MongoClients.create("mongodb://localhost:27017")) {
+        	HashMap<String,String> hmap = new HashMap<>();
+            MongoDatabase database = mongoClient.getDatabase("test");
+            
+
+            MongoCollection<Document> collection = database.getCollection(dynamicTableName);
+            
+            BasicDBObject query = new BasicDBObject();
+            query.put("_id", dynamicTableDataId);
+          
+           BasicDBObject newDocument = new BasicDBObject();
+           
+           for(String key : dbColumnNamesAnswerList.keySet()) {
+        	   newDocument.put(key,dbColumnNamesAnswerList.get(key));
+           }
+           
+           BasicDBObject updateObject = new BasicDBObject();
+           updateObject.put("$set", newDocument);
+           
+           collection.updateOne(query, updateObject);
+            
+           FindIterable<Document> iterDoc = collection.find();
+           Iterator it = iterDoc.iterator();
+           while (it.hasNext()) {
+              System.out.println(it.next());
+           }
     
+            
+        }
+    }
     
     
     

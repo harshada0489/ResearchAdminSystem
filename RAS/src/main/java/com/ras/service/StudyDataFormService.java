@@ -102,5 +102,15 @@ public class StudyDataFormService {
 		repository.save(studyDataForm);
 	}
 	
-
+public StudyDataForm getStudyDataFormObj(String studyDataFormIdString) {
+	StudyDataForm studyDataForm = null;
+	Integer studyDataFormId = Integer.parseInt(studyDataFormIdString);
+	Optional<StudyDataForm> db = repository.findById(studyDataFormId);
+	if(db.isPresent()) {
+		studyDataForm = db.get();
+	}
+	return studyDataForm;
+	
+}
+	
 }

@@ -10,8 +10,9 @@ class StudySideQuesionPage extends React.Component {
             questionList : [],
             countOfPage : [],
             currentPage : "",
-            // answerMapList  : [],
-            items : []
+            answerMapList  : [],
+             items : [{test: "testing"}],
+             returnItemsList:[]
         }
         this.handleChange = this.handleChange.bind(this);
         this.endOfForm = this.endOfForm.bind(this);
@@ -21,19 +22,19 @@ class StudySideQuesionPage extends React.Component {
     handleChange = (e) => {
  
             this.setState(prevState => ({
-                items: {
-                    ...prevState.items,
+                answerMapList: {
+                    ...prevState.answerMapList,
                     [e.target.id]: e.target.value,
                 },
             }));
-            // console.log("items in this state = ", this.state.items);
+            // console.log("answerMapList in this state = ", this.state.answerMapList);
     }
 
     endOfForm(){
-        console.log("end form items in this state = ", this.state.items);
+        console.log("end form answerMapList in this state = ", this.state.answerMapList);
 
         axios.post(API_URL + this.state.currentPage +"/endPage"
-            ,this.state.items).then(response =>{
+            ,this.state.answerMapList).then(response =>{
             console.log("response.data =", response.data);
 
             if(response.data === 'Successful'){
@@ -55,10 +56,10 @@ class StudySideQuesionPage extends React.Component {
     }
 
     nextForm(){
-        console.log("next form button items in this state = ", this.state.items);
+        console.log("next form button answerMapList in this state = ", this.state.answerMapList);
 
         axios.post(API_URL + this.state.currentPage +"/goToNextPage"
-            ,this.state.items).then(response =>{
+            ,this.state.answerMapList).then(response =>{
             console.log("response.data =", response.data);
             var resdata = response.data.questionList[0];
 
@@ -83,10 +84,11 @@ class StudySideQuesionPage extends React.Component {
             });
 
             this.setState(prevState => ({
-                items: {
-                    ...prevState.items,
+                answerMapList: {
+                    ...prevState.answerMapList,
                     "studyId" : this.props.location.state.detail.questionList[0].studyId,
                     "studyAppDataId" : this.props.location.state.detail.questionList[0].studyAppDataId,
+                    "studyDataFormId" : this.props.location.state.detail.questionList[0].studyDataFormId,
                     
                     // "page" : this.props.location.state.detail.questionList[0].page,
                 },
@@ -123,7 +125,7 @@ class StudySideQuesionPage extends React.Component {
       }
 
     render(){
-        // console.log("question List in this state = ", this.state.questionList);
+        console.log("question List in this state = ", this.state.questionList);
         // console.log("count of Pages in this state = ", this.state.countOfPage);
         // console.log("current Pages in this state = ", this.state.currentPage);
         

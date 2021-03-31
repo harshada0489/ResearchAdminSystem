@@ -48,6 +48,9 @@ public class StudyApplicationService {
 	@Autowired
 	StudyDataFormService studyDataFormService;
 	
+	@Autowired
+	QuestionService qservice;
+	
 	public StudyApplicationService() {
 		// TODO Auto-generated constructor stub
 	}
@@ -153,6 +156,7 @@ public class StudyApplicationService {
 //			if(hmap.containsKey("systemFormId")) {
 //				String systemFormIdString= hmap.get("systemFormId");
 				Integer systemFormId= studyDataForm.getSystemFormId();
+				Integer studyDataFormId= studyDataForm.getId();
 				
 				String pageNumber= hmap.get("page");
 				
@@ -166,6 +170,7 @@ public class StudyApplicationService {
 					HashMap<String, String> qmap = new HashMap<>();
 					qmap.put("studyAppDataId", studyAppDataId+"");
 					qmap.put("studyDataId", studyAppDataId+"");	
+					qmap.put("studyDataFormId", studyDataFormId+"");	
 					
 					qmap.put("studyId", studyDataForm.getStudyAppId() +"");	
 					
@@ -269,87 +274,44 @@ public int getTheCountOfQuestionPages(String systemFormIdString) {
 	}
 	
 	
-	public void searchforDataId(Map<String, String> answerList) {
+	public StudyDataForm searchforDataId(String studyDataFormId) {
+		StudyDataForm studyDataForm = null;
+		studyDataForm = studyDataFormService.getStudyDataFormObj(studyDataFormId);
 		
-//		MongoListCollections collection ;
-		
-		String studyAppDataIdString= answerList.get("studyAppDataId");
-		Integer studyAppDataId=Integer.parseInt(studyAppDataIdString);
-		Optional<StudyDataForm> db = studyDataFormRepository.findById(studyAppDataId);
-		
-		if(db.isPresent()) {
-			StudyDataForm studyDataForm = db.get();
-	  		
-	  		String systemFormName = studyDataForm.getDynamicTableName();
-	  		try {
-				int dynamicFormId = MongoDBBulkInsert.insertInDynamicTable(systemFormName, answerList);
-				System.out.println("dynamicFormId===" + dynamicFormId );
-				
-				String studyDataFormId = answerList.get("studyAppDataId");
-				studyDataForm.setDynamicTableDataId(dynamicFormId);
-				
-				studyDataFormRepository.save(studyDataForm);
-				
-			} catch (UnknownHostException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			
-		}
-		
+//		String studyAppDataIdString= answerList.get("studyAppDataId");
+//		Integer studyAppDataId=Integer.parseInt(studyAppDataIdString);
+//		Optional<StudyDataForm> db = studyDataFormRepository.findById(studyAppDataId);
+//		
+//		if(db.isPresent()) {
+//			StudyDataForm studyDataForm = db.get();
+//	  		
+//	  		String systemFormName = studyDataForm.getDynamicTableName();
+//	  		try {
+//				int dynamicFormId = MongoDBBulkInsert.insertInDynamicTable(systemFormName, answerList);
+//				System.out.println("dynamicFormId===" + dynamicFormId );
+//				
+//				String studyDataFormId = answerList.get("studyAppDataId");
+//				studyDataForm.setDynamicTableDataId(dynamicFormId);
+//				
+//				studyDataFormRepository.save(studyDataForm);
+//				
+//			} catch (UnknownHostException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+//			
+//		}
+		return studyDataForm;
 	}
 	
 	
 	
-	public List<HashMap<String,String>> getStudyFormByPageId( String pageNumber , Map<String, String> answerList) {
+	public List<HashMap<String,String>> getStudyFormByPageId( String pageNumber , StudyDataForm studyDataForm) {
 		System.out.println("=================== Inside method: getStudyForm() =================");
-		HashMap<String, String> hmap = new HashMap<>();
 		List<HashMap<String,String>> questionList = new ArrayList<>();
-
-		List<Question> qList = new ArrayList<>();
 		
-		String studyAppDataIdString = answerList.get("studyAppDataId");
-		Integer studyAppDataId = Integer.parseInt(studyAppDataIdString);
-		Optional<StudyDataForm> db = studyDataFormRepository.findById(studyAppDataId);
+		questionList = qservice.getQuestionList(pageNumber, studyDataForm);
 		
-		System.out.println("db.isPresent() =" + db.isPresent());
-
-		if(db.isPresent()) {
-			StudyDataForm studyDataForm = db.get();
-	  		
-	  		int systemFormId = studyDataForm.getSystemFormId();
-			
-	
-				qList= qrepository.findByFormIdAndPageNumber(systemFormId, pageNumber);
-				System.out.println("size of qListDemo list = "+ qList);			
-				
-				String studyId = answerList.get("studyId");
-
-				for(int count = 0 ; count< qList.size(); count++) {
-					HashMap<String, String> qmap = new HashMap<>();
-					qmap.put("studyAppDataId", studyAppDataId+"");
-					qmap.put("studyDataId", studyId);	
-					
-//					qmap.put("studyId", studyAppId);	
-					
-					
-					
-					qmap.put("page", qList.get(count).getPageNumber());
-					qmap.put("systemFormId", qList.get(count).getFormId()+"");
-					qmap.put("questionNumber", qList.get(count).getQuestionNumber());
-					qmap.put("questionText", qList.get(count).getQuestionText());
-					qmap.put("answerType", qList.get(count).getAnswerType());
-					qmap.put("dbColumnName", qList.get(count).getDbColumnName());
-					
-					
-					questionList.add(qmap);
-					
-				}
-	
-//			}
-			
-			System.out.println("questionList" + questionList);
-		}
 
 		return questionList;
 	}
@@ -394,8 +356,16 @@ public int getTheCountOfQuestionPages(String systemFormIdString) {
 	}
 	
 	public void updateStudyDataFormWithDynamicId(StudyDataForm studyDataForm, Integer dynamicTableDataId) {
+		System.out.println("Inside class : StudyApplicationService and method : updateStudyDataFormWithDynamicId()");
+		
 		studyDataFormService.updateStudyDataFormWithDynamicId(studyDataForm,dynamicTableDataId);
 		
+		
+	}
+	
+	public void calldynamicTableService(String dynamicTableName,Integer dynamicTableDataId, Map<String, Object> dbColumnNamesAnswerList) {
+		System.out.println("Inside class : StudyApplicationService and method : calldynamicTableService()");
+		MongoListCollections.insertdbColumnNamesInDynamicTable(dynamicTableName, dynamicTableDataId, dbColumnNamesAnswerList);
 		
 	}
 	

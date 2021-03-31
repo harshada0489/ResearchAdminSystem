@@ -29,7 +29,9 @@ public class StudyDataForm {
 	
 	private Date modifiedDate;
 
-	
+	public StudyDataForm() {
+		
+	}
 
 
 	public StudyDataForm(int studyAppId, int systemFormId, String dynamicTableName) {
