@@ -49,6 +49,7 @@ public class StudyApplicationResource {
 		 studyAppId = studyApplicationService.addCreateStudyDefaultValues(studyApplication);
 		Integer systemFormDataId = null;
 		Integer dynamicTableDataId = null;
+		Integer studyDataFormId = null;
 		if(studyAppId != 0) {
 			 
 			hmap= studyApplicationService.searchForfilterList(studyAppId);
@@ -61,7 +62,8 @@ public class StudyApplicationResource {
 			
 			
 			String dynamicTableName = studyDataForm.getDynamicTableName();
-			Integer studyDataFormId = studyDataForm.getId();
+			 studyDataFormId = studyDataForm.getId();
+			 System.out.println("studyDataFormId = " + studyDataFormId);
 			Integer systemFormId = studyDataForm.getSystemFormId();
 			dynamicTableDataId = studyApplicationService.updateDynamicTable(dynamicTableName, studyDataFormId, systemFormId);
 			
@@ -79,6 +81,7 @@ public class StudyApplicationResource {
 		Map<String,Object> responseMap = new HashMap<String,Object>();
 		responseMap.put("questionList", questionList);
 		responseMap.put("dynamicTableDataId", dynamicTableDataId+"");
+//		responseMap.put("studyDataFormId", studyDataFormId+"");
 		int countOfQuestionPages= studyApplicationService.getTheCountOfQuestionPages(questionList.get(0).get("systemFormId"));	
 
 		responseMap.put("pageList", countOfQuestionPages); //add pagelist later todo
@@ -91,7 +94,7 @@ public class StudyApplicationResource {
 
 	@GetMapping("/study/{studyId}/{filterFormId}/{systemFormId}/{page}")
 	public ResponseEntity<?> provideQuestionList(@PathVariable String studyId, @PathVariable String filterFormId, @PathVariable String systemFormId, @PathVariable String page) {
-		System.out.println("Inside provideQuestionList()");		
+		System.out.println("Inside class:StudyApplicationResource method: provideQuestionList()");		
 		
 		System.out.println("systemFormId =" + systemFormId);
 		System.out.println("page = " + page);
@@ -101,31 +104,53 @@ public class StudyApplicationResource {
 	
 	
 	@PostMapping("/study/{currPage}/goToNextPage")
-	public ResponseEntity<?> getNextPageQuestionList(@PathVariable Integer currPage, @RequestBody Map<String, String> answerList) {
+	public ResponseEntity<?> getNextPageQuestionList(@PathVariable Integer currPage, @RequestBody HashMap<String, String> answerList) {
+		System.out.println("Inside class:StudyApplicationResource method: getNextPageQuestionList()");
 		Map<String,Object> responseMap = new HashMap<String,Object>();
 		List<HashMap<String,String>> questionList = new ArrayList<>();
-		System.out.println("Inside getNextPageQuestionList()");
+		
 		
 		System.out.println("answerList =" + answerList);
+		
 		System.out.println("currPage =" + currPage);
 		// search for studyDataId tin qList to insert the values in that id's form 
 		
+		StudyDataForm studyDataForm = null;
+		
 		Iterator<String> ansIterator = answerList.keySet().iterator();
-		while(ansIterator.hasNext()) {
-			String key = ansIterator.next();
-			if(key == "studyAppDataId") {
+//		while(ansIterator.hasNext()) {
+//			String key = ansIterator.next();
+//			if(key == "studyDataFormId") {
+				String studyDataFormId= answerList.get("studyDataFormId");
 				
-				studyApplicationService.searchforDataId(answerList);
+				studyDataForm = studyApplicationService.searchforDataId(studyDataFormId);
 				
-			}
-		}
+//				System.out.println("studyDataForm id retrieved = " + studyDataForm.getId());
+				String dynamicTableName = studyDataForm.getDynamicTableName();
+				Integer dynamicTableDataId = studyDataForm.getDynamicTableDataId();
+				
+				
+				HashMap<String, Object> dbColumnNamesAnswerList = new HashMap<>();
+				
+				for(String key: answerList.keySet()) {
+					if(!(key.endsWith("Id"))) {
+						System.out.println(key);
+						dbColumnNamesAnswerList.put(key, answerList.get(key));
+					}
+				}
+				
+				studyApplicationService.calldynamicTableService(dynamicTableName,dynamicTableDataId,dbColumnNamesAnswerList);
+				
+				
+//		}
 		
 		
 		//after successful insertion of data 
 		Integer nextPage = currPage + 1;
+		Integer systemFormId = studyDataForm.getSystemFormId();
 		
 		String nextPageString = nextPage.toString();
-		questionList = studyApplicationService.getStudyFormByPageId(nextPageString, answerList);
+		questionList = studyApplicationService.getStudyFormByPageId(nextPageString, studyDataForm);
 		
 		
 //		List<Question> qList = new ArrayList<>();
@@ -163,14 +188,14 @@ public class StudyApplicationResource {
 		int countOfQuestionPages= studyApplicationService.getTheCountOfQuestionPages(questionList.get(0).get("systemFormId"));	
 
 		responseMap.put("pageList", countOfQuestionPages);
-		
+//		}
 	return ResponseEntity.ok(responseMap);
 	}
 
 	
 	@PostMapping("/study/{currPage}/endPage")
 	public ResponseEntity<?> endQuestionList(@PathVariable Integer currPage, @RequestBody Map answerList) {
-		System.out.println("Inside endQuestionList()");
+		System.out.println("Inside class:StudyApplicationResource method: endQuestionList()");
 		
 		System.out.println("answerList =" + answerList);
 		System.out.println("currPage =" + currPage);
