@@ -9,6 +9,7 @@ import "./afterLoginCommon.scss";
 import "./createStudy.scss";
 import AuthService from "../../services/auth.service";
 import StudySideQuesionPage from "./StudySideQuesionPage";
+import ContactDetails from "./ContactDetails";
 
 const API_URL = 'http://localhost:8080/ras/studyForm'
 // const API_NEXT_PAGE_URL = 'http://localhost:8080/ras/nextPage'
@@ -84,16 +85,33 @@ class CreateStudy extends React.Component {
 
 
 
-        axios.post(API_URL,this.state).then(response =>{
-            var resdata = response.data.questionList[0];
-            console.log(" rresponse ========= ", response.data.questionList[0]);
+        // axios.post(API_URL,this.state).then(response =>{
+        //     var resdata = response.data.questionList[0];
+        //     console.log(" rresponse ========= ", response.data.questionList[0]);
           
+        //     this.props.history.push({
+        //         pathname: "/study/" + resdata.studyId + "/" + resdata.studyDataId+ "/" + resdata.systemFormId + "/" + resdata.page,
+        //         state: { detail: response.data }
+        //     })
+        //     window.location.reload();
+        // }
+        axios.post(API_URL,this.state).then(response =>{
+            var resdata = response.data;
+            console.log(" response ========= ", response.data);
+
             this.props.history.push({
-                pathname: "/study/" + resdata.studyId + "/" + resdata.studyDataId+ "/" + resdata.systemFormId + "/" + resdata.page,
+                pathname: "/study/" + resdata.studyAppId + "/" + resdata.studyDataFormId+ "/" + "contactDetails",
                 state: { detail: response.data }
-            })
-            window.location.reload();
-        })
+            }
+        )
+            // this.props.history.push({
+            //     pathname: "/study/" + resdata.studyId + "/" + resdata.studyDataId+ "/" + resdata.systemFormId + "/" + resdata.page,
+            //     state: { detail: response.data }
+            // }
+            // )
+            // window.location.reload();
+        }
+        )
         .catch(error =>{
           console.log(error)
         })

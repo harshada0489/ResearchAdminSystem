@@ -24,7 +24,7 @@ import com.ras.repository.QuestionRepository;
 import com.ras.repository.StudyDataFormRepository;
 import com.ras.resource.StudyApplicationRepository;
 import com.ras.service.mongodbOperations.NextSequenceService;
-//import com.ras.resource.LoginRequestRepository;
+
 
 @Service
 public class StudyApplicationService {
@@ -94,71 +94,20 @@ public class StudyApplicationService {
 		  return filterList;
 	  }
 	
-	public List<HashMap<String,String>> getStudyForm(StudyDataForm studyDataForm) {
+	public List<HashMap<String,String>> getStudyForm(String pageNumber ,StudyDataForm studyDataForm) {
 		System.out.println("=================== Inside class: StudyApplicationService and  method: getStudyForm() =================");
 		HashMap<String, String> hmap = new HashMap<>();
-//		List<Document> qList = new ArrayList<>();
+		
 		List<HashMap<String,String>> questionList = new ArrayList<>();
 
 		List<Question> qList = new ArrayList<>();
 		
-		
-//		Optional<StudyApplication> db = studyApplicationRepository.findById(studyAppId);
-//		
-//		System.out.println("db.isPresent() =" + db.isPresent());
-//
-//		if(db.isPresent()) {
-//			StudyApplication study = db.get();
-//	  		
-//	  		String filter1 = study.getFilter1();
-//			String filter2 =  study.getFilter2();
-//			
-//			Integer studyId = study.getId();
-//			
-//			String filterCombo = createFilterList(filter1, filter2);
-//			System.out.println("filterCombo = "  + filterCombo);
-//			
-//			hmap= MongoListCollections.getSystemFormByFilters(filterCombo);
-//			
-//			
-//			if(hmap.containsKey("systemFormId")) {
-//				System.out.println("systemFormId=" + hmap.containsKey("systemFormId"));
-//				
-//				
-//				String systemFormIdString  = hmap.get("systemFormId");
-//				int systemFormId  = Integer.parseInt(systemFormIdString);
-				
-//				String filterFormId  = hmap.get("filterFormId");
-				
-//				String systemFormName  = hmap.get("systemFormName");
-				
-//				StudyDataForm studyDataForm = new StudyDataForm(studyId,systemFormId,systemFormName);
-
-//				studyDataForm.setCreatedDate(new Date());
-//				studyDataForm.setModifiedDate(new Date());
-//				studyDataForm.setStatus("active");
-
-//				int seq = nextSequenceService.getNextSequenceForstudyDataFormId("customSequences");
-//				System.out.println("studyDataFormId generated" + seq);
-//				studyDataForm.setId(seq);
-
-				
-//				studyDataFormRepository.save(studyDataForm);
-//				Integer studyDataFormId = studyDataForm.getId();
-				
-//				System.out.println("studyDataForm id= " + studyDataFormId);
+	
 				hmap.put("studyAppDataId",studyDataForm.getStudyAppId()+"");
-//			}
 
-
-			hmap.put("page", "1");
-			
-//			if(hmap.containsKey("systemFormId")) {
-//				String systemFormIdString= hmap.get("systemFormId");
 				Integer systemFormId= studyDataForm.getSystemFormId();
 				Integer studyDataFormId= studyDataForm.getId();
 				
-				String pageNumber= hmap.get("page");
 				
 				Integer studyAppDataId= studyDataForm.getDynamicTableDataId();
 				
@@ -185,43 +134,13 @@ public class StudyApplicationService {
 					questionList.add(qmap);
 					
 				}
-	
-//			}
 			
 			System.out.println("questionList" + questionList);
-//		}
 
 		return questionList;
 	}
 	
-	
-	
-//	public int getTheCountOfQuestionPages(String studyAppId) {
-//		
-//		
-//		List<Question> qList = new ArrayList<>();
-//		
-//		HashSet<String> hset = new HashSet<>();
-//		qList= qrepository.findByFormId(studyAppId);
-//		System.out.println("size of qListDemo list = "+ qList);
-//		
-//		int countPage = 0;
-//		
-//		if(qList.size()>0) {
-//			
-//			for(int count = 0 ; count< qList.size(); count++) {
-//				hset.add(qList.get(count).getPageNumber());
-//			}
-//			if(hset.size()>0) {
-//				countPage = hset.size();
-//			}
-//		}
-//		System.out.println("countPage = "+ countPage);
-//		
-//		return countPage;
-//		
-//	}
-//	
+
 	
 public int getTheCountOfQuestionPages(String systemFormIdString) {
 		
@@ -277,30 +196,6 @@ public int getTheCountOfQuestionPages(String systemFormIdString) {
 	public StudyDataForm searchforDataId(String studyDataFormId) {
 		StudyDataForm studyDataForm = null;
 		studyDataForm = studyDataFormService.getStudyDataFormObj(studyDataFormId);
-		
-//		String studyAppDataIdString= answerList.get("studyAppDataId");
-//		Integer studyAppDataId=Integer.parseInt(studyAppDataIdString);
-//		Optional<StudyDataForm> db = studyDataFormRepository.findById(studyAppDataId);
-//		
-//		if(db.isPresent()) {
-//			StudyDataForm studyDataForm = db.get();
-//	  		
-//	  		String systemFormName = studyDataForm.getDynamicTableName();
-//	  		try {
-//				int dynamicFormId = MongoDBBulkInsert.insertInDynamicTable(systemFormName, answerList);
-//				System.out.println("dynamicFormId===" + dynamicFormId );
-//				
-//				String studyDataFormId = answerList.get("studyAppDataId");
-//				studyDataForm.setDynamicTableDataId(dynamicFormId);
-//				
-//				studyDataFormRepository.save(studyDataForm);
-//				
-//			} catch (UnknownHostException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
-//			
-//		}
 		return studyDataForm;
 	}
 	
