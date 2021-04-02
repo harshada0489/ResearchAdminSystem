@@ -29,14 +29,7 @@ public class QuestionService {
 	}
 
 	public String addQuestionDetails(List<Question> question) {
-		
-//		this.formId = formId;
-//		this.pageNumber = pageNumber;
-//		this.questionNum = questionNum;
-//		this.questionText = questionText;
-//		this.answerType = answerType;
-//		this.dbColumnName = dbColumnName;
-		
+
 		System.out.println("Calling from class: QuestionService & method: addQuestionDetails() ");
 			for(int counter=0; counter<question.size(); counter++) {
 				Question q=question.get(counter);
@@ -65,35 +58,19 @@ public class QuestionService {
 
 		List<Question> qList = new ArrayList<>();
 		
-//		String systemFormIdString= answerList.get("systemFormId").toString();
-//		Integer systemFormId = Integer.parseInt(systemFormIdString);
 		Integer systemFormId= studyDataForm.getSystemFormId();
 		
 		qList = repository.findByFormIdAndPageNumber(systemFormId, pageNumber);
 		
-		
 
-//		if(db.isPresent()) {
-//			StudyDataForm studyDataForm = db.get();
-	  		
-//	  		int systemFormId = studyDataForm.getSystemFormId();
-			
-
-//				qList= qrepository.findByFormIdAndPageNumber(systemFormId, pageNumber);
 				System.out.println("size of qListDemo list = "+ qList);			
 				
-//				String studyId = answerList.get("studyId");
+
+				Integer studyDataFormId= studyDataForm.getId();
 
 				
-				Integer studyDataFormId= studyDataForm.getId();
-				
-//				String pageNumber= hmap.get("page");
-				
 				Integer studyAppDataId= studyDataForm.getDynamicTableDataId();
-				
-				
-				
-				
+
 				for(int count = 0 ; count< qList.size(); count++) {
 					HashMap<String, String> qmap = new HashMap<>();
 					qmap.put("studyAppDataId", studyAppDataId+"");
@@ -114,10 +91,8 @@ public class QuestionService {
 					
 				}
 
-//			}
-			
 			System.out.println("questionList" + questionList);
-//		}
+
 			return questionList;
 	}
 	

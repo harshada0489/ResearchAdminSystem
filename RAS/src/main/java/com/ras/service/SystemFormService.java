@@ -48,21 +48,9 @@ public class SystemFormService {
 			} else {
 			    return null;
 			}
-		  
-		  
-		  
-//		  System.out.println("form = " + form.));
-//		  System.out.println(form.toString());
-//		    if (form == null)
-//		      return null;
-//
-//		    else {
-//		    	form.toString()
-//		    	repository.deleteById(id);
+
 		    	return form;
-//		    }
-			    
-		    
+	    
 		  }
 
 	  public Optional<SystemForm> findById(String id) {

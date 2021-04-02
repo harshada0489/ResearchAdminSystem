@@ -63,21 +63,17 @@ public class MongoListCollections {
              createTableName= getDynamicCreateTableNamebySystemFormFilterList(database, tableName, systemForm);
             System.out.println("createTableName =====" + createTableName);
             
-     
             HashMap<String,String> hmap = new HashMap<>();
-            
             
             if(createTableName.isEmpty()) {
             	System.out.println("Table exists with included systemForm =" + systemForm);
             }else {
-//            	hmap= getDBcolumnName(database,createTableName, formId)	;
 
                 System.out.println("hmap = " + hmap);
                 
                 createDynamicTable(database,createTableName);
             }
-            
-            
+ 
         }
         return createTableName;
     }
@@ -90,9 +86,7 @@ public class MongoListCollections {
     	 FindIterable<Document> sysFormFit = systemFormDB.find(eq("_id",systemForm));
          
          String filterList="";
-         
-         
-         
+
          for (Document docs : sysFormFit) {
 				if(docs.containsKey("filterList")) {
 					
@@ -132,8 +126,7 @@ public class MongoListCollections {
     	if(sortedDBNames.size()>0) {
     		System.out.println("last element of the sorted List = " + sortedDBNames.get(sortedDBNames.size()-1));
     	}
-    	
-    	
+
     	if(sortedDBNames.isEmpty()) {
     		int counter  = 1;
     		formNumber = "00" + counter;
@@ -153,17 +146,11 @@ public class MongoListCollections {
 	       					
 	       					if(systemFormId.equals(formId)) {
 	       						exists = "true";
-//	       						System.out.println("formId already exists");
 	       						 break;
 	       					}
-	                    
-	                }
-       		 
-        		
+	                }	
             }
-    		
-    		
-	       		
+
 				}
     		
     		
@@ -186,10 +173,6 @@ public class MongoListCollections {
     		
 
     		 System.out.println("form Number = " + formNumber);
-    		
-    		
-//    		Random rand = new Random();
-//    		int counter = rand.nextInt(1000);
     		
     	}
        
@@ -228,7 +211,6 @@ public class MongoListCollections {
                 }
       
                 hmap.put("status", "active");
-//                hmap.put("systemFormId", formId.toString());
                 hmap.put("studyId", "");
                 hmap.put("isLock", "disabled");
                 
@@ -271,31 +253,7 @@ public class MongoListCollections {
     	    	String latestSystemForm= sortedDBNames.get(sortedDBNames.size()-1);
     	    	hmap.put("systemFormName", latestSystemForm);	
     	    	System.out.println("");
-//    	    	MongoCollection<Document> collection = database.getCollection(latestSystemForm);
-//    	    	System.out.println("latest System Form found in db =" + collection);
-//
-//    	    	
-//    	    	FindIterable<Document> fit = collection.find();
-//
-//                for (Document docs : fit) {
-//       					
-//       					for(String key : docs.keySet()) {
-//       						if(key.contains("_id")) {
-//       							String value = docs.get(key).toString();
-//           						System.out.println("studyAppDataId = "+ value);
-//           						hmap.put("studyAppDataId",value );
-//       						}
-//       						
-//       						if(key.contains("systemFormId")) {
-//       							String value = docs.get(key).toString();
-//           						System.out.println("systemFormId Id = "+ value);
-//           						hmap.put("systemFormId",value );
-//       						}
-//       						
-//       					}
-//                }
-                
-                
+              
     	    	return hmap;
             }
 
@@ -417,112 +375,5 @@ public class MongoListCollections {
             
         }
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-//	public static void insertInDynamicTable(String systemFormName, Map<String, String> answerList) {
-//		ArrayList<String> sortedDBNames = new ArrayList<>();
-//		Map<String, Object> saveDynamicMap = new HashMap<>();
-//		
-//		
-//		Iterator<String> ansIterator = answerList.keySet().iterator();
-//		while(ansIterator.hasNext()) {
-//			String key = ansIterator.next();
-//			if(!(key == "studyAppDataId")) {
-//				String value = answerList.get(key);
-//				saveDynamicMap.put(key,value );
-//
-//			}
-//		}
-//		
-//		saveDynamicMap.put("createdDate", new Date());
-//		saveDynamicMap.put("modifiedDate", new Date());
-//		saveDynamicMap.put("isLock", "disabled");
-//		saveDynamicMap.put("status", "active");
-//        
-//		Logger mongoLogger = Logger.getLogger("org.mongodb.driver");
-//        mongoLogger.setLevel(Level.SEVERE);
-//
-//        try (MongoClient mongoClient = MongoClients.create("mongodb://localhost:27017")) {
-//
-//            MongoDatabase database = mongoClient.getDatabase("test");
-//            
-//            String dynamicTable = answerList.get("");
-//            MongoCollection<Document> collection = database.getCollection(systemFormName);
-//            
-//            ArrayList<Document> docs = new ArrayList<Document>();  
-//            
-//        	Document d1 = new Document();
-//        	
-//        	for(String key : saveDynamicMap.keySet()) {
-//        		d1.append(key, saveDynamicMap.get(key));
-//        	}
-//
-//            docs.add(d1);
-//        	
-//        collection.insertMany(docs);
-//        FindIterable<Document> fit =collection.find();
-//        
-//        
-//        for (Document document : fit) {
-//				
-//				for(String key : document.keySet()) {
-//					if(key.contains("_id")) {
-//						String value = document.get(key).toString();
-//						System.out.println("dynamic form inserted values in _id = " + value);
-//						
-//					}
-//				}
-//    }
-//       
-//      
-//  
-//            
-//        }
-//		
-//		
-//
-//        }
-
-
-    
-    
-
-//    public static List<Document> getQuestionSet(String systemFormId, String pageNumber) {
-//    	
-//    	List<Document> list = new ArrayList<>();
-//    	
-//    	
-//    	Logger mongoLogger = Logger.getLogger("org.mongodb.driver");
-//        mongoLogger.setLevel(Level.SEVERE);
-//
-//        try (MongoClient mongoClient = MongoClients.create("mongodb://localhost:27017")) {
-//
-//            MongoDatabase database = mongoClient.getDatabase("test");
-//            
-//            MongoCollection<Document> collection = database.getCollection("question");
-//            
-//            FindIterable<Document> fit = collection.find(and(eq("formId", systemFormId), eq("pageNumber", pageNumber)));
-//
-//            for (Document docs : fit) {
-//            	
-//            	System.out.println("docs = " + docs);
-//                
-//            	list.add(docs);
-//            } 
-//        }
-//    	
-//    	
-//    	
-//    	return list;
-//    }
     
 }

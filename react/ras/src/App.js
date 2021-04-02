@@ -22,6 +22,9 @@ import CreateForm from "./components/admin/CreateForm";
 import FormDetailsEdit from "./components/admin/FormDetailsEdit";
 import FormDetailsView from "./components/admin/FormDetailsView";
 
+import  ContactDetails  from './components/afterLogin/ContactDetails';
+
+
 import {SideBar} from './components/SideBar/SideBar';
 
 class App extends Component {
@@ -145,6 +148,7 @@ class App extends Component {
             <Route path="/:sysId/createQuestion/Page/:pageNum" component={QuestionPage} />
             {/* <Route path="/createAttribute" component={AdminCreateFormAttributes} /> */}
             <Route path="/study/:studyId/:filterFormId/:systemFormId/:page" component={StudySideQuesionPage} />
+            <Route path="/study/:studyAppId/:studyDataFormId/contactDetails" component={ContactDetails} />
             <Route path="/systemForm" component={SystemForm} />
             <Route path="/createForm" component={CreateForm} />
             <Route path="/form/edit/:id" component={FormDetailsEdit} />
