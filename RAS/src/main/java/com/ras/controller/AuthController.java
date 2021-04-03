@@ -31,6 +31,7 @@ import com.ras.repository.RoleRepository;
 import com.ras.repository.UserRepository;
 import com.ras.security.jwt.JwtUtils;
 import com.ras.service.UserDetailsImpl;
+import com.ras.service.mongodbOperations.NextSequenceService;
 
 
 
@@ -53,6 +54,9 @@ public class AuthController {
 	@Autowired
 	JwtUtils jwtUtils;
 
+	@Autowired
+	NextSequenceService nextSequenceService;
+	
 	@PostMapping("/signin")
 	public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
 
@@ -68,7 +72,7 @@ public class AuthController {
 				.collect(Collectors.toList());
 
 		return ResponseEntity.ok(new JwtResponse(jwt, 
-												 userDetails.getId(), 
+												 userDetails.getId()+"", 
 												 userDetails.getUsername(), 
 												 userDetails.getEmail(), 
 												 roles));
@@ -137,6 +141,14 @@ public class AuthController {
 		}
 
 		user.setRoles(roles);
+		
+		
+		int seq = nextSequenceService.getNextSequenceForuserId("customSequences");
+		System.out.println("user Id generated = " + seq);
+		user.setId(seq);
+
+		
+		
 		userRepository.save(user);
 
 		return ResponseEntity.ok(new MessageResponse("User registered successfully!"));

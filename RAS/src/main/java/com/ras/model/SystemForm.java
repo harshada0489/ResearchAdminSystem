@@ -33,6 +33,9 @@ public class SystemForm {
 
 	  private int version;
 	  
+	  
+	  private int creatorId;
+	  
 	  private String status;
   
 	  private Date createdDate;
@@ -138,6 +141,14 @@ public SystemForm(@NotBlank String formName,@NotBlank String formDescription) {
 
 	public void setVersion(int version) {
 		this.version = version;
+	}
+
+	public int getCreatorId() {
+		return creatorId;
+	}
+
+	public void setCreatorId(int creatorId) {
+		this.creatorId = creatorId;
 	}
 
 	  

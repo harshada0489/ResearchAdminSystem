@@ -23,6 +23,8 @@ public class CustomSequences {
 	    
 	    private int userIdSeq;
 	    
+	    private int studyContactsIdSeq;
+	    
 
 		public String getId() {
 			return id;
@@ -72,6 +74,12 @@ public class CustomSequences {
 		}
 		public void setUserIdSeq(int userIdSeq) {
 			this.userIdSeq = userIdSeq;
+		}
+		public int getStudyContactsIdSeq() {
+			return studyContactsIdSeq;
+		}
+		public void setStudyContactsIdSeq(int studyContactsIdSeq) {
+			this.studyContactsIdSeq = studyContactsIdSeq;
 		}
 		
 		

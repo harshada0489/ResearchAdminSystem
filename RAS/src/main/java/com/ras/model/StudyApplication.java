@@ -49,6 +49,9 @@ public class StudyApplication {
 //	@JsonProperty(value = "researcherId")
 	private String researcherID;
 	
+	
+	private int creatorId;
+	
 	private String status;
 	
 	private Date createdDate;
@@ -63,7 +66,7 @@ public class StudyApplication {
 
 	public StudyApplication(int id, String studyTitle, String oneWordIdentifier, String gender, int age,
 			int noOfHumanRequired, String typeOfAnimal, int noOfAnimalRequired, String filter1, String filter2,
-			String researcherID, String status, Date createdDate, Date modifiedDate) {
+			String researcherID, int creatorId, String status, Date createdDate, Date modifiedDate) {
 		super();
 		this.id = id;
 		this.studyTitle = studyTitle;
@@ -76,6 +79,7 @@ public class StudyApplication {
 		this.filter1 = filter1;
 		this.filter2 = filter2;
 		this.researcherID = researcherID;
+		this.creatorId = creatorId;
 		this.status = status;
 		this.createdDate = createdDate;
 		this.modifiedDate = modifiedDate;
@@ -222,6 +226,16 @@ public class StudyApplication {
 		this.modifiedDate = modifiedDate;
 	}
 
+	
+	public int getCreatorId() {
+		return creatorId;
+	}
+
+	public void setCreatorId(int creatorId) {
+		this.creatorId = creatorId;
+	}
+	
+	
 
 	@Override
 	public String toString() {

@@ -5,6 +5,8 @@ import  CreateStudy  from './afterLogin/createStudy';
 
 import {SideBar} from './SideBar/SideBar';
 
+import ViewMyStudyApp from './afterLogin/ViewMyStudyApp';
+
 export default class Profile extends Component {
   constructor(props) {
     super(props);
@@ -15,6 +17,7 @@ export default class Profile extends Component {
     this.createStudyHandler = this.createStudyHandler.bind(this);
     this.adminCreateStudyFormHandler = this.adminCreateStudyFormHandler.bind(this);
     this.systemFormHandler = this.systemFormHandler.bind(this);
+    this.studyStatusHandler = this.studyStatusHandler.bind(this);
   }
 
   createStudyHandler(event){
@@ -31,6 +34,11 @@ export default class Profile extends Component {
   systemFormHandler(event){
     event.preventDefault();
       this.props.history.push("/systemForm");
+  }
+
+  studyStatusHandler(event){
+    event.preventDefault();
+      this.props.history.push("/viewSystemForm");
   }
 
   render() {
@@ -106,15 +114,20 @@ export default class Profile extends Component {
           {/* <SideBar/> */}
 
                  <div>
-                  <div className="diff-action">
-                     <button type="button" onClick={this.createStudyHandler} className="btn">
+                  {/* <div className="diff-action"> */}
+                            <button className="btn btn-success" onClick={this.createStudyHandler}> Create Study </button>
+
+                     {/* <button type="button" onClick={this.createStudyHandler} className="btn">
                      Create Study
-                     </button>
-                 </div>
-  
+                     </button> */}
+                 {/* </div> */}
+                  <div>
+                    <ViewMyStudyApp />
+                  </div>
+                  
                  {/* <div className="diff-action">
-                     <button type="button" onClick={this.createStudyHandler} className="btn">
-                     Submitted Study Status
+                     <button type="button" onClick={this.studyStatusHandler} className="btn">
+                      Study Status
                      </button>
                  </div> */}
                  

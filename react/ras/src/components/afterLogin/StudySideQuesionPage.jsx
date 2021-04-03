@@ -1,6 +1,6 @@
 import React from 'react';
 import axios from 'axios';
-
+import AuthService from "../../services/auth.service";
 
 const API_URL = 'http://localhost:8080/ras/study/'
 class StudySideQuesionPage extends React.Component {
@@ -12,7 +12,9 @@ class StudySideQuesionPage extends React.Component {
             currentPage : "",
             answerMapList  : [],
              items : [{test: "testing"}],
-             returnItemsList:[]
+             returnItemsList:[],
+
+             
         }
         this.handleChange = this.handleChange.bind(this);
         this.endOfForm = this.endOfForm.bind(this);
@@ -89,6 +91,7 @@ class StudySideQuesionPage extends React.Component {
                     "studyId" : this.props.location.state.detail.questionList[0].studyId,
                     "studyAppDataId" : this.props.location.state.detail.questionList[0].studyAppDataId,
                     "studyDataFormId" : this.props.location.state.detail.questionList[0].studyDataFormId,
+                    "creatorId" : AuthService.getCurrentUser().id
                     
                     // "page" : this.props.location.state.detail.questionList[0].page,
                 },

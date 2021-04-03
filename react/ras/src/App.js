@@ -23,7 +23,7 @@ import FormDetailsEdit from "./components/admin/FormDetailsEdit";
 import FormDetailsView from "./components/admin/FormDetailsView";
 
 import  ContactDetails  from './components/afterLogin/ContactDetails';
-
+import ViewMyStudyApp from './components/afterLogin/ViewMyStudyApp';
 
 import {SideBar} from './components/SideBar/SideBar';
 
@@ -150,6 +150,7 @@ class App extends Component {
             <Route path="/study/:studyId/:filterFormId/:systemFormId/:page" component={StudySideQuesionPage} />
             <Route path="/study/:studyAppId/:studyDataFormId/contactDetails" component={ContactDetails} />
             <Route path="/systemForm" component={SystemForm} />
+            <Route path="/viewMyStudyApp" component={ViewMyStudyApp} />
             <Route path="/createForm" component={CreateForm} />
             <Route path="/form/edit/:id" component={FormDetailsEdit} />
             <Route path="/form/view/:id" component={FormDetailsView} />

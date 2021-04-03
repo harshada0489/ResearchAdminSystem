@@ -63,6 +63,12 @@ public int getNextSequenceForuserId(String seqName) {
 }
 
 
+public int getNextSequenceForStudyContactsId(String seqName) {
+	
+	CustomSequences counter = mongo.findAndModify(query(where("_id").is(seqName)), new Update().inc("studyContactsIdSeq", 1),  options().returnNew(true).upsert(true),CustomSequences.class);
+	return counter.getStudyContactsIdSeq();
+}
+
 
 
 

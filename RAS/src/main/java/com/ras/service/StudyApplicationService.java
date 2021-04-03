@@ -264,4 +264,13 @@ public int getTheCountOfQuestionPages(String systemFormIdString) {
 		
 	}
 	
+	
+	private static List<StudyApplication> forms = new ArrayList<>();
+	
+	public List<StudyApplication> getAllStudyApp(Integer creatorId){
+		System.out.println("Inside class: SystemFormService and method: getAllDBForms() ");
+		List<StudyApplication> dbAllForms = studyApplicationRepository.findByCreatorId(creatorId);
+		return dbAllForms;
+	}
+	
 }

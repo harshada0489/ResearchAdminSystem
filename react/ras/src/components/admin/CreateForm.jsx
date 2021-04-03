@@ -5,6 +5,8 @@ import Form from "react-validation/build/form";
 import Input from "react-validation/build/input";
 import CheckButton from "react-validation/build/button";
 
+import AuthService from "../../services/auth.service";
+
 var API_URL = "http://localhost:8080/ras/systemForm/create"
 
 const required = value => {
@@ -48,7 +50,9 @@ class CreateForm extends React.Component{
             formName : '',
             formDescription : '',
             filter1: '',
-            filter2:''
+            filter2:'',
+            creatorId: AuthService.getCurrentUser().id
+
         }
 
         this.onChangeFormName = this.onChangeFormName.bind(this);
@@ -157,6 +161,7 @@ class CreateForm extends React.Component{
       }
     render(){
 
+      console.log("this.state = ", this.state);
       console.log("filter1=",this.state.filter1, " filter2 = ", this.state.filter2);
 
       const showFilter2 = () => {

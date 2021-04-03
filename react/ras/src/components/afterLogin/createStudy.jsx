@@ -31,7 +31,7 @@ class CreateStudy extends React.Component {
             filter1: '',
             filter2:'',
 
-            currentUser: AuthService.getCurrentUser()
+            creatorId: AuthService.getCurrentUser().id
           };
 
         this.studyFormHandler = this.studyFormHandler.bind(this);
@@ -62,8 +62,8 @@ class CreateStudy extends React.Component {
       studyFormHandler(event){
 
         event.preventDefault();
-        console.log(this.state.currentUser.id);
-        this.state.researcherId = this.state.currentUser.id;
+        console.log(this.state.currentUser);
+        // this.state.researcherId = this.state.currentUser.id;
         if(this.state.filter1==="human"){
             console.log("Selected filter1 = human ");
             this.state.typeOfAnimal = "";
@@ -136,6 +136,8 @@ class CreateStudy extends React.Component {
         let { currentUser } = this.state;
 
         console.log("filter1=",this.state.filter1, " filter2 = ", this.state.filter2);
+
+        console.log("this.state = ",this.state);
 
         const showFilter2 = () => {
           if (this.state.filter1 === "human"){

@@ -23,6 +23,7 @@ import com.mongodb.client.MongoCursor;
 import com.ras.model.Question;
 import com.ras.model.StudyApplication;
 import com.ras.model.StudyDataForm;
+import com.ras.model.SystemForm;
 import com.ras.model.payload.request.LoginRequest;
 //import com.ras.service.LoginRequestService;
 import com.ras.service.MongoListCollections;
@@ -36,40 +37,48 @@ public class StudyApplicationResource {
 	@Autowired
 	private StudyApplicationService studyApplicationService;
 	
+	
+	@GetMapping("/viewMyStudyForm/{creatorId}")
+	public List<StudyApplication> getAllStudyApp(@PathVariable Integer creatorId ) {
+		System.out.println("Inside class: StudyApplicationResource and method: getAllStudyApp() ");
+		List<StudyApplication> allForms = studyApplicationService.getAllStudyApp(creatorId);
+		System.out.println("allForms =  " + allForms);
+		return allForms ;
+	}
 
 	@PostMapping("/studyForm")
 	public ResponseEntity<?> addUserRequest(@RequestBody StudyApplication studyApplication) throws Exception {
 		
-//		HashMap<String, String> hmap = new HashMap<>();
-//		System.out.println("calling from ---------->>>>>> class: CreateStudyResource , method:addUserRequest ");
-//		System.out.println("Response Body params ---------->>>>> " + studyApplication);
-//		Integer studyAppId = 0;
-//		 studyAppId = studyApplicationService.addCreateStudyDefaultValues(studyApplication);
-//		Integer systemFormDataId = null;
-//		Integer dynamicTableDataId = null;
-//		Integer studyDataFormId = null;
-//		if(studyAppId != 0) {
-//			 
-//			hmap= studyApplicationService.searchForfilterList(studyAppId);
-//			systemFormDataId = studyApplicationService.putEntryInStudyDataForm(hmap);
-//			System.out.println("systemFormDataId = " + systemFormDataId);
-//			
-//			StudyDataForm studyDataForm = studyApplicationService.getStudyDataApp(systemFormDataId);
-//			System.out.println("studyDataForm = " + studyDataForm.getDynamicTableName() + " , " + 
-//					studyDataForm.getId());
-//			
-//			
-//			String dynamicTableName = studyDataForm.getDynamicTableName();
-//			 studyDataFormId = studyDataForm.getId();
-//			 System.out.println("studyDataFormId = " + studyDataFormId);
-//			Integer systemFormId = studyDataForm.getSystemFormId();
-//			dynamicTableDataId = studyApplicationService.updateDynamicTable(dynamicTableName, studyDataFormId, systemFormId);
-//			
-//			System.out.println("dynamicTableDataId = "+ dynamicTableDataId);
-//			
-//			studyApplicationService.updateStudyDataFormWithDynamicId(studyDataForm, dynamicTableDataId);
-//
-//		}
+		HashMap<String, String> hmap = new HashMap<>();
+		System.out.println("calling from ---------->>>>>> class: CreateStudyResource , method:addUserRequest ");
+		System.out.println("Response Body params ---------->>>>> " + studyApplication);
+		Integer studyAppId = 0;
+		 studyAppId = studyApplicationService.addCreateStudyDefaultValues(studyApplication);
+		Integer systemFormDataId = null;
+		Integer dynamicTableDataId = null;
+		Integer studyDataFormId = null;
+		if(studyAppId != 0) {
+			 
+			hmap= studyApplicationService.searchForfilterList(studyAppId);
+			systemFormDataId = studyApplicationService.putEntryInStudyDataForm(hmap);
+			System.out.println("systemFormDataId = " + systemFormDataId);
+			
+			StudyDataForm studyDataForm = studyApplicationService.getStudyDataApp(systemFormDataId);
+			System.out.println("studyDataForm = " + studyDataForm.getDynamicTableName() + " , " + 
+					studyDataForm.getId());
+			
+			
+			String dynamicTableName = studyDataForm.getDynamicTableName();
+			 studyDataFormId = studyDataForm.getId();
+			 System.out.println("studyDataFormId = " + studyDataFormId);
+			Integer systemFormId = studyDataForm.getSystemFormId();
+			dynamicTableDataId = studyApplicationService.updateDynamicTable(dynamicTableName, studyDataFormId, systemFormId);
+			
+			System.out.println("dynamicTableDataId = "+ dynamicTableDataId);
+			
+			studyApplicationService.updateStudyDataFormWithDynamicId(studyDataForm, dynamicTableDataId);
+
+		}
 		
 		
 		Map<Integer,Object> userList = new HashMap<Integer,Object>();
@@ -87,11 +96,11 @@ public class StudyApplicationResource {
 		Map<String,Object> responseMap = new HashMap<String,Object>();
 		
 		
-		responseMap.put("dynamicTableDataId", 25);
+		responseMap.put("dynamicTableDataId", dynamicTableDataId);
 		responseMap.put("userList", userList);
 		responseMap.put("typeList", typeList);
-		responseMap.put("studyDataFormId", 45);
-		responseMap.put("studyAppId", 20);
+		responseMap.put("studyDataFormId", studyDataFormId);
+		responseMap.put("studyAppId",studyAppId);
 
 		System.out.println("responseMap =" + responseMap);
 	return ResponseEntity.ok(responseMap);
@@ -189,9 +198,10 @@ public class StudyApplicationResource {
 				HashMap<String, Object> dbColumnNamesAnswerList = new HashMap<>();
 				
 				for(String key: answerList.keySet()) {
-					if(key.contains("studyId")) {
+					if(key.contains("studyId") || key.contains("creatorId") ) {
 						dbColumnNamesAnswerList.put(key, answerList.get(key));
 					}
+					
 					if(!(key.endsWith("Id"))) {
 						System.out.println(key);
 						dbColumnNamesAnswerList.put(key, answerList.get(key));
@@ -234,23 +244,23 @@ public class StudyApplicationResource {
 	}
 	
 	
-	@PostMapping("/study/{studyId}/{studyAppDataId}/{studyDataFormId}/contactDetails")
-	public ResponseEntity<?> contactDetailsList(
-			@PathVariable Integer studyId, @PathVariable Integer studyAppDataId, @PathVariable Integer studyDataFormId,
-			@RequestBody  List<Object> contactList) {
-		System.out.println("Inside class:StudyApplicationResource method: contactDetailsList()");
-		ResponseEntity<?> responseMap;
-		System.out.println("contactList =" + contactList);
-		
-		System.out.println("studyId =" + studyId);
-		System.out.println("studyAppDataId =" + studyAppDataId);
-		System.out.println("studyDataFormId =" + studyDataFormId);
-		
-
-		
-		
-	return ResponseEntity.ok("Successful");
-	}
+//	@PostMapping("/study/{studyId}/{studyAppDataId}/{studyDataFormId}/contactDetails")
+//	public ResponseEntity<?> contactDetailsList(
+//			@PathVariable Integer studyId, @PathVariable Integer studyAppDataId, @PathVariable Integer studyDataFormId,
+//			@RequestBody  List<Object> contactList) {
+//		System.out.println("Inside class:StudyApplicationResource method: contactDetailsList()");
+//		ResponseEntity<?> responseMap;
+//		System.out.println("contactList =" + contactList);
+//		
+//		System.out.println("studyId =" + studyId);
+//		System.out.println("studyAppDataId =" + studyAppDataId);
+//		System.out.println("studyDataFormId =" + studyDataFormId);
+//		
+//
+//		
+//		
+//	return ResponseEntity.ok("Successful");
+//	}
 	
 	
 }

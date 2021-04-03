@@ -34,6 +34,8 @@ public class Page {
 	  
 	  private String formVersion;
 	 
+	  private int creatorId;
+	  
 	  private String status;
 	  
 	  private Date createdDate;
@@ -110,7 +112,14 @@ public class Page {
 	public void setModifiedDate(Date modifiedDate) {
 		this.modifiedDate = modifiedDate;
 	}
+	
+	public int getCreatorId() {
+		return creatorId;
+	}
 
+	public void setCreatorId(int creatorId) {
+		this.creatorId = creatorId;
+	}
 	
 	
 }
