@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import com.ras.model.StudyContacts;
+import com.ras.model.StudyContactsConfig;
+import com.ras.repository.StudyContactsConfigRepository;
 import com.ras.repository.StudyContactsRepository;
 import com.ras.service.mongodbOperations.NextSequenceService;
 
@@ -20,6 +22,9 @@ public class StudyContactsService {
 
 	@Autowired
 	StudyContactsRepository repository;
+	
+	@Autowired
+	StudyContactsConfigRepository studyContactsConfigRepository;
 	
 	@Autowired
 	NextSequenceService nextSequenceService;
@@ -52,6 +57,14 @@ public class StudyContactsService {
 		}
 		
 		
+
+		
 		
 	}
+	
+	public List<StudyContactsConfig> getUserTypes() {
+		List<StudyContactsConfig> tList = studyContactsConfigRepository.findAll();
+		return tList;
+	}
+	
 }

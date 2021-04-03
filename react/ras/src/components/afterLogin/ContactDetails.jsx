@@ -1,4 +1,3 @@
-
 import React from 'react';
 import axios from 'axios';
 import AuthService from "../../services/auth.service";
@@ -15,19 +14,15 @@ class ContactDetails extends React.Component {
     constructor(props){
         super(props);
         this.state={
-            contactList: [{index: Math.random(), userId: "", type: "", creatorId: AuthService.getCurrentUser().id}],
+            contactList: [{index: Math.random(), userId: "", type: "", creatorId: AuthService.getCurrentUser().id, userList: [], typeList:[]}],
             userList : [],
             typeList : [],
-
-            // dynamicTableDataId : "",
-            // studyDataFormId : "",
-            // studyAppId : "",
             currentPage : 0,
             answerMapList : [],
             
-            // creatorId: AuthService.getCurrentUser().id
+            request_user_list:[],
+            request_type_list:[],
         }
-
 
         this.handleChange = this.handleChange.bind(this);
         this.addNewRow = this.addNewRow.bind(this);
@@ -37,7 +32,6 @@ class ContactDetails extends React.Component {
 
 
     }
-
 
     handleChange = (e) => {
         if (["userId", "type"].includes(e.target.name)) {
@@ -49,18 +43,12 @@ class ContactDetails extends React.Component {
             this.setState({ [e.target.name]: e.target.value })
         }
 
-        // let contactList = [...this.state.contactList];
-        // contactList[e.target.dataset.id]["formId"] = this.state.systemFormDetails.formId;
-        // contactList[e.target.dataset.id]["pageId"] = this.state.systemFormDetails.pageId;
-        // contactList[e.target.dataset.id]["pageNumber"] = this.state.systemFormDetails.pageNumber;
-
     }
     addNewRow = () => {
         this.setState((prevState) => ({
-            contactList: [...prevState.contactList, { index: Math.random(), userId: "", type: ""}]
+            contactList: [...prevState.contactList, { index: Math.random(), userId: "", type: "", creatorId: AuthService.getCurrentUser().id,}]
         }));
     }
-
 
     deteteRow = (index) => {
         this.setState({
@@ -68,10 +56,6 @@ class ContactDetails extends React.Component {
         });
 
     }
-
-    
-
-     
 
     handleSubmit = (e) => {
         e.preventDefault();
@@ -102,20 +86,14 @@ class ContactDetails extends React.Component {
                     return false;
                 }
 
-                // {
-                    
-                // }
         }
 
         if(count == 0){
             NotificationManager.warning(" Atleast one Principal Investigator is required");
                     return false;
         }
-        // let data = { formData: this.state.taskList }
 
         console.log("this.state.contactList =", this.state.contactList);
-       
-
 
         axios.post(API_URL + this.state.answerMapList.studyId + "/"  + this.state.answerMapList.studyAppDataId + "/"
         + this.state.answerMapList.studyDataFormId + "/contactDetails"
@@ -130,10 +108,6 @@ class ContactDetails extends React.Component {
         });
 
 
-
-
-
-
         axios.post(API_URL + this.state.currentPage +"/goToNextPage"
         ,this.state.answerMapList).then(response =>{
         console.log("response.data =", response.data);
@@ -145,8 +119,6 @@ class ContactDetails extends React.Component {
         })
         window.location.reload();
     }
-
-
 
         ).catch(error => {
             if(error.response.status && error.response.status===400)
@@ -165,26 +137,11 @@ class ContactDetails extends React.Component {
     }
 
 
-
-
-
-
-
-
-
-
-
-
     getData(){
         console.log(" Inside method getData() ");
 
             this.setState({userList : this.props.location.state.detail.userList,
                 typeList : this.props.location.state.detail.typeList,
-
-
-                // dynamicTableDataId : this.props.location.state.detail.dynamicTableDataId,
-                // studyDataFormId : this.props.location.state.detail.studyDataFormId,
-                // studyAppId : this.props.location.state.detail.studyAppId
             });
 
 
@@ -198,34 +155,45 @@ class ContactDetails extends React.Component {
             }));
 
 
-            // this.setState(prevState => ({
-            //     contactList: {
-            //         "userList" : this.props.location.state.detail.userList,
-            //          "typeList" : this.props.location.state.detail.typeList,   
-            //          "getlist" : {index: Math.random(), userId: "", type: "", creatorId: AuthService.getCurrentUser().id},
-            //     },
-            // }));
-
+            this.setState({contactList : [{
+                userList: [this.props.location.state.detail.userList],
+                typeList: [this.props.location.state.detail.typeList],
+            }]  
+            });
+            
 
       }
 
     componentDidMount(){
         console.log(" Inside method componentMount() start");
+        
+
+        axios
+        .get(`http://localhost:8080/ras/study/getUserList`)
+        .then(response=>response.data)
+        // console.log("response.data =", response.data);
+        .then(
+
+            data=>{this.setState({request_user:data.request_user_list});
+                  this.setState({request_type:data.request_type_list}); 
+                    this.setState({loading:false}); 
+                  }
+                  
+                  )
+        .catch(error => {console.log(error);});
+
+
+
         this.getData();
+
         console.log(" Inside method componentMount() end");
     
       }
 
-
-      
     render(){
         console.log("userList in this state = ", this.state.userList);
         console.log("typeList in this state = ", this.state.typeList);
-
-
         console.log("this.state.answerMapList = ", this.state.answerMapList);
-
-        
 
 
         let { contactList } = this.state 
@@ -268,8 +236,6 @@ class ContactDetails extends React.Component {
                                     </table>
                                 </div>
                                 <div className="card-footer text-center"> 
-                                 {/* <button type="button" onClick={this.goToPrevPage} className="btn btn-primary text-center"> Go Back </button> */}
-                                 {/* &nbsp; &nbsp; <button type="button" onClick={this.endOfForm} className="btn btn-primary text-center">End Form </button> */}
                                  &nbsp; &nbsp; <button type="submit" className="btn btn-primary text-center"> Save & go to Next Page </button>
                                 </div>
                             </div>
@@ -283,8 +249,5 @@ class ContactDetails extends React.Component {
             }
 
 }
-
-
-
 
 export default ContactDetails;
