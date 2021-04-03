@@ -4,32 +4,63 @@ import { Dropdown } from 'semantic-ui-react'
 
 const ContactList = (props) => {
   console.log("props= ", props);
+
+  let uList;
+  let tList;
+
+  if(props.contactList[0].userList[0]){
+    console.log("============================ userList is present =========================");
+    console.log("props.contactList[0].userList[0].length =", props.contactList[0].userList[0].length);
+
+     uList = props.contactList[0].userList[0].length
+                && props.contactList[0].userList[0].map((item, i) => {
+                  return (
+                    <option value={item.id}>{item.firstName}</option>
+                  )
+                  },this);
+    
+     console.log("uList = " + uList);
+  }else{
+     uList = null;
+  }
   
+
+  if(props.contactList[0].userList[0]){
+      console.log("============================ typeList is present =========================");
+      console.log("props.contactList[0].typeList[0].length =", props.contactList[0].typeList[0].length);
+
+       tList = props.contactList[0].typeList[0].length
+      && props.contactList[0].typeList[0].map((item, i) => {
+        return (
+          <option value={item.type}>{item.type}</option>
+        )
+        },this);
+  
+        console.log("tList = " + tList);
+  
+  }else{
+    tList = null;
+  }
+   
+
+
+
   return (
     props.contactList.map((val, idx) => {
-      let userId = `userId-${idx}`, type = `type-${idx}`
+      let userId = `userId-${idx}`, type = `type-${idx}`;
       return (
         <tr key={val.index}>
           <td>
-            {/* <input type="text"  name="user" data-id={idx} id={user} className="form-control " /> */}
-
             <select name="userId" id={userId} data-id={idx} className="form-control" >
-              <option value="">Select</option>
-              <option value="101">Harshada Bhangale</option>
-              <option value="102">Rahul Bhole</option>
-              <option value="103">Yuga</option>
+            <option value="">Select</option>
+              {uList}
             </select>
-
-
           </td>
 
           <td>
-          <select name="type" id={type} data-id={idx} className="form-control" >
-              <option value="">Select</option>
-              <option value="Principal Investigator">Principal Investigator</option>
-              <option value="Study Author">Study Author</option>
-              <option value="Study Contact">Study Contact</option>
-              <option value="Reviewer">Reviewer</option>
+            <select name="type" id={type} data-id={idx} className="form-control" >
+            <option value="">Select</option>
+              {tList}
             </select>
           </td>
 
@@ -54,4 +85,12 @@ const ContactList = (props) => {
 
 export default ContactList
 
+
+
+// let uList = props.contactList.userList.length > 0
+// 		&& props.contactList.userList.map((item, i) => {
+// 		return (
+// 			<option key={i} value={item.firstName}>{item.firstName}</option>
+// 		)
+//     }, this);
 

@@ -17,8 +17,10 @@ import org.springframework.stereotype.Service;
 import com.mongodb.client.MongoCollection;
 import com.ras.model.Question;
 import com.ras.model.StudyApplication;
+import com.ras.model.StudyContactsConfig;
 import com.ras.model.StudyDataForm;
 import com.ras.model.SystemForm;
+import com.ras.model.User;
 import com.ras.model.payload.request.LoginRequest;
 import com.ras.repository.QuestionRepository;
 import com.ras.repository.StudyDataFormRepository;
@@ -50,6 +52,12 @@ public class StudyApplicationService {
 	
 	@Autowired
 	QuestionService qservice;
+	
+	@Autowired
+	UserDetailsServiceImpl userService;
+	
+	@Autowired
+	StudyContactsService studyContactsService;
 	
 	public StudyApplicationService() {
 		// TODO Auto-generated constructor stub
@@ -273,4 +281,13 @@ public int getTheCountOfQuestionPages(String systemFormIdString) {
 		return dbAllForms;
 	}
 	
+	public List<User> callForUserService() {
+		List<User> uList = userService.getUserList();
+		return uList;
+	}
+	
+	public List<StudyContactsConfig> callForStudyContactsConfigService() {
+		List<StudyContactsConfig> tList = studyContactsService.getUserTypes();
+		return tList;
+	}
 }

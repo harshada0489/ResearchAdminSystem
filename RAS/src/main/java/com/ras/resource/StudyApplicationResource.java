@@ -6,6 +6,10 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
+
 import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -20,10 +24,13 @@ import org.springframework.web.bind.annotation.RestController;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
+import com.ras.model.DepartmentConfig;
 import com.ras.model.Question;
 import com.ras.model.StudyApplication;
+import com.ras.model.StudyContactsConfig;
 import com.ras.model.StudyDataForm;
 import com.ras.model.SystemForm;
+import com.ras.model.User;
 import com.ras.model.payload.request.LoginRequest;
 //import com.ras.service.LoginRequestService;
 import com.ras.service.MongoListCollections;
@@ -81,19 +88,58 @@ public class StudyApplicationResource {
 		}
 		
 		
-		Map<Integer,Object> userList = new HashMap<Integer,Object>();
-		userList.put(1, "Harshada Bhangale");
-		userList.put(2, "Rahul Bhole");
-		userList.put(3, "Yuga");
+		List<User> userList= studyApplicationService.callForUserService();
 		
-		Map<Integer,Object> typeList = new HashMap<Integer,Object>();
-		typeList.put(1, "Principal Investigator");
-		typeList.put(2, "Study Author");
-		typeList.put(3, "Study Contact");
-		typeList.put(4, "Reviewer");
+		
+//		User u1 = new User("harshada" ,"harshada","harshada","harshada","harshada","harshada","harshada");
+//		User u2 = new User("rahul" ,"rahul","rahul","rahul","rahul","rahul","rahul");
+//		User u3 = new User("pooja" ,"pooja","pooja","pooja","pooja","pooja","pooja");
+//		User u4 = new User("yuga","yuga","yuga","yuga","yuga","yuga","yuga");
+		
+		
+//		List<User> userList = new ArrayList<>();
+//		userList.add(u1);
+//		userList.add(u2);
+//		userList.add(u3);
+//		userList.add(u4);
+//		
+		
+		List<StudyContactsConfig> typeList= studyApplicationService.callForStudyContactsConfigService();
+		
+		
+//		StudyContactsConfig s1 = new StudyContactsConfig(1,"Principal Investigator");
+//		StudyContactsConfig s2 = new StudyContactsConfig(2,"Study Author");
+//		StudyContactsConfig s3 = new StudyContactsConfig(3,"Study Contact");
+//		StudyContactsConfig s4 = new StudyContactsConfig(4,"Reviewer");
+//		
+//		
+//		List<StudyContactsConfig> typeList = new ArrayList<>();
+//		typeList.add(s1);
+//		typeList.add(s2);
+//		typeList.add(s3);
+//		typeList.add(s4);
+		
 		
 		
 		Map<String,Object> responseMap = new HashMap<String,Object>();
+		
+		System.out.println("request_user_list =" + userList);
+		responseMap.put("request_user_list",userList);
+		responseMap.put("request_type_list",typeList);
+		
+		
+//		Map<Integer,Object> userList = new HashMap<Integer,Object>();
+//		userList.put(1, "Harshada Bhangale");
+//		userList.put(2, "Rahul Bhole");
+//		userList.put(3, "Yuga");
+//		
+//		Map<Integer,Object> typeList = new HashMap<Integer,Object>();
+//		typeList.put(1, "Principal Investigator");
+//		typeList.put(2, "Study Author");
+//		typeList.put(3, "Study Contact");
+//		typeList.put(4, "Reviewer");
+//		
+		
 		
 		
 		responseMap.put("dynamicTableDataId", dynamicTableDataId);
@@ -242,6 +288,53 @@ public class StudyApplicationResource {
 		
 	return ResponseEntity.ok("Successful");
 	}
+	
+	
+	@GetMapping("/study/getUserList")
+	public ResponseEntity<?> getUserList() {
+		System.out.println("Inside class:StudyApplicationResource method: endQuestionList()");
+		
+
+		
+		User u1 = new User("harshada" ,"harshada","harshada","harshada","harshada","harshada","harshada");
+		User u2 = new User("rahul" ,"rahul","rahul","rahul","rahul","rahul","rahul");
+		User u3 = new User("pooja" ,"pooja","pooja","pooja","pooja","pooja","pooja");
+		User u4 = new User("yuga","yuga","yuga","yuga","yuga","yuga","yuga");
+		
+		
+		List<User> uList = new ArrayList<>();
+		uList.add(u1);
+		uList.add(u2);
+		uList.add(u3);
+		uList.add(u4);
+		
+		
+		
+		
+		StudyContactsConfig s1 = new StudyContactsConfig(1,"PI");
+		StudyContactsConfig s2 = new StudyContactsConfig(2,"Study Author");
+		StudyContactsConfig s3 = new StudyContactsConfig(3,"Study Contact");
+		StudyContactsConfig s4 = new StudyContactsConfig(4,"Reviewer");
+		
+		
+		List<StudyContactsConfig> sList = new ArrayList<>();
+		sList.add(s1);
+		sList.add(s2);
+		sList.add(s3);
+		sList.add(s4);
+		
+		
+		
+		Map<String,Object> responseMap = new HashMap<String,Object>();
+		
+		System.out.println("request_user_list =" + uList);
+		responseMap.put("request_user_list",uList);
+		responseMap.put("request_type_list",sList);
+		
+	return ResponseEntity.ok(responseMap);
+	}
+	
+	
 	
 	
 //	@PostMapping("/study/{studyId}/{studyAppDataId}/{studyDataFormId}/contactDetails")
