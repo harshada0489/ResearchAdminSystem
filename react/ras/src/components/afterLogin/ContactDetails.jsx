@@ -15,7 +15,7 @@ class ContactDetails extends React.Component {
     constructor(props){
         super(props);
         this.state={
-            contactList: [{ index: Math.random(), user: "", userType: ""}],
+            contactList: [{index: Math.random(), userId: "", type: "", creatorId: AuthService.getCurrentUser().id}],
             userList : [],
             typeList : [],
 
@@ -25,7 +25,7 @@ class ContactDetails extends React.Component {
             currentPage : 0,
             answerMapList : [],
             
-            currentUser: AuthService.getCurrentUser()
+            // creatorId: AuthService.getCurrentUser().id
         }
 
 
@@ -40,7 +40,7 @@ class ContactDetails extends React.Component {
 
 
     handleChange = (e) => {
-        if (["user", "userType"].includes(e.target.name)) {
+        if (["userId", "type"].includes(e.target.name)) {
             let contactList = [...this.state.contactList]
             contactList[e.target.dataset.id][e.target.name] = e.target.value;
         }
@@ -57,7 +57,7 @@ class ContactDetails extends React.Component {
     }
     addNewRow = () => {
         this.setState((prevState) => ({
-            contactList: [...prevState.contactList, { index: Math.random(), user: "", userType: ""}]
+            contactList: [...prevState.contactList, { index: Math.random(), userId: "", type: ""}]
         }));
     }
 
@@ -77,12 +77,12 @@ class ContactDetails extends React.Component {
         e.preventDefault();
         console.log("this.state.contactList = ",this.state.contactList);
         console.log("this.state.contactList.length = ", this.state.contactList.length)
-        console.log("this.state.contactList[0].user = ", this.state.contactList[0].user === '');
-        console.log("this.state.contactList[0].userType = ", this.state.contactList[0].userType=== '');
+        console.log("this.state.contactList[0].userId = ", this.state.contactList[0].userId === '');
+        console.log("this.state.contactList[0].type = ", this.state.contactList[0].tpe=== '');
         
         for(var i=0; i<this.state.contactList.length; i++)
         {
-                if(this.state.contactList[i].user === '' || this.state.contactList[i].userType ==='' )
+                if(this.state.contactList[i].userId === '' || this.state.contactList[i].type ==='' )
                 {
                     NotificationManager.warning("Please Fill up Required Field.Please Check User name and User Type ");
                     return false;
@@ -92,7 +92,7 @@ class ContactDetails extends React.Component {
 
         for(var i=0; i<this.state.contactList.length; i++)
         {
-                if(this.state.contactList[i].userType ==='Principal Investigator'){
+                if(this.state.contactList[i].type ==='Principal Investigator'){
                     count = count + 1;
                 }
 
@@ -198,6 +198,14 @@ class ContactDetails extends React.Component {
             }));
 
 
+            // this.setState(prevState => ({
+            //     contactList: {
+            //         "userList" : this.props.location.state.detail.userList,
+            //          "typeList" : this.props.location.state.detail.typeList,   
+            //          "getlist" : {index: Math.random(), userId: "", type: "", creatorId: AuthService.getCurrentUser().id},
+            //     },
+            // }));
+
 
       }
 
@@ -221,8 +229,9 @@ class ContactDetails extends React.Component {
 
 
         let { contactList } = this.state 
-
+        
         return (
+
             <div className="content">
                 
                 <NotificationContainer/>

@@ -23,15 +23,16 @@ public class FormDetails {
 
 	  private String formDescription;
 
+	  private int creatorId;
 	  
 	  
-	  
-	public FormDetails(String filter1, String filter2, String formName, String formDescription) {
+	public FormDetails(String filter1, String filter2, String formName, String formDescription, int creatorId) {
 		super();
 		this.filter1 = filter1;
 		this.filter2 = filter2;
 		this.formName = formName;
 		this.formDescription = formDescription;
+		this.creatorId = creatorId;
 	}
 	
 	
@@ -68,7 +69,13 @@ public class FormDetails {
 		this.formDescription = formDescription;
 	}
 
+	public int getCreatorId() {
+		return creatorId;
+	}
 
+	public void setCreatorId(int creatorId) {
+		this.creatorId = creatorId;
+	}
 
 	  
 

@@ -79,6 +79,7 @@ public class SystemFormService {
 			  
 			  String filterCombo = createFilterList(filter1, filter2);
 			 
+			  sysForm.setCreatorId(form.getCreatorId());
 			  
 			  sysForm.setFilterList(filterCombo);
 

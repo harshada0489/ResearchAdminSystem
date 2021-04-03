@@ -6,6 +6,8 @@ import { confirmAlert } from 'react-confirm-alert'; // Import
 import 'react-confirm-alert/src/react-confirm-alert.css';
 import { Link } from "react-router-dom";
 
+import AuthService from "../../services/auth.service";
+
 const API_URL = "http://localhost:8080/ras/systemForm"
 
 class SystemForm extends React.Component{
@@ -13,12 +15,16 @@ class SystemForm extends React.Component{
         super(props);
         this.state = {
             systemFormList: [],
-            message: null
+            message: null,
+
+
+            currentUser: AuthService.getCurrentUser()
         }
-        this.refreshCourses = this.refreshCourses.bind(this)
+        this.refreshCourses = this.refreshCourses.bind(this);
         this.editFormClicked = this.editFormClicked.bind(this);
         this.deleteFormClicked = this.deleteFormClicked.bind(this);
         this.createFormClicked = this.createFormClicked.bind(this);
+       
         
     }
 
@@ -90,7 +96,10 @@ class SystemForm extends React.Component{
     }
 
     render() {
-        console.log('render')
+        console.log('render');
+        console.log("this.state.currentUser id= " ,this.state.currentUser.id);
+
+
         return (
             <div className="container">
                 <h3>All System Forms</h3>
@@ -112,14 +121,11 @@ class SystemForm extends React.Component{
                                         <tr key={formDetails.id}>
                                             <td><Link to = {"/form/view/" + formDetails.id}>{formDetails.id}</Link>
                                             </td>
-                                            {/* <td><Link to={'/systemForm/edit/' + formDetails.id }>{formDetails.id}</Link></td> */}
-                                            {/* <td><Link to ={ `${API_URL}/edit/${formDetails.id}`} >{formDetails.id}</Link></td> */}
+                                            
                                             <td>{formDetails.formName}</td>
                                             <td>{formDetails.formDescription}</td>
                                             
                                             <td><button className="btn btn-success" onClick={() => this.editFormClicked(formDetails.id)}>Edit</button></td>
-
-                                            {/* <td><button className="btn btn-success" onClick={() => this.editFormClicked(formDetails.id)}>Edit</button></td> */}
                                             <td><button className="btn btn-warning" onClick={() => this.deleteFormClicked(formDetails.id)}>Delete</button></td>
                                         
                                         </tr>

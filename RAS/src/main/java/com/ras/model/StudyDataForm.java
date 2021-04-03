@@ -23,6 +23,9 @@ public class StudyDataForm {
 	
 	private String round;
 	
+	
+	private int creatorId;
+	
 	private String status;
 	
 	private Date createdDate;
@@ -122,7 +125,13 @@ public class StudyDataForm {
 		this.modifiedDate = modifiedDate;
 	}
 	
-	
+	public int getCreatorId() {
+		return creatorId;
+	}
+
+	public void setCreatorId(int creatorId) {
+		this.creatorId = creatorId;
+	}
 	
 	
 

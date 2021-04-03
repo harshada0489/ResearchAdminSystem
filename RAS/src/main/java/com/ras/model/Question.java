@@ -62,6 +62,8 @@ public class Question {
 	  
 	  private String modifiedByUserId;
 	  
+	  private int creatorId;
+	  
 	  
 	  private String status;
 	  
@@ -225,7 +227,13 @@ public class Question {
 		this.questionNumber = questionNumber;
 	}
 
+	public int getCreatorId() {
+		return creatorId;
+	}
 
+	public void setCreatorId(int creatorId) {
+		this.creatorId = creatorId;
+	}
 
 
 

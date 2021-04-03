@@ -13,8 +13,9 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "users")
 public class User {
+	
   @Id
-  private String id;
+  private int id;
 
   @NotBlank
   @Size(max = 20)
@@ -73,15 +74,21 @@ public class User {
 	this.department = department;
 }
 
-  public String getId() {
-    return id;
-  }
 
-  public void setId(String id) {
-    this.id = id;
-  }
 
-  public String getUsername() {
+  public int getId() {
+	return id;
+}
+
+
+
+public void setId(int id) {
+	this.id = id;
+}
+
+
+
+public String getUsername() {
     return username;
   }
 
@@ -122,14 +129,6 @@ public String getLastName() {
 public void setLastName(String lastName) {
 	this.lastName = lastName;
 }
-
-//public String getLoginType() {
-//	return loginType;
-//}
-//
-//public void setLoginType(String loginType) {
-//	this.loginType = loginType;
-//}
 
 public String getInstitute() {
 	return institute;
