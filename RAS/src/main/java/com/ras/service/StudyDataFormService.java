@@ -66,6 +66,7 @@ public class StudyDataFormService {
 		studyDataForm.setCreatedDate(new Date());
 		studyDataForm.setModifiedDate(new Date());
 		studyDataForm.setDynamicTableFormVersion(version+"");
+		studyDataForm.setLock(false);
 		
 		repository.save(studyDataForm);
 		int systemFormDataId = studyDataForm.getId();

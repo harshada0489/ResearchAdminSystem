@@ -69,14 +69,18 @@ public int getNextSequenceForStudyContactsId(String seqName) {
 	return counter.getStudyContactsIdSeq();
 }
 
+public int getNextSequenceForRbStudyApplicationId(String seqName) {
+	
+	CustomSequences counter = mongo.findAndModify(query(where("_id").is(seqName)), new Update().inc("rbStudyApplicationIdSeq", 1),  options().returnNew(true).upsert(true),CustomSequences.class);
+	return counter.getRbStudyApplicationIdSeq();
+}
+
+public int getNextSequenceForloginHistoryIdSeq(String seqName) {
+	
+	CustomSequences counter = mongo.findAndModify(query(where("_id").is(seqName)), new Update().inc("loginHistoryIdSeq", 1),  options().returnNew(true).upsert(true),CustomSequences.class);
+	return counter.getLoginHistoryIdSeq();
+}
 
 
-
-
-
-
-
-//
-//private int userIdSeq;
 
 }
