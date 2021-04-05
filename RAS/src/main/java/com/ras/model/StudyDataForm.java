@@ -23,6 +23,7 @@ public class StudyDataForm {
 	
 	private String round;
 	
+	private boolean isLock;
 	
 	private int creatorId;
 	
@@ -131,6 +132,16 @@ public class StudyDataForm {
 
 	public void setCreatorId(int creatorId) {
 		this.creatorId = creatorId;
+	}
+
+
+	public boolean isLock() {
+		return isLock;
+	}
+
+
+	public void setLock(boolean isLock) {
+		this.isLock = isLock;
 	}
 	
 	

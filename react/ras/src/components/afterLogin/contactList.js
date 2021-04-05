@@ -25,14 +25,14 @@ const ContactList = (props) => {
   }
   
 
-  if(props.contactList[0].userList[0]){
+  if(props.contactList[0].typeList[0]){
       console.log("============================ typeList is present =========================");
       console.log("props.contactList[0].typeList[0].length =", props.contactList[0].typeList[0].length);
 
        tList = props.contactList[0].typeList[0].length
       && props.contactList[0].typeList[0].map((item, i) => {
         return (
-          <option value={item.type}>{item.type}</option>
+          <option value={item.id}>{item.type}</option>
         )
         },this);
   

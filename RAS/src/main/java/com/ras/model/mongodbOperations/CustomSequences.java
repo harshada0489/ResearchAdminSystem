@@ -25,6 +25,10 @@ public class CustomSequences {
 	    
 	    private int studyContactsIdSeq;
 	    
+	    private int rbStudyApplicationIdSeq;
+	    
+	    private int loginHistoryIdSeq;
+	    
 
 		public String getId() {
 			return id;
@@ -80,6 +84,18 @@ public class CustomSequences {
 		}
 		public void setStudyContactsIdSeq(int studyContactsIdSeq) {
 			this.studyContactsIdSeq = studyContactsIdSeq;
+		}
+		public int getRbStudyApplicationIdSeq() {
+			return rbStudyApplicationIdSeq;
+		}
+		public void setRbStudyApplicationIdSeq(int rbStudyApplicationIdSeq) {
+			this.rbStudyApplicationIdSeq = rbStudyApplicationIdSeq;
+		}
+		public int getLoginHistoryIdSeq() {
+			return loginHistoryIdSeq;
+		}
+		public void setLoginHistoryIdSeq(int loginHistoryIdSeq) {
+			this.loginHistoryIdSeq = loginHistoryIdSeq;
 		}
 		
 		

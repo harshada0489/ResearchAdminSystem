@@ -59,6 +59,9 @@ public class StudyApplicationService {
 	@Autowired
 	StudyContactsService studyContactsService;
 	
+	@Autowired
+	RbStudyApplicationService rbStudyApplicationService;
+	
 	public StudyApplicationService() {
 		// TODO Auto-generated constructor stub
 	}
@@ -69,7 +72,7 @@ public class StudyApplicationService {
 		HashMap<String, String> hmap = new HashMap<>();
 		studyApp.setCreatedDate(new java.util.Date());
 		studyApp.setModifiedDate(new java.util.Date());
-		studyApp.setStatus("pending");
+		studyApp.setStatus("Draft");
 		System.out.println("Calling from addCreateStudyDefaultValues()" + studyApp);
 		
 		
@@ -289,5 +292,14 @@ public int getTheCountOfQuestionPages(String systemFormIdString) {
 	public List<StudyContactsConfig> callForStudyContactsConfigService() {
 		List<StudyContactsConfig> tList = studyContactsService.getUserTypes();
 		return tList;
+	}
+	
+	public void callRbService(Integer studyAppId){
+		Optional<StudyApplication> db = studyApplicationRepository.findById(studyAppId);
+		if(db.isPresent()) {
+			StudyApplication  studyApp = db.get();
+			rbStudyApplicationService.addRvStudyApp(studyApp);
+		}
+		
 	}
 }

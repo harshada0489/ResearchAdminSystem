@@ -1,13 +1,16 @@
 package com.ras.controller;
 
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -30,6 +33,7 @@ import com.ras.model.payload.response.MessageResponse;
 import com.ras.repository.RoleRepository;
 import com.ras.repository.UserRepository;
 import com.ras.security.jwt.JwtUtils;
+import com.ras.service.LoginHistoryService;
 import com.ras.service.UserDetailsImpl;
 import com.ras.service.mongodbOperations.NextSequenceService;
 
@@ -57,16 +61,31 @@ public class AuthController {
 	@Autowired
 	NextSequenceService nextSequenceService;
 	
+	@Autowired
+	LoginHistoryService loginHistoryService;
+	
 	@PostMapping("/signin")
-	public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
+	public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest , HttpServletRequest request) {
 
 		Authentication authentication = authenticationManager.authenticate(
 				new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
 
+		
+		
 		SecurityContextHolder.getContext().setAuthentication(authentication);
 		String jwt = jwtUtils.generateJwtToken(authentication);
 		
 		UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();		
+		
+		if(authentication.isAuthenticated()) {
+			Integer userId= userDetails.getId();
+			String ipAddress = request.getRemoteAddr();
+			Date loginTime = new Date();
+			loginHistoryService.insertLoginDetails(userId, ipAddress, loginTime);
+			
+		}
+		
+		
 		List<String> roles = userDetails.getAuthorities().stream()
 				.map(item -> item.getAuthority())
 				.collect(Collectors.toList());

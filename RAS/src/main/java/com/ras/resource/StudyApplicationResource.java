@@ -88,59 +88,16 @@ public class StudyApplicationResource {
 		}
 		
 		
-		List<User> userList= studyApplicationService.callForUserService();
-		
-		
-//		User u1 = new User("harshada" ,"harshada","harshada","harshada","harshada","harshada","harshada");
-//		User u2 = new User("rahul" ,"rahul","rahul","rahul","rahul","rahul","rahul");
-//		User u3 = new User("pooja" ,"pooja","pooja","pooja","pooja","pooja","pooja");
-//		User u4 = new User("yuga","yuga","yuga","yuga","yuga","yuga","yuga");
-		
-		
-//		List<User> userList = new ArrayList<>();
-//		userList.add(u1);
-//		userList.add(u2);
-//		userList.add(u3);
-//		userList.add(u4);
-//		
+		List<User> userList= studyApplicationService.callForUserService();	
 		
 		List<StudyContactsConfig> typeList= studyApplicationService.callForStudyContactsConfigService();
-		
-		
-//		StudyContactsConfig s1 = new StudyContactsConfig(1,"Principal Investigator");
-//		StudyContactsConfig s2 = new StudyContactsConfig(2,"Study Author");
-//		StudyContactsConfig s3 = new StudyContactsConfig(3,"Study Contact");
-//		StudyContactsConfig s4 = new StudyContactsConfig(4,"Reviewer");
-//		
-//		
-//		List<StudyContactsConfig> typeList = new ArrayList<>();
-//		typeList.add(s1);
-//		typeList.add(s2);
-//		typeList.add(s3);
-//		typeList.add(s4);
-		
-		
-		
+	
 		Map<String,Object> responseMap = new HashMap<String,Object>();
 		
 		System.out.println("request_user_list =" + userList);
-		responseMap.put("request_user_list",userList);
-		responseMap.put("request_type_list",typeList);
 		
-		
-//		Map<Integer,Object> userList = new HashMap<Integer,Object>();
-//		userList.put(1, "Harshada Bhangale");
-//		userList.put(2, "Rahul Bhole");
-//		userList.put(3, "Yuga");
-//		
-//		Map<Integer,Object> typeList = new HashMap<Integer,Object>();
-//		typeList.put(1, "Principal Investigator");
-//		typeList.put(2, "Study Author");
-//		typeList.put(3, "Study Contact");
-//		typeList.put(4, "Reviewer");
-//		
-		
-		
+//		responseMap.put("request_user_list",userList);
+//		responseMap.put("request_type_list",typeList);		
 		
 		responseMap.put("dynamicTableDataId", dynamicTableDataId);
 		responseMap.put("userList", userList);
@@ -283,56 +240,18 @@ public class StudyApplicationResource {
 		System.out.println("currPage =" + currPage);
 		getNextPageQuestionList(currPage,answerList);
 
-
+		
+		String studyAppIdString = answerList.get("studyId").toString();
+		Integer studyAppId = Integer.parseInt(studyAppIdString);
+		
+		studyApplicationService.callRbService(studyAppId);
 		
 		
 	return ResponseEntity.ok("Successful");
 	}
 	
 	
-	@GetMapping("/study/getUserList")
-	public ResponseEntity<?> getUserList() {
-		System.out.println("Inside class:StudyApplicationResource method: endQuestionList()");
-		
-
-		
-		User u1 = new User("harshada" ,"harshada","harshada","harshada","harshada","harshada","harshada");
-		User u2 = new User("rahul" ,"rahul","rahul","rahul","rahul","rahul","rahul");
-		User u3 = new User("pooja" ,"pooja","pooja","pooja","pooja","pooja","pooja");
-		User u4 = new User("yuga","yuga","yuga","yuga","yuga","yuga","yuga");
-		
-		
-		List<User> uList = new ArrayList<>();
-		uList.add(u1);
-		uList.add(u2);
-		uList.add(u3);
-		uList.add(u4);
-		
-		
-		
-		
-		StudyContactsConfig s1 = new StudyContactsConfig(1,"PI");
-		StudyContactsConfig s2 = new StudyContactsConfig(2,"Study Author");
-		StudyContactsConfig s3 = new StudyContactsConfig(3,"Study Contact");
-		StudyContactsConfig s4 = new StudyContactsConfig(4,"Reviewer");
-		
-		
-		List<StudyContactsConfig> sList = new ArrayList<>();
-		sList.add(s1);
-		sList.add(s2);
-		sList.add(s3);
-		sList.add(s4);
-		
-		
-		
-		Map<String,Object> responseMap = new HashMap<String,Object>();
-		
-		System.out.println("request_user_list =" + uList);
-		responseMap.put("request_user_list",uList);
-		responseMap.put("request_type_list",sList);
-		
-	return ResponseEntity.ok(responseMap);
-	}
+	
 	
 	
 	
