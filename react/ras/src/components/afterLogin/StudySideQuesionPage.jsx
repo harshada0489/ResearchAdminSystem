@@ -153,13 +153,12 @@ class StudySideQuesionPage extends React.Component {
         console.log("question List in this state = ", this.state.questionList);
         // console.log("count of Pages in this state = ", this.state.countOfPage);
         // console.log("current Pages in this state = ", this.state.currentPage);
-        
+    
        let currPage = this.state.currentPage;
        let totalPages = this.state.countOfPage;
        
         console.log("currPage= ", currPage)
-
-        
+    
        const currPageComponent = () => {
         let myArray = []
         for(let i = 0; i<totalPages;i++) {
