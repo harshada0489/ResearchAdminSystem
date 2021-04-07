@@ -113,5 +113,14 @@ public StudyDataForm getStudyDataFormObj(String studyDataFormIdString) {
 	return studyDataForm;
 	
 }
+
+
+public StudyDataForm getStudyDataFormObjByStudyId(Integer studyAppId) {
+	StudyDataForm studyDataForm =repository.findByStudyAppId(studyAppId);
 	
+	return studyDataForm;
+	
+}
+
+
 }

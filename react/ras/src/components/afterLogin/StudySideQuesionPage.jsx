@@ -91,7 +91,7 @@ class StudySideQuesionPage extends React.Component {
                     "studyId" : this.props.location.state.detail.questionList[0].studyId,
                     "studyAppDataId" : this.props.location.state.detail.questionList[0].studyAppDataId,
                     "studyDataFormId" : this.props.location.state.detail.questionList[0].studyDataFormId,
-                    "creatorId" : AuthService.getCurrentUser().id
+                    "creatorId": AuthService.getCurrentUser().id
                     
                     // "page" : this.props.location.state.detail.questionList[0].page,
                 },

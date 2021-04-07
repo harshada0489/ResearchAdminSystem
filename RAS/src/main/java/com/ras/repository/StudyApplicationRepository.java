@@ -1,4 +1,4 @@
-package com.ras.resource;
+package com.ras.repository;
 
 import java.util.List;
 import java.util.Optional;
