@@ -122,5 +122,13 @@ public StudyDataForm getStudyDataFormObjByStudyId(Integer studyAppId) {
 	
 }
 
+public void updateIsLock(Integer studyAppId) {
+	System.out.println("In class: StudyDataFormService and method: updateIsLock()");
+	StudyDataForm studyDataForm =getStudyDataFormObjByStudyId(studyAppId);
+	System.out.println("studyDataForm = " + studyDataForm.getId());
+	studyDataForm.setLock(true);
+	repository.save(studyDataForm);
+	
+}
 
 }

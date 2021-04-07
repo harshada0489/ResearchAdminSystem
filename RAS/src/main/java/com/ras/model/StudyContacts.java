@@ -27,7 +27,7 @@ public class StudyContacts {
 	
 	private int rvId;
 	
-	private String type;
+	private int type;
 	
 	
 	private int creatorId;
@@ -42,7 +42,7 @@ public class StudyContacts {
 	
 	
 
-	public StudyContacts(int studyAppId, int studyDataFormId, int userId, int rvId, String type) {
+	public StudyContacts(int studyAppId, int studyDataFormId, int userId, int rvId, int type) {
 		super();
 		this.studyAppId = studyAppId;
 		this.studyDataFormId = studyDataFormId;
@@ -93,11 +93,11 @@ public class StudyContacts {
 		this.rvId = rvId;
 	}
 
-	public String getType() {
+	public int getType() {
 		return type;
 	}
 
-	public void setType(String type) {
+	public void setType(int type) {
 		this.type = type;
 	}
 

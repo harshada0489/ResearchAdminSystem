@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import com.mongodb.client.MongoCollection;
 import com.ras.model.Question;
 import com.ras.model.StudyApplication;
+import com.ras.model.StudyContacts;
 import com.ras.model.StudyContactsConfig;
 import com.ras.model.StudyDataForm;
 import com.ras.model.SystemForm;
@@ -309,6 +310,29 @@ public int getTheCountOfQuestionPages(String systemFormIdString) {
 		}
 		
 	}
+	
+	public void callStudyDataFromServiceForUpdate(Integer studyAppId) {
+		
+		System.out.println("In class: StudyApplicationService and method: callStudyDataFromServiceForUpdate() ");
+		studyDataFormService.updateIsLock(studyAppId);
+	}
+	
+	public void callStudyAppServiceForUpdate(Integer studyAppId, String updateStatus) {
+		System.out.println("In class: StudyApplicationService and method: callStudyAppServiceForUpdate() ");
+		Optional<StudyApplication> db = studyApplicationRepository.findById(studyAppId);
+		if(db.isPresent()) {
+			StudyApplication studyApp = db.get();
+			studyApp.setStatus(updateStatus);
+			studyApplicationRepository.save(studyApp);
+		}
+	}
+	
+public StudyContacts callStudyContactWithStudyAppId(Integer studyAppId) {
+	Integer PI = 1;
+	StudyContacts studyContact = studyContactsService.getStudyContactWithStudyAppIdAndPrincipalInvestigator(studyAppId,PI );
+
+	return studyContact;
+}
 	
 	public void calldynamicTableServicefordbColumn(String dynamicTableName,Integer dynamicTableDataId,List<HashMap<String,String>> questionList ) {
 		MongoListCollections.getdbColumnNamesValuesFromDynamicTable(dynamicTableName, dynamicTableDataId, questionList);

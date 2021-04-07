@@ -2,6 +2,7 @@ import React from 'react';
 import axios from 'axios';
 import AuthService from "../../services/auth.service";
 
+
 const API_URL = 'http://localhost:8080/ras/study/'
 class StudySideQuesionPage extends React.Component {
     constructor(props){
@@ -13,6 +14,9 @@ class StudySideQuesionPage extends React.Component {
             answerMapList  : [],
              items : [{test: "testing"}],
              returnItemsList:[],
+
+
+             creatorId: AuthService.getCurrentUser().id,
 
              
         }
@@ -39,14 +43,32 @@ class StudySideQuesionPage extends React.Component {
             ,this.state.answerMapList).then(response =>{
             console.log("response.data =", response.data);
 
-            if(response.data === 'Successful'){
+            if(response.data.load === 'Successful'){
                 console.log("Data inserted Successfully");
-                this.props.history.push({
-                    pathname: "/profile"
+                console.log("this.state.creatorId= ", this.state.creatorId);
+
+                    axios.post(API_URL + response.data.studyAppId +"/sendStudy/")
+                    .then(response =>{
+                    console.log("response.data =", response.data);
+
+                    if(response.data === 'Successful'){
+                        console.log("response is Successful");
+                        this.props.history.push({
+                            pathname: "/profile"
+                        })
+                        window.location.reload();
+                    }  
                 })
-                window.location.reload();
+                .catch(error =>{
+                console.log(error)
+                })
+                
+                // this.props.history.push({
+                //     pathname: "/profile"
+                // })
+                // window.location.reload();
             }
-            // var resdata = response.data.questionList[0];
+            
 
             
         })
@@ -131,13 +153,12 @@ class StudySideQuesionPage extends React.Component {
         console.log("question List in this state = ", this.state.questionList);
         // console.log("count of Pages in this state = ", this.state.countOfPage);
         // console.log("current Pages in this state = ", this.state.currentPage);
-        
+    
        let currPage = this.state.currentPage;
        let totalPages = this.state.countOfPage;
        
         console.log("currPage= ", currPage)
-
-        
+    
        const currPageComponent = () => {
         let myArray = []
         for(let i = 0; i<totalPages;i++) {

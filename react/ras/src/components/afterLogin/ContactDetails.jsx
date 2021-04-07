@@ -22,6 +22,7 @@ class ContactDetails extends React.Component {
             
             request_user_list:[],
             request_type_list:[],
+            creatorId: AuthService.getCurrentUser().id
         }
 
         this.handleChange = this.handleChange.bind(this);
@@ -66,7 +67,7 @@ class ContactDetails extends React.Component {
         
         for(var i=0; i<this.state.contactList.length; i++)
         {
-                if(this.state.contactList[i].userId === '' || this.state.contactList[i].type ==='' )
+                if(this.state.contactList[i].userId === '' && this.state.contactList[i].type ==='' )
                 {
                     NotificationManager.warning("Please Fill up Required Field.Please Check User name and User Type ");
                     return false;
@@ -76,7 +77,7 @@ class ContactDetails extends React.Component {
 
         for(var i=0; i<this.state.contactList.length; i++)
         {
-                if(this.state.contactList[i].type ==='Principal Investigator'){
+                if(this.state.contactList[i].type == 1){
                     count = count + 1;
                 }
 
@@ -94,8 +95,11 @@ class ContactDetails extends React.Component {
         }
 
         console.log("this.state.contactList =", this.state.contactList);
+        console.log("this.state.creatorId=", this.state.creatorId);
+        console.log("post url=", API_URL + this.state.creatorId +"/"+ this.state.answerMapList.studyId + "/"  + this.state.answerMapList.studyAppDataId + "/"
+        + this.state.answerMapList.studyDataFormId + "/contactDetails");
 
-        axios.post(API_URL + this.state.answerMapList.studyId + "/"  + this.state.answerMapList.studyAppDataId + "/"
+        axios.post(API_URL + this.state.creatorId +"/"+ this.state.answerMapList.studyId + "/"  + this.state.answerMapList.studyAppDataId + "/"
         + this.state.answerMapList.studyDataFormId + "/contactDetails"
         , this.state.contactList).then(response =>{
         console.log("response.data =", response.data);
