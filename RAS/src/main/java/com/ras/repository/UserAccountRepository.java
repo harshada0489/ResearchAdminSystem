@@ -1,4 +1,4 @@
-package com.ras.resource;
+package com.ras.repository;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
 

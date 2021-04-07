@@ -22,6 +22,10 @@ import CreateForm from "./components/admin/CreateForm";
 import FormDetailsEdit from "./components/admin/FormDetailsEdit";
 import FormDetailsView from "./components/admin/FormDetailsView";
 
+
+import StudyAppView from "./components/afterLogin/StudyAppView";
+
+
 import  ContactDetails  from './components/afterLogin/ContactDetails';
 import ViewMyStudyApp from './components/afterLogin/ViewMyStudyApp';
 
@@ -154,6 +158,10 @@ class App extends Component {
             <Route path="/createForm" component={CreateForm} />
             <Route path="/form/edit/:id" component={FormDetailsEdit} />
             <Route path="/form/view/:id" component={FormDetailsView} />
+
+            <Route path="/viewMyStudyForm/viewPage/:currentPage/studyApp/view/:id" component={StudyAppView} />
+            
+
           </Switch>
         </div>
 

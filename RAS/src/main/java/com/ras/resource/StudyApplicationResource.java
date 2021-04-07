@@ -2,6 +2,7 @@ package com.ras.resource;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -12,6 +13,9 @@ import javax.validation.constraints.Size;
 
 import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.aggregation.Aggregation;
+import org.springframework.data.mongodb.core.aggregation.LookupOperation;
+import org.springframework.data.mongodb.core.aggregation.MatchOperation;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.jayway.jsonpath.Criteria;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
@@ -250,6 +255,134 @@ public class StudyApplicationResource {
 	return ResponseEntity.ok("Successful");
 	}
 	
+	
+	@PostMapping("/viewMyStudyForm/page/{currPage}/studyApp/view/{studyAppId}")
+	public ResponseEntity<?> viewStudyApp(@PathVariable Integer currPage, @PathVariable Integer studyAppId){
+		System.out.println("Inside class:StudyApplicationResource method: viewStudyApp()");
+		
+		
+		System.out.println("Inside class:StudyApplicationResource method: getNextPageQuestionList()");
+		Map<String,Object> responseMap = new HashMap<String,Object>();
+		List<HashMap<String,String>> questionList = new ArrayList<>();
+		
+		StudyDataForm studyDataForm = null;
+		
+				
+				studyDataForm = studyApplicationService.searchforDataIdByStudyId(studyAppId);
+
+				String dynamicTableName = studyDataForm.getDynamicTableName();
+				Integer dynamicTableDataId = studyDataForm.getDynamicTableDataId();
+				Integer studyId = studyDataForm.getStudyAppId();
+				Integer creatorId = studyDataForm.getCreatorId();
+				
+				HashMap<String, Object> dbColumnNamesAnswerList = new HashMap<>();
+				dbColumnNamesAnswerList.put("studyId",studyId);
+				dbColumnNamesAnswerList.put("creatorId",creatorId);
+				dbColumnNamesAnswerList.put("studyId",studyId);
+				
+				
+				
+//				studyApplicationService.calldynamicTableService(dynamicTableName,dynamicTableDataId,dbColumnNamesAnswerList);
+				
+		//after successful insertion of data 
+				
+
+		Integer systemFormId = studyDataForm.getSystemFormId();
+		
+		
+		String nextPageString = currPage.toString();
+		
+		questionList = studyApplicationService.getStudyFormByPageId(nextPageString, studyDataForm);
+		
+		responseMap.put("questionList", questionList);
+		
+		if(!(questionList.isEmpty())) {
+
+			
+
+//			HashSet<String> qDbColumnSet = new HashSet<>();
+//			for(HashMap<String, String> q : questionList) {
+//				System.out.println("q =" + q);
+//				if(q.containsKey("dbColumnName")) {
+//					
+//					qDbColumnSet.add(q.get("dbColumnName"));
+//				}
+//			}
+//			System.out.println("qDbColumnSet = "+ qDbColumnSet);
+//			
+			
+			
+			studyApplicationService.calldynamicTableServicefordbColumn(dynamicTableName,dynamicTableDataId, questionList);
+			int countOfQuestionPages= studyApplicationService.getTheCountOfQuestionPages(questionList.get(0).get("systemFormId"));	
+
+			responseMap.put("pageList", countOfQuestionPages);
+		}
+		
+
+	return ResponseEntity.ok(responseMap);
+
+	}
+	
+
+	
+	@PostMapping("/viewMyStudyForm/nextPage/{currPage}/studyApp/view/{studyAppId}")
+	public ResponseEntity<?> viewNextPageStudyApp(@PathVariable Integer currPage, @PathVariable Integer studyAppId){
+		System.out.println("Inside class:StudyApplicationResource method: viewStudyApp()");
+		
+		
+		System.out.println("Inside class:StudyApplicationResource method: getNextPageQuestionList()");
+		Map<String,Object> responseMap = new HashMap<String,Object>();
+		List<HashMap<String,String>> questionList = new ArrayList<>();
+		
+		StudyDataForm studyDataForm = null;
+		
+				
+				studyDataForm = studyApplicationService.searchforDataIdByStudyId(studyAppId);
+
+				String dynamicTableName = studyDataForm.getDynamicTableName();
+				Integer dynamicTableDataId = studyDataForm.getDynamicTableDataId();
+				Integer studyId = studyDataForm.getStudyAppId();
+				Integer creatorId = studyDataForm.getCreatorId();
+				
+				HashMap<String, Object> dbColumnNamesAnswerList = new HashMap<>();
+				dbColumnNamesAnswerList.put("studyId",studyId);
+				dbColumnNamesAnswerList.put("creatorId",creatorId);
+				dbColumnNamesAnswerList.put("studyId",studyId);
+				
+				
+				
+//				studyApplicationService.calldynamicTableService(dynamicTableName,dynamicTableDataId,dbColumnNamesAnswerList);
+				
+		//after successful insertion of data 
+				
+
+		Integer systemFormId = studyDataForm.getSystemFormId();
+		
+		
+		Integer nextPage = currPage + 1;
+		String nextPageString = nextPage.toString();
+		questionList = studyApplicationService.getStudyFormByPageId(nextPageString, studyDataForm);
+		
+		
+		
+		
+		if(!(questionList.isEmpty())) {
+			responseMap.put("questionList", questionList);
+			
+//			studyApplicationService.calldynamicTableServicefordbColumn(dynamicTableName,dynamicTableDataId);
+			
+			int countOfQuestionPages= studyApplicationService.getTheCountOfQuestionPages(questionList.get(0).get("systemFormId"));	
+
+			responseMap.put("pageList", countOfQuestionPages);
+		}
+		
+
+	return ResponseEntity.ok(responseMap);
+
+	}
+	
+	
+
 	
 	
 	

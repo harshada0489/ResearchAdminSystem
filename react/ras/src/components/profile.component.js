@@ -114,22 +114,10 @@ export default class Profile extends Component {
           {/* <SideBar/> */}
 
                  <div>
-                  {/* <div className="diff-action"> */}
-                            <button className="btn btn-success" onClick={this.createStudyHandler}> Create Study </button>
-
-                     {/* <button type="button" onClick={this.createStudyHandler} className="btn">
-                     Create Study
-                     </button> */}
-                 {/* </div> */}
+                      <button className="btn btn-success" onClick={this.createStudyHandler}> Create Study </button>
                   <div>
                     <ViewMyStudyApp />
                   </div>
-                  
-                 {/* <div className="diff-action">
-                     <button type="button" onClick={this.studyStatusHandler} className="btn">
-                      Study Status
-                     </button>
-                 </div> */}
                  
               </div> 
         </div>

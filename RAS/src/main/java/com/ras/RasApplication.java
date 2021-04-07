@@ -9,11 +9,11 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ras.resource.DepartmentConfigRepository;
-import com.ras.resource.InstituteConfigRepository;
-import com.ras.resource.LoginTypeConfigRepository;
+import com.ras.repository.DepartmentConfigRepository;
+import com.ras.repository.InstituteConfigRepository;
+import com.ras.repository.LoginTypeConfigRepository;
+import com.ras.repository.UserAccountRepository;
 import com.ras.resource.ResearchRepository;
-import com.ras.resource.UserAccountRepository;
 
 
 

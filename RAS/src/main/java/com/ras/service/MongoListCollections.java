@@ -36,6 +36,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -376,4 +377,92 @@ public class MongoListCollections {
         }
     }
     
+    
+    public static void getdbColumnNamesValuesFromDynamicTable(String dynamicTableName,Integer dynamicTableDataId, List<HashMap<String,String>> questionList) {
+    	
+
+    	System.out.println("Inside class : MongoListCollections and method : insertdbColumnNamesInDynamicTable()");
+    	Logger mongoLogger = Logger.getLogger("org.mongodb.driver");
+        mongoLogger.setLevel(Level.SEVERE);
+
+        
+//		HashSet<String> qDbColumnSet = new HashSet<>();
+//		for(HashMap<String, String> q : questionList) {
+//			System.out.println("q =" + q);
+//			if(q.containsKey("dbColumnName")) {
+//				
+//				qDbColumnSet.add(q.get("dbColumnName"));
+//			}
+//		}
+//		System.out.println("qDbColumnSet = "+ qDbColumnSet);
+
+		
+		
+        try (MongoClient mongoClient = MongoClients.create("mongodb://localhost:27017")) {
+        	HashMap<String,String> hmap = new HashMap<>();
+            MongoDatabase database = mongoClient.getDatabase("test");
+            
+
+            MongoCollection<Document> collection = database.getCollection(dynamicTableName);
+            System.out.println("dynamic table collection ====" + collection);
+                    
+            
+            
+            FindIterable<Document> iterDoc = collection.find();
+	          Iterator it = iterDoc.iterator();
+	          while (it.hasNext()) {
+	             System.out.println(it.next());
+	             
+	             
+	          }
+	          
+	          for(Document docs : iterDoc) {
+	        	  System.out.println(docs);
+	        	  if(docs.containsKey("_id")) {
+	        		  if(docs.get("_id") == dynamicTableDataId) {
+
+	        			  for(HashMap<String, String> q : questionList) {
+	        					System.out.println("q =" + q);
+	        					if(q.containsKey("dbColumnName")) {
+	        						String dbColumnName = q.get("dbColumnName");
+	        						if(docs.containsKey(dbColumnName)) {
+	        							q.put("answer", docs.getString(dbColumnName));
+	        						}
+	        					}
+	        					System.out.println("q = " + q);  
+	        				}
+	        			  
+	        		  }
+	        	  }
+
+	      	}
+	        System.out.println("questionList = " + questionList);  
+	          
+            
+        }
+//            BasicDBObject query = new BasicDBObject();
+//            query.put("_id", dynamicTableDataId);
+//          
+//           BasicDBObject newDocument = new BasicDBObject();
+//           
+//           for(String key : dbColumnNamesAnswerList.keySet()) {
+//        	   newDocument.put(key,dbColumnNamesAnswerList.get(key));
+//           }
+//           
+//           BasicDBObject updateObject = new BasicDBObject();
+//           updateObject.put("$set", newDocument);
+//           
+//           collection.updateOne(query, updateObject);
+//            
+//           FindIterable<Document> iterDoc = collection.find();
+//           Iterator it = iterDoc.iterator();
+//           while (it.hasNext()) {
+//              System.out.println(it.next());
+//           }
+//    
+//            
+//        }
+    	
+    	
+    }
 }

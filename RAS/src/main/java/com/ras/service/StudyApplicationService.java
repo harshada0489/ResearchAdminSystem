@@ -23,8 +23,8 @@ import com.ras.model.SystemForm;
 import com.ras.model.User;
 import com.ras.model.payload.request.LoginRequest;
 import com.ras.repository.QuestionRepository;
+import com.ras.repository.StudyApplicationRepository;
 import com.ras.repository.StudyDataFormRepository;
-import com.ras.resource.StudyApplicationRepository;
 import com.ras.service.mongodbOperations.NextSequenceService;
 
 
@@ -210,6 +210,13 @@ public int getTheCountOfQuestionPages(String systemFormIdString) {
 		return studyDataForm;
 	}
 	
+	public StudyDataForm searchforDataIdByStudyId(Integer studyAppId) {
+		StudyDataForm studyDataForm = null;
+		studyDataForm = studyDataFormService.getStudyDataFormObjByStudyId(studyAppId);
+		return studyDataForm;
+	}
+	
+	
 	
 	
 	public List<HashMap<String,String>> getStudyFormByPageId( String pageNumber , StudyDataForm studyDataForm) {
@@ -301,5 +308,9 @@ public int getTheCountOfQuestionPages(String systemFormIdString) {
 			rbStudyApplicationService.addRvStudyApp(studyApp);
 		}
 		
+	}
+	
+	public void calldynamicTableServicefordbColumn(String dynamicTableName,Integer dynamicTableDataId,List<HashMap<String,String>> questionList ) {
+		MongoListCollections.getdbColumnNamesValuesFromDynamicTable(dynamicTableName, dynamicTableDataId, questionList);
 	}
 }
