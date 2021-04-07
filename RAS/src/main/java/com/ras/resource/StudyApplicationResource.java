@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.aggregation.Aggregation;
 import org.springframework.data.mongodb.core.aggregation.LookupOperation;
 import org.springframework.data.mongodb.core.aggregation.MatchOperation;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,6 +24,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.jayway.jsonpath.Criteria;
@@ -32,6 +35,7 @@ import com.mongodb.client.MongoCursor;
 import com.ras.model.DepartmentConfig;
 import com.ras.model.Question;
 import com.ras.model.StudyApplication;
+import com.ras.model.StudyContacts;
 import com.ras.model.StudyContactsConfig;
 import com.ras.model.StudyDataForm;
 import com.ras.model.SystemForm;
@@ -240,7 +244,7 @@ public class StudyApplicationResource {
 	@PostMapping("/study/{currPage}/endPage")
 	public ResponseEntity<?> endQuestionList(@PathVariable Integer currPage, @RequestBody HashMap answerList) {
 		System.out.println("Inside class:StudyApplicationResource method: endQuestionList()");
-		ResponseEntity<?> responseMap;
+		Map<String,Object> responseMap = new HashMap<String,Object>();
 		System.out.println("answerList =" + answerList);
 		System.out.println("currPage =" + currPage);
 		getNextPageQuestionList(currPage,answerList);
@@ -249,11 +253,49 @@ public class StudyApplicationResource {
 		String studyAppIdString = answerList.get("studyId").toString();
 		Integer studyAppId = Integer.parseInt(studyAppIdString);
 		
+		studyApplicationService.callStudyDataFromServiceForUpdate(studyAppId);
+		
 		studyApplicationService.callRbService(studyAppId);
+		responseMap.put("load","Successful");
+		responseMap.put("studyAppId",studyAppId);
 		
+//		responseMap.put("load","Successful");
+//		responseMap.put("studyAppId",112);
 		
+	return ResponseEntity.ok(responseMap);
+	}
+	
+	
+	@PostMapping("/study/{studyAppId}/sendStudy/")
+	public ResponseEntity<?> sendStudyAfterEndOfStudyForm(@PathVariable("studyAppId") Integer studyAppId) {
+		
+		System.out.println("Inside class:StudyApplicationResource method: sendStudyAfterEndOfStudyForm()");
+		Map<String,Object> responseMap = new HashMap<String,Object>();
+		System.out.println("studyAppId =" + studyAppId);
+		
+		StudyContacts studycontact = studyApplicationService.callStudyContactWithStudyAppId(studyAppId);
+		if(studycontact != null) {
+			Integer creatorId = studycontact.getCreatorId();
+			Integer PIUserId = studycontact.getUserId();
+			
+			if(creatorId == PIUserId) {
+				System.out.println("Sent to Reviewer");
+				
+				String updateStatus = "Sent to Reviewer";
+				studyApplicationService.callStudyAppServiceForUpdate(studyAppId,updateStatus);
+			}
+			else {
+				System.out.println("Sent to Principal Investigator");
+				String updateStatus = "Sent to Principal Investigator";
+				studyApplicationService.callStudyAppServiceForUpdate(studyAppId,updateStatus);
+			}
+			
+		}
+		
+
 	return ResponseEntity.ok("Successful");
 	}
+	
 	
 	
 	@PostMapping("/viewMyStudyForm/page/{currPage}/studyApp/view/{studyAppId}")

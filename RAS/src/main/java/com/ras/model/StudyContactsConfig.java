@@ -2,40 +2,55 @@ package com.ras.model;
 
 import javax.persistence.Entity;
 
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+
 @Entity
+@Document(collection = "studyContactsConfig")
 public class StudyContactsConfig {
 
+	@Id
+	private int id;
 	
-	private int Id;
+	private String type;
 	
-	private int type;
-	
-	public StudyContactsConfig() {
-		// TODO Auto-generated constructor stub
-	}
-	
-	public StudyContactsConfig(int id, int type) {
+
+
+	public StudyContactsConfig(int id, String type) {
 		super();
-		Id = id;
+		this.id = id;
 		this.type = type;
 	}
 
+
+
+
+
 	public int getId() {
-		return Id;
+		return id;
 	}
 
 	public void setId(int id) {
-		Id = id;
+		this.id = id;
 	}
 
-	public int getType() {
+
+
+
+
+	public String getType() {
 		return type;
 	}
 
-	public void setType(int type) {
+
+
+
+
+	public void setType(String type) {
 		this.type = type;
 	}
-	
+
+
 	
 
 }

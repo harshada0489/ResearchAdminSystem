@@ -6,4 +6,5 @@ import com.ras.model.StudyContacts;
 
 public interface StudyContactsRepository extends MongoRepository<StudyContacts, Integer> {
 
+	StudyContacts findByStudyAppIdAndType(Integer studyAppId, Integer type);
 }

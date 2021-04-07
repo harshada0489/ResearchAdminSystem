@@ -24,9 +24,10 @@ public class StudyContactsResource {
 	private StudyContactsService studyContactsService;
 	
 
-	@PostMapping("/study/{studyId}/{studyAppDataId}/{studyDataFormId}/contactDetails")
+	@PostMapping("/study/{creatorId}/{studyId}/{studyAppDataId}/{studyDataFormId}/contactDetails")
 	public ResponseEntity<?> contactDetailsList(
-			@PathVariable Integer studyId, @PathVariable Integer studyAppDataId, @PathVariable Integer studyDataFormId,
+			@PathVariable Integer creatorId,@PathVariable Integer studyId, 
+			@PathVariable Integer studyAppDataId, @PathVariable Integer studyDataFormId,
 			@RequestBody  List<StudyContacts> studyContacts) {
 		System.out.println("Inside class:StudyContactsService method: contactDetailsList()");
 		ResponseEntity<?> responseMap;
@@ -36,7 +37,7 @@ public class StudyContactsResource {
 		System.out.println("studyAppDataId =" + studyAppDataId);
 		System.out.println("studyDataFormId =" + studyDataFormId);
 		
-		studyContactsService.saveStudyContacts(studyContacts,studyId, studyDataFormId);
+		studyContactsService.saveStudyContacts(studyContacts,studyId, studyDataFormId, creatorId);
 		
 		
 		

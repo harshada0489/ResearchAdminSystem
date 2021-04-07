@@ -30,7 +30,7 @@ public class StudyContactsService {
 	NextSequenceService nextSequenceService;
 	
 
-	public void saveStudyContacts(List<StudyContacts> studyContactsList,Integer studyId, Integer studyDataFormId) {
+	public void saveStudyContacts(List<StudyContacts> studyContactsList,Integer studyId, Integer studyDataFormId, Integer creatorId) {
 		System.out.println("Inside StudyContactsService method: saveStudyContacts()");
 		System.out.println("list studyContacts size  = " + studyContactsList.size());
 		
@@ -39,6 +39,7 @@ public class StudyContactsService {
 			
 			studyContacts.setStudyAppId(studyId);
 			studyContacts.setStudyDataFormId(studyDataFormId);
+			studyContacts.setCreatorId(creatorId);
 			
 			studyContacts.setCreatedDate(new Date());
 			studyContacts.setModifiedDate(new Date());
@@ -65,6 +66,12 @@ public class StudyContactsService {
 	public List<StudyContactsConfig> getUserTypes() {
 		List<StudyContactsConfig> tList = studyContactsConfigRepository.findAll();
 		return tList;
+	}
+	
+	public StudyContacts getStudyContactWithStudyAppIdAndPrincipalInvestigator(Integer studyAppId, Integer PI ) {
+		StudyContacts studyContact = repository.findByStudyAppIdAndType(studyAppId, PI);
+		return studyContact;
+		
 	}
 	
 }

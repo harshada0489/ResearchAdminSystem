@@ -38,15 +38,19 @@ class StudyAppView extends React.Component{
 endOfForm(){
 console.log("end form answerMapList in this state = ", this.state.answerMapList);
 
+this.props.history.push({
+    pathname: "/profile"
+})
+
 // axios.post(API_URL + this.state.currentPage +"/endPage"
 //     ,this.state.answerMapList).then(response =>{
 //     console.log("response.data =", response.data);
 
 //     if(response.data === 'Successful'){
 //         console.log("Data inserted Successfully");
-//         this.props.history.push({
-//             pathname: "/profile"
-//         })
+        // this.props.history.push({
+        //     pathname: "/profile"
+        // })
 //         window.location.reload();
 //     }
    
