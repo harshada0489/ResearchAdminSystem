@@ -259,9 +259,6 @@ public class StudyApplicationResource {
 		responseMap.put("load","Successful");
 		responseMap.put("studyAppId",studyAppId);
 		
-//		responseMap.put("load","Successful");
-//		responseMap.put("studyAppId",112);
-		
 	return ResponseEntity.ok(responseMap);
 	}
 	
