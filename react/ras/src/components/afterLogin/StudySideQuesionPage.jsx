@@ -224,7 +224,8 @@ class StudySideQuesionPage extends React.Component {
                                                             <label htmlFor={d.dbColumnName}>{d.questionText}</label>
                                                         </div>
                                                         <div className="col-75">
-                                                            <input type={d.answerType} name={d.dbColumnName}  id={d.dbColumnName} onChange={this.handleChange} placeholder="Enter the value"/>
+                                                            <input type={d.answerType} name={d.dbColumnName}  id={d.dbColumnName} 
+                                                            onChange={this.handleChange} placeholder="Enter the value"/>
                                                         </div>
                                                     </div>
 
