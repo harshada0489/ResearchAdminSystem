@@ -276,9 +276,9 @@ public class StudyApplicationResource {
 			Integer PIUserId = studycontact.getUserId();
 			
 			if(creatorId == PIUserId) {
-				System.out.println("Sent to Reviewer");
+				System.out.println("Sent to Board");
 				
-				String updateStatus = "Sent to Reviewer";
+				String updateStatus = "Sent to Board";
 				studyApplicationService.callStudyAppServiceForUpdate(studyAppId,updateStatus);
 			}
 			else {
@@ -299,8 +299,6 @@ public class StudyApplicationResource {
 	public ResponseEntity<?> viewStudyApp(@PathVariable Integer currPage, @PathVariable Integer studyAppId){
 		System.out.println("Inside class:StudyApplicationResource method: viewStudyApp()");
 		
-		
-		System.out.println("Inside class:StudyApplicationResource method: getNextPageQuestionList()");
 		Map<String,Object> responseMap = new HashMap<String,Object>();
 		List<HashMap<String,String>> questionList = new ArrayList<>();
 		
@@ -313,6 +311,8 @@ public class StudyApplicationResource {
 				Integer dynamicTableDataId = studyDataForm.getDynamicTableDataId();
 				Integer studyId = studyDataForm.getStudyAppId();
 				Integer creatorId = studyDataForm.getCreatorId();
+				Boolean disabled = studyDataForm.isLock();
+				
 				
 				HashMap<String, Object> dbColumnNamesAnswerList = new HashMap<>();
 				dbColumnNamesAnswerList.put("studyId",studyId);
@@ -355,6 +355,8 @@ public class StudyApplicationResource {
 			int countOfQuestionPages= studyApplicationService.getTheCountOfQuestionPages(questionList.get(0).get("systemFormId"));	
 
 			responseMap.put("pageList", countOfQuestionPages);
+			System.out.println("disabled =" + disabled);
+			responseMap.put("disabled", disabled);
 		}
 		
 
@@ -420,6 +422,101 @@ public class StudyApplicationResource {
 
 	}
 	
+	
+	
+	@PostMapping("/viewMyStudyForm/saveDraftNextPage/{currPage}/studyApp/view/{studyAppId}")
+	public ResponseEntity<?> viewAndSaveDraftedNextPageStudyApp(@PathVariable Integer currPage, @PathVariable Integer studyAppId,  @RequestBody HashMap<String, String> answerList){
+		System.out.println("Inside class:StudyApplicationResource method: viewAndSaveDraftedNextPageStudyApp()");
+		
+		
+		System.out.println("answeMapList = "+ answerList);
+		Map<String,Object> responseMap = new HashMap<String,Object>();
+		List<HashMap<String,String>> questionList = new ArrayList<>();
+		
+		StudyDataForm studyDataForm = null;
+		
+				
+				studyDataForm = studyApplicationService.searchforDataIdByStudyId(studyAppId);
+
+				String dynamicTableName = studyDataForm.getDynamicTableName();
+				Integer dynamicTableDataId = studyDataForm.getDynamicTableDataId();
+				Integer studyId = studyDataForm.getStudyAppId();
+				Integer creatorId = studyDataForm.getCreatorId();
+				
+				HashMap<String, Object> dbColumnNamesAnswerList = new HashMap<>();
+				
+				for(String key: answerList.keySet()) {
+					if(key.contains("studyId") || key.contains("creatorId") ) {
+						dbColumnNamesAnswerList.put(key, answerList.get(key));
+					}
+					
+					if(!(key.endsWith("Id"))) {
+						System.out.println(key);
+						dbColumnNamesAnswerList.put(key, answerList.get(key));
+					}
+				}
+				
+				
+//				dbColumnNamesAnswerList.put("studyId",studyId);
+//				dbColumnNamesAnswerList.put("creatorId",creatorId);
+//				dbColumnNamesAnswerList.put("studyId",studyId);
+				
+				
+				
+				studyApplicationService.calldynamicTableService(dynamicTableName,dynamicTableDataId,dbColumnNamesAnswerList);
+				
+		//after successful insertion of data 
+				
+
+		Integer systemFormId = studyDataForm.getSystemFormId();
+		
+		
+		Integer nextPage = currPage + 1;
+		String nextPageString = nextPage.toString();
+		questionList = studyApplicationService.getStudyFormByPageId(nextPageString, studyDataForm);
+		
+		
+		
+		
+		if(!(questionList.isEmpty())) {
+			responseMap.put("questionList", questionList);
+			
+//			studyApplicationService.calldynamicTableServicefordbColumn(dynamicTableName,dynamicTableDataId);
+			
+			int countOfQuestionPages= studyApplicationService.getTheCountOfQuestionPages(questionList.get(0).get("systemFormId"));	
+
+			responseMap.put("pageList", countOfQuestionPages);
+		}
+		
+
+	return ResponseEntity.ok(responseMap);
+
+	}
+	
+	
+	@PostMapping("/viewMyStudyForm/endDraftPage/{currPage}/studyApp/view/{studyAppId}")
+	public ResponseEntity<?> viewAndendDraftPageStudyApp(@PathVariable Integer currPage, @PathVariable Integer studyAppId,  @RequestBody HashMap<String, String> answerList){
+		System.out.println("Inside class:StudyApplicationResource method: viewAndSaveDraftedNextPageStudyApp()");
+		
+		Map<String,Object> responseMap = new HashMap<String,Object>();
+		
+		viewAndSaveDraftedNextPageStudyApp(currPage,studyAppId,answerList);
+		
+		
+//		String studyAppIdString = answerList.get("studyId").toString();
+//		Integer studyId = Integer.parseInt(studyAppIdString);
+		
+		studyApplicationService.callStudyDataFromServiceForUpdate(studyAppId);
+		
+		sendStudyAfterEndOfStudyForm(studyAppId);
+		
+		studyApplicationService.callRbService(studyAppId);
+		responseMap.put("load","Successful");
+		responseMap.put("studyAppId",studyAppId);
+
+	return ResponseEntity.ok(responseMap);
+
+	}
 	
 
 	
