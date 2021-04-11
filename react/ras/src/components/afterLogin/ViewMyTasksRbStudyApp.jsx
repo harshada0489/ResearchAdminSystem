@@ -27,6 +27,7 @@ class ViewMyTasksRbStudyApp extends React.Component{
              returnItemsList:[],
              loggedInUserId: AuthService.getCurrentUser().id,
             decision:[],
+            correctionComment : "",
              disabled:""
 
 
@@ -43,6 +44,7 @@ class ViewMyTasksRbStudyApp extends React.Component{
         this.reviewerDecisionApprove = this.reviewerDecisionApprove.bind(this);
         this.reviewerDecisionReject = this.reviewerDecisionReject.bind(this);
         this.reviewerDecisionCorrection = this.reviewerDecisionCorrection.bind(this);
+        this.handleCommentChange = this.handleCommentChange.bind(this);
 
 }
 
@@ -60,6 +62,12 @@ handleChange = (e) => {
 }
 
 
+handleCommentChange = (e) => {
+    this.setState({
+        correctionComment : e.target.value
+    })
+}
+
 reviewerDecisionApprove(){
     console.log("Inside method Approve");
 
@@ -70,28 +78,6 @@ reviewerDecisionApprove(){
     .then(
         response => {
             console.log(response.data);
-            // this.setState({
-            //     qAndAList : response.data
-            // });
-            // this.setState({questionList : response.data.questionList,
-            //     countOfPage : response.data.pageList,
-            //     currentPage : response.data.questionList[0].page,
-                
-            // });
-        
-            // this.setState(prevState => ({
-            //     answerMapList: {
-            //         ...prevState.answerMapList,
-            //         "studyId" : response.data.questionList[0].studyId,
-            //         "studyAppDataId" : response.data.questionList[0].studyAppDataId,
-            //         "studyDataFormId" : response.data.questionList[0].studyDataFormId,
-                    
-            //         "creatorId" : AuthService.getCurrentUser().id
-            //     },
-            // }));
-            // // window.location.reload();
-            
-            // console.log("qAndAList=",this.state.qAndAList);
         }
     )
 
@@ -100,10 +86,28 @@ reviewerDecisionApprove(){
 
 reviewerDecisionReject(){
     console.log("Inside method reviewerDecisionReject");
+
+    axios.post(API_URL + "/reviewOutcome/rejected/" + this.state.loggedInUserId  +"/"+ this.state.id)
+    .then(
+        response => {
+            console.log(response.data);
+        }
+    )
+
 }
 
 reviewerDecisionCorrection(){
-    console.log("Inside method reviewerDecisionCorrection");
+    console.log("Inside method reviewerDecisionCorrection = ", this.state.correctionComment);
+
+    axios.post(API_URL + "/reviewOutcome/correction/" + this.state.loggedInUserId  +"/"+ this.state.id,
+    this.state.correctionComment)
+    .then(
+        response => {
+            console.log(response.data);
+        }
+    )
+
+    
 }
 
 
@@ -375,8 +379,8 @@ if(disabled){
 
             <div className="card-footer text-center">    
             <div className="col-75">
-                                                    <input type="textarea" name="corrections"  id="corrections"
-                                                    onChange={this.handleChange}
+                                                    <input type="textarea" name="correctionComment"  id="correctionComment"
+                                                    onChange={this.handleCommentChange}
                                                     />
                                                 </div>
             </div>

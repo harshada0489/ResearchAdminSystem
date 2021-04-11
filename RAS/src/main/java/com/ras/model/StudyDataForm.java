@@ -21,7 +21,7 @@ public class StudyDataForm {
 	
 	private String dynamicTableFormVersion;
 	
-	private String round;
+	private int round;
 	
 	private boolean isLock;
 	
@@ -94,11 +94,11 @@ public class StudyDataForm {
 		this.dynamicTableFormVersion = dynamicTableFormVersion;
 	}
 
-	public String getRound() {
+	public int getRound() {
 		return round;
 	}
 
-	public void setRound(String round) {
+	public void setRound(int round) {
 		this.round = round;
 	}
 

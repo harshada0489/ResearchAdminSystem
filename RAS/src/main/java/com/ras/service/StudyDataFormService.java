@@ -61,7 +61,7 @@ public class StudyDataFormService {
 		studyDataForm.setId(seq);
 
 		
-		studyDataForm.setRound("1");
+		studyDataForm.setRound(1);
 		studyDataForm.setStatus("active");
 		studyDataForm.setCreatedDate(new Date());
 		studyDataForm.setModifiedDate(new Date());
@@ -147,6 +147,40 @@ public StudyDataForm fetchStudyDataForm(int studyDataFormId){
 	StudyDataForm studyDataForm = null;
 	studyDataForm = getStudyDataFormObj(studyDataFormId);
 	return studyDataForm;
+}
+
+public int createNewRowInStudyDatForm(int studyDataFormId) throws Exception {
+	StudyDataForm oldStudyDataForm = null;
+	int newStudyDataFormId = 0;
+	oldStudyDataForm = fetchStudyDataForm(studyDataFormId);
+	if(oldStudyDataForm !=null) {
+		int round = oldStudyDataForm.getRound();
+		
+		 int dynamicTableDataId = oldStudyDataForm.getDynamicTableDataId();
+		 String oldDynamicTableName = oldStudyDataForm.getDynamicTableName();
+		 
+		 int newDynamicTableDataId =MongoListCollections.getAndInsertNewRowInDynamicTable(oldDynamicTableName, dynamicTableDataId);
+		 
+		 
+		StudyDataForm newStudyDataForm = new StudyDataForm(oldStudyDataForm.getStudyAppId(), oldStudyDataForm.getSystemFormId(), oldDynamicTableName);
+		newStudyDataForm.setRound(round + 1);
+		newStudyDataForm.setDynamicTableDataId(newDynamicTableDataId);
+		newStudyDataForm.setLock(false);
+		
+		int seq = nextSequenceService.getNextSequenceForstudyDataFormId("customSequences");
+		System.out.println("studyDataForm Id generated = " + seq);
+		newStudyDataForm.setId(seq);
+		
+		repository.save(newStudyDataForm);
+		
+		 newStudyDataFormId = newStudyDataForm.getId();
+		
+	}else {
+		throw new Exception("studyDataForm doesnt Exist ...");
+	}
+	
+	return newStudyDataFormId;
+	
 }
 
 }
