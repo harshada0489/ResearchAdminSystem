@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import com.mongodb.client.MongoCollection;
 import com.ras.model.Question;
+import com.ras.model.RbStudyApplication;
 import com.ras.model.StudyApplication;
 import com.ras.model.StudyContacts;
 import com.ras.model.StudyContactsConfig;
@@ -27,6 +28,7 @@ import com.ras.repository.QuestionRepository;
 import com.ras.repository.StudyApplicationRepository;
 import com.ras.repository.StudyDataFormRepository;
 import com.ras.service.mongodbOperations.NextSequenceService;
+import com.ras.util.SystemConstant;
 
 
 @Service
@@ -205,7 +207,7 @@ public int getTheCountOfQuestionPages(String systemFormIdString) {
 	}
 	
 	
-	public StudyDataForm searchforDataId(String studyDataFormId) {
+	public StudyDataForm searchforDataId(int studyDataFormId) {
 		StudyDataForm studyDataForm = null;
 		studyDataForm = studyDataFormService.getStudyDataFormObj(studyDataFormId);
 		return studyDataForm;
@@ -217,6 +219,13 @@ public int getTheCountOfQuestionPages(String systemFormIdString) {
 		return studyDataForm;
 	}
 	
+	public StudyDataForm getCurrentStudyDataForm(Integer studyAppId) {
+		StudyDataForm studyDataForm = null;
+		StudyApplication studyApplication = findByAppId(studyAppId);
+		
+		studyDataForm = studyDataFormService.getCurrentStudyDataForm(studyApplication.getCurrentStudyDataFormId());
+		return studyDataForm;
+	}
 	
 	
 	
@@ -292,6 +301,17 @@ public int getTheCountOfQuestionPages(String systemFormIdString) {
 		return dbAllForms;
 	}
 	
+	public List<RbStudyApplication> getMyTask(int userId){
+		System.out.println("Inside class: SystemFormService and method: getMyTask() ");
+		
+		// Get List of Rb Applications using userId
+		
+		List<RbStudyApplication> rbAppsByReviewer = rbStudyApplicationService.getRbAppsByReviewer(userId);
+		
+		return rbAppsByReviewer;
+	}
+	
+	
 	public List<User> callForUserService() {
 		List<User> uList = userService.getUserList();
 		return uList;
@@ -302,16 +322,8 @@ public int getTheCountOfQuestionPages(String systemFormIdString) {
 		return tList;
 	}
 	
-	public void callRbService(Integer studyAppId){
-		Optional<StudyApplication> db = studyApplicationRepository.findById(studyAppId);
-		if(db.isPresent()) {
-			StudyApplication  studyApp = db.get();
-			rbStudyApplicationService.addRvStudyApp(studyApp);
-		}
-		
-	}
 	
-	public void callStudyDataFromServiceForUpdate(Integer studyAppId) {
+	public void callStudyDataFromServiceForLock(Integer studyAppId) {
 		
 		System.out.println("In class: StudyApplicationService and method: callStudyDataFromServiceForUpdate() ");
 		studyDataFormService.updateIsLock(studyAppId);
@@ -327,14 +339,39 @@ public int getTheCountOfQuestionPages(String systemFormIdString) {
 		}
 	}
 	
-public StudyContacts callStudyContactWithStudyAppId(Integer studyAppId) {
-	Integer PI = 1;
-	StudyContacts studyContact = studyContactsService.getStudyContactWithStudyAppIdAndPrincipalInvestigator(studyAppId,PI );
-
-	return studyContact;
-}
+	public StudyContacts getStudyContactWithType(Integer studyAppId, int type) {
+		
+		StudyContacts studyContact = studyContactsService.getStudyContactByType(studyAppId,type );
+	
+		return studyContact;
+	}
 	
 	public void calldynamicTableServicefordbColumn(String dynamicTableName,Integer dynamicTableDataId,List<HashMap<String,String>> questionList ) {
 		MongoListCollections.getdbColumnNamesValuesFromDynamicTable(dynamicTableName, dynamicTableDataId, questionList);
 	}
+	
+	
+	public StudyApplication findByAppId(int studyAppId) {
+		StudyApplication  studyApp = null;	
+		Optional<StudyApplication> db = studyApplicationRepository.findById(studyAppId);
+		if(db.isPresent()) {
+			 studyApp = db.get();
+		}
+		return studyApp;
+	}
+	
+	public void updateCurrentStudyDataForm(int studyAppId, int systemFormDataId) throws Exception {
+		if(studyAppId>0 && systemFormDataId>0) {
+			StudyApplication studyApp = findByAppId(studyAppId);
+			if(studyApp != null) {
+				
+				studyApp.setCurrentStudyDataFormId(systemFormDataId);
+				studyApplicationRepository.save(studyApp);
+				
+			}else {
+				throw new Exception("updateCurrentStudyDataForm() : studyApp not found");
+			}
+		}
+	}
+	
 }

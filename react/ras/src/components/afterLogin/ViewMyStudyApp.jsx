@@ -15,7 +15,8 @@ class ViewMyStudyApp extends React.Component {
     constructor(props){
         super(props);
         this.state={
-            systemFormList: [],
+            studyFormList: [],
+            myTasks:[],
             message: null,
             currentPage : 1,
             creatorId: AuthService.getCurrentUser().id,
@@ -24,51 +25,19 @@ class ViewMyStudyApp extends React.Component {
         }
 
         this.refreshCourses = this.refreshCourses.bind(this);
-        // this.viewFormClicked = this.viewFormClicked.bind(this);
-
     }
  
-    // viewFormClicked(studyAppId){
-
-    //     console.log("this.state.currentPage = ", this.state.currentPage);
-    //     console.log("studyAppId = ", studyAppId);
-    
-    //     axios.post(API_URL + "/page/" + this.state.currentPage + "/studyApp/view/" + studyAppId)
-    //    .then(response =>{
-    //     console.log("response.data =", response.data);
-    //     var resdata = response.data.questionList[0];
-        
-    //     console.log("Before history push ");
-    //     // <StudyAppView/>
-    //     this.props.history.push({
-    //         pathname: "/study/viewPage/" + this.state.currentPage + "/studyApp/view/" + studyAppId,
-    //         state: { detail: response.data }
-    //     });
-
-    //     console.log("After history push ");
-
-    //     window.location.reload();
-    // }
-
-    //     ).catch(error => {
-            
-    //         NotificationManager.error("Bad Request");
-            
-    //         this.setState({ errors: error })
-    //     });
-
-
-
-    // }
 
     refreshCourses(){
         axios.get(API_URL + "/" + this.state.creatorId).then(response => {
-            console.log("response= ",response.data);
+            console.log("response= ",response.data.MyStudyApp);
             this.setState({
-                systemFormList : response.data
+                studyFormList : response.data.MyStudyApp,
+                myTasks : response.data.myTasks
             });
             
-            console.log("systemFormList=",this.state.systemFormList);
+            console.log("studyFormList=",this.state.studyFormList);
+            console.log("myTasks=",this.state.myTasks);
         });
     }
 
@@ -79,9 +48,55 @@ class ViewMyStudyApp extends React.Component {
 
     render(){
 
-console.log("this.state.creatorId = " , this.state.creatorId);
+        console.log("this.state.creatorId = " , this.state.creatorId);
         return(
-            <div className="container">
+                <div className="container">
+                    <h3>My Tasks</h3>
+                    {this.state.message && <div class="alert alert-success">{this.state.message}</div>}
+                    <div className="container">
+                        <table className="table">
+                            <thead>
+                                <tr>
+                                    <th>Rb Id</th>
+                                    <th>Study Title</th>
+                                    <th>Task Status</th>
+                                    <th>Round No</th> 
+                                    <th>Outcome</th> 
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {
+                                    this.state.myTasks.map(
+                                        formDetails =>
+                                            <tr key={formDetails.id}>
+                                                <td>
+                                                    <Link to = {"viewMyRbTasksForm/viewPage/"+ this.state.currentPage +"/studyApp/view/" + formDetails.id}>{formDetails.id}</Link>
+                                                </td>
+                                                <td>{formDetails.studyTitle}</td>
+                                                <td>{formDetails.taskStatus}</td>
+                                                <td> Round Todo </td>
+                                                <td>{formDetails.reviewerOutcome}</td>
+                                                {/* <td>{formDetails.reviewerOutcome}</td> */}
+                                                
+                                                {/* <td><button className="btn btn-success" onClick={() => this.viewFormClicked(formDetails.id)}>View</button></td> */}
+                                                {/* <td><button className="btn btn-warning" onClick={() => this.deleteFormClicked(formDetails.id)}>Delete</button></td> */} 
+                                            
+                                            </tr>
+                                    )
+                                }
+                            </tbody>
+                        </table>
+                            {/* <div className="row">
+                                <button className="btn btn-success" onClick={this.createStudyHandler}> + </button>
+                            </div> */}
+                    </div>
+
+
+
+
+
+
+
                 <h3>My Study Applications</h3>
                 {this.state.message && <div class="alert alert-success">{this.state.message}</div>}
                 <div className="container">
@@ -96,13 +111,12 @@ console.log("this.state.creatorId = " , this.state.creatorId);
                         </thead>
                         <tbody>
                             {
-                                this.state.systemFormList.map(
+                                this.state.studyFormList.map(
                                     formDetails =>
                                         <tr key={formDetails.id}>
                                             <td>
                                                 <Link to = {"viewMyStudyForm/viewPage/"+ this.state.currentPage +"/studyApp/view/" + formDetails.id}>{formDetails.id}</Link>
                                             </td>
-                                            {/* <td>{formDetails.id}</td> */}
                                             <td>{formDetails.studyTitle}</td>
                                             <td>{formDetails.status}</td>
                                             <td>{formDetails.createdDate}</td>

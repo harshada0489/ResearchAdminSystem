@@ -34,6 +34,7 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 import com.ras.model.DepartmentConfig;
 import com.ras.model.Question;
+import com.ras.model.RbStudyApplication;
 import com.ras.model.StudyApplication;
 import com.ras.model.StudyContacts;
 import com.ras.model.StudyContactsConfig;
@@ -43,7 +44,9 @@ import com.ras.model.User;
 import com.ras.model.payload.request.LoginRequest;
 //import com.ras.service.LoginRequestService;
 import com.ras.service.MongoListCollections;
+import com.ras.service.RbStudyApplicationService;
 import com.ras.service.StudyApplicationService;
+import com.ras.util.SystemConstant;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
@@ -53,13 +56,27 @@ public class StudyApplicationResource {
 	@Autowired
 	private StudyApplicationService studyApplicationService;
 	
+	@Autowired
+	private RbStudyApplicationService rbStudyApplicationService;
+	
 	
 	@GetMapping("/viewMyStudyForm/{creatorId}")
-	public List<StudyApplication> getAllStudyApp(@PathVariable Integer creatorId ) {
+	public ResponseEntity<?> getAllStudyApp(@PathVariable Integer creatorId ) {
 		System.out.println("Inside class: StudyApplicationResource and method: getAllStudyApp() ");
+		Map<String,Object> responseMap = new HashMap<String,Object>();
+		
 		List<StudyApplication> allForms = studyApplicationService.getAllStudyApp(creatorId);
 		System.out.println("allForms =  " + allForms);
-		return allForms ;
+		
+		
+		List<RbStudyApplication> myTasks = studyApplicationService.getMyTask(creatorId);
+		
+		
+		responseMap.put("MyStudyApp",allForms);
+		responseMap.put("myTasks",myTasks);
+		
+		return ResponseEntity.ok(responseMap);
+//		return allForms ;
 	}
 
 	@PostMapping("/studyForm")
@@ -69,7 +86,7 @@ public class StudyApplicationResource {
 		System.out.println("calling from ---------->>>>>> class: CreateStudyResource , method:addUserRequest ");
 		System.out.println("Response Body params ---------->>>>> " + studyApplication);
 		Integer studyAppId = 0;
-		 studyAppId = studyApplicationService.addCreateStudyDefaultValues(studyApplication);
+		studyAppId = studyApplicationService.addCreateStudyDefaultValues(studyApplication);
 		Integer systemFormDataId = null;
 		Integer dynamicTableDataId = null;
 		Integer studyDataFormId = null;
@@ -77,6 +94,9 @@ public class StudyApplicationResource {
 			 
 			hmap= studyApplicationService.searchForfilterList(studyAppId);
 			systemFormDataId = studyApplicationService.putEntryInStudyDataForm(hmap);
+			studyApplicationService.updateCurrentStudyDataForm(studyAppId, systemFormDataId);
+			
+			
 			System.out.println("systemFormDataId = " + systemFormDataId);
 			
 			StudyDataForm studyDataForm = studyApplicationService.getStudyDataApp(systemFormDataId);
@@ -199,8 +219,9 @@ public class StudyApplicationResource {
 		
 		Iterator<String> ansIterator = answerList.keySet().iterator();
 
-				String studyDataFormId= answerList.get("studyDataFormId");
+				String studyDataFormIdString= answerList.get("studyDataFormId");
 				
+				int studyDataFormId = Integer.parseInt(studyDataFormIdString);
 				studyDataForm = studyApplicationService.searchforDataId(studyDataFormId);
 
 				String dynamicTableName = studyDataForm.getDynamicTableName();
@@ -253,9 +274,10 @@ public class StudyApplicationResource {
 		String studyAppIdString = answerList.get("studyId").toString();
 		Integer studyAppId = Integer.parseInt(studyAppIdString);
 		
-		studyApplicationService.callStudyDataFromServiceForUpdate(studyAppId);
+		// locking the study
+		studyApplicationService.callStudyDataFromServiceForLock(studyAppId);
 		
-		studyApplicationService.callRbService(studyAppId);
+	
 		responseMap.put("load","Successful");
 		responseMap.put("studyAppId",studyAppId);
 		
@@ -264,28 +286,24 @@ public class StudyApplicationResource {
 	
 	
 	@PostMapping("/study/{studyAppId}/sendStudy/")
-	public ResponseEntity<?> sendStudyAfterEndOfStudyForm(@PathVariable("studyAppId") Integer studyAppId) {
+	public ResponseEntity<?> sendStudyAfterEndOfStudyForm(@PathVariable("studyAppId") Integer studyAppId) throws Exception {
 		
 		System.out.println("Inside class:StudyApplicationResource method: sendStudyAfterEndOfStudyForm()");
 		Map<String,Object> responseMap = new HashMap<String,Object>();
 		System.out.println("studyAppId =" + studyAppId);
 		
-		StudyContacts studycontact = studyApplicationService.callStudyContactWithStudyAppId(studyAppId);
-		if(studycontact != null) {
-			Integer creatorId = studycontact.getCreatorId();
-			Integer PIUserId = studycontact.getUserId();
+		StudyContacts piContact = studyApplicationService.getStudyContactWithType(studyAppId, SystemConstant.TYPE_PRINCIPAL_INVESTIGATOR);
+		if(piContact != null) {
+			Integer creatorId = piContact.getCreatorId();
+			Integer PIUserId = piContact.getUserId();
 			
-			if(creatorId == PIUserId) {
-				System.out.println("Sent to Board");
-				
-				String updateStatus = "Sent to Board";
-				studyApplicationService.callStudyAppServiceForUpdate(studyAppId,updateStatus);
-			}
-			else {
+				int destinationRbId = -1; 
+				int currentRbStudyAppId = 0;
+				String reviewOutcome = null;
+				rbStudyApplicationService.findAndSendRbStudyAppToNextState(studyAppId, SystemConstant.STATE_DRAFT, SystemConstant.STATE_PI, PIUserId, destinationRbId, currentRbStudyAppId, reviewOutcome);
 				System.out.println("Sent to Principal Investigator");
 				String updateStatus = "Sent to Principal Investigator";
 				studyApplicationService.callStudyAppServiceForUpdate(studyAppId,updateStatus);
-			}
 			
 		}
 		
@@ -296,7 +314,7 @@ public class StudyApplicationResource {
 	
 	
 	@PostMapping("/viewMyStudyForm/page/{currPage}/studyApp/view/{studyAppId}")
-	public ResponseEntity<?> viewStudyApp(@PathVariable Integer currPage, @PathVariable Integer studyAppId){
+	public ResponseEntity<?> viewMyStudyApp(@PathVariable Integer currPage, @PathVariable Integer studyAppId){
 		System.out.println("Inside class:StudyApplicationResource method: viewStudyApp()");
 		
 		Map<String,Object> responseMap = new HashMap<String,Object>();
@@ -495,22 +513,17 @@ public class StudyApplicationResource {
 	
 	
 	@PostMapping("/viewMyStudyForm/endDraftPage/{currPage}/studyApp/view/{studyAppId}")
-	public ResponseEntity<?> viewAndendDraftPageStudyApp(@PathVariable Integer currPage, @PathVariable Integer studyAppId,  @RequestBody HashMap<String, String> answerList){
+	public ResponseEntity<?> viewAndendDraftPageStudyApp(@PathVariable Integer currPage, @PathVariable Integer studyAppId,  @RequestBody HashMap<String, String> answerList) throws Exception{
 		System.out.println("Inside class:StudyApplicationResource method: viewAndSaveDraftedNextPageStudyApp()");
 		
 		Map<String,Object> responseMap = new HashMap<String,Object>();
 		
 		viewAndSaveDraftedNextPageStudyApp(currPage,studyAppId,answerList);
 		
+		studyApplicationService.callStudyDataFromServiceForLock(studyAppId);
 		
-//		String studyAppIdString = answerList.get("studyId").toString();
-//		Integer studyId = Integer.parseInt(studyAppIdString);
+		sendStudyAfterEndOfStudyForm(studyAppId);		
 		
-		studyApplicationService.callStudyDataFromServiceForUpdate(studyAppId);
-		
-		sendStudyAfterEndOfStudyForm(studyAppId);
-		
-		studyApplicationService.callRbService(studyAppId);
 		responseMap.put("load","Successful");
 		responseMap.put("studyAppId",studyAppId);
 

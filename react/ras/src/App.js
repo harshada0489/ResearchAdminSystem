@@ -29,6 +29,9 @@ import StudyAppView from "./components/afterLogin/StudyAppView";
 import  ContactDetails  from './components/afterLogin/ContactDetails';
 import ViewMyStudyApp from './components/afterLogin/ViewMyStudyApp';
 
+import ViewMyTasksRbStudyApp from './components/afterLogin/ViewMyTasksRbStudyApp';
+
+
 import {SideBar} from './components/SideBar/SideBar';
 
 class App extends Component {
@@ -68,7 +71,7 @@ class App extends Component {
     return (
       <div>
         <nav className="navbar navbar-expand navbar-dark bg-dark">
-          <Link to={"/"} className="navbar-brand">
+          <Link to={"/profile"} className="navbar-brand">
             ReseachAdminSystem
           </Link>
           <div className="navbar-nav mr-auto">
@@ -160,8 +163,8 @@ class App extends Component {
             <Route path="/form/view/:id" component={FormDetailsView} />
 
             <Route path="/viewMyStudyForm/viewPage/:currentPage/studyApp/view/:id" component={StudyAppView} />
+            <Route path="/viewMyRbTasksForm/viewPage/:currentPage/studyApp/view/:id" component={ViewMyTasksRbStudyApp} />            
             
-
           </Switch>
         </div>
 
@@ -173,81 +176,3 @@ class App extends Component {
 
 export default App;
 
-// class App extends React.Component {
-//   constructor(props) {
-//     super(props);
-//     this.state = {
-//       isLogginActive: true
-//     };
-//   }
-
-//   componentDidMount() {
-//     this.rightSide.classList.add("right");
-//   }
-
-//   changeState() {
-//     const { isLogginActive } = this.state;
-
-//     if (isLogginActive) {
-//       this.rightSide.classList.remove("right");
-//       this.rightSide.classList.add("left");
-//     } else {
-//       this.rightSide.classList.remove("left");
-//       this.rightSide.classList.add("right");
-//     }
-//     this.setState(prevState => ({ isLogginActive: !prevState.isLogginActive }));
-//   }
-
-
-
-//   render() {
-//     const { isLogginActive } = this.state;
-//     const current = isLogginActive ? "Register" : "Login";
-//     const currentActive = isLogginActive ? "login" : "register";
-//     return (
-
-//       <div className="App">
-//         <div className="login">
-//           <div className="container" ref={ref => (this.container = ref)}>
-//             {isLogginActive && (
-//               <Login containerRef={ref => (this.current = ref)} />
-//             )}
-//             {!isLogginActive && (
-//               <Register containerRef={ref => (this.current = ref)} />
-//             )}
-//           </div>
-//           <RightSide
-//             current={current}
-//             currentActive={currentActive}
-//             containerRef={ref => (this.rightSide = ref)}
-//             onClick={this.changeState.bind(this)}
-//           />
-
-//         </div>
-
-//       </div>
-   
-
-      
-//     );
-//   }
-// }
-
-// const RightSide = props => {
-//   return (
-//     <div
-//       className="right-side"
-//       ref={props.containerRef}
-//       onClick={props.onClick}
-//     >
-//       <div className="inner-container">
-//         <div className="text">{props.current}</div>
-//       </div>
-//     </div>
-//   );
-
-// };
-
-
-
-// export default App;

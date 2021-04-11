@@ -25,7 +25,7 @@ public class StudyContacts {
 	
 	private int userId;
 	
-	private int rvId;
+	private int rbId;
 	
 	private int type;
 	
@@ -47,7 +47,7 @@ public class StudyContacts {
 		this.studyAppId = studyAppId;
 		this.studyDataFormId = studyDataFormId;
 		this.userId = userId;
-		this.rvId = rvId;
+		this.rbId = rvId;
 		this.type = type;
 	}
 
@@ -86,11 +86,11 @@ public class StudyContacts {
 	}
 
 	public int getRvId() {
-		return rvId;
+		return rbId;
 	}
 
 	public void setRvId(int rvId) {
-		this.rvId = rvId;
+		this.rbId = rvId;
 	}
 
 	public int getType() {

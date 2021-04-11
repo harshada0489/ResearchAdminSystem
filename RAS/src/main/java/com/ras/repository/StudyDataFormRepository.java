@@ -10,4 +10,6 @@ import com.ras.model.SystemForm;
 public interface StudyDataFormRepository extends MongoRepository<StudyDataForm, Integer> {
 
 	StudyDataForm findByStudyAppId(Integer studyAppId) ;
+	
+
 }
