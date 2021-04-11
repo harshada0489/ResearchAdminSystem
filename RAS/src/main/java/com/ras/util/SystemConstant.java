@@ -43,6 +43,7 @@ public class SystemConstant {
 
 	 public static String STUDY_APP_STATUS_APPROVED = "Study Approved";
 	 public static String STUDY_APP_STATUS_REJECTED = "Study Rejected";
+	 public static String STUDY_APP_STATUS_CORRECTIONS = "Study Needs Corrections";
 	 
 	 
 	 

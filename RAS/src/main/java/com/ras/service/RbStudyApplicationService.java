@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.ras.model.RbStudyApplication;
 import com.ras.model.StudyApplication;
 import com.ras.model.StudyContacts;
+import com.ras.model.StudyDataForm;
 import com.ras.repository.RbStudyApplicationRepository;
 import com.ras.service.mongodbOperations.NextSequenceService;
 import com.ras.util.SystemConstant;
@@ -29,6 +30,9 @@ public class RbStudyApplicationService {
 	
 	@Autowired
 	StudyContactsService studyContactsService;
+	
+	@Autowired
+	StudyDataFormService studyDataFormService;
 	
 	public void createRbStudyAppForFirstTime_PI(StudyApplication studyApp, int reviewerId, int rbId) {
 		
@@ -134,21 +138,27 @@ public RbStudyApplication createRbStudyAppForNextState(RbStudyApplication currRb
 
 
 	
-	public void findAndSendRbStudyAppToNextState(int studyAppId, int CURR_STATE, int FUTURE_STATE, int destinationReviewerId, int destinationRbId , int currentRbStudyAppId, String reviewOutcome) throws Exception{
+	public void findAndSendRbStudyAppToNextState(int studyAppId, int CURR_STATE, int FUTURE_STATE, int destinationReviewerId, int destinationRbId , int currentRbStudyAppId, String reviewOutcome, String comments) throws Exception{
 		
 		StudyApplication  studyApp = studyApplicationService.findByAppId(studyAppId);
 		if(studyApp !=null) {
-			String reviewerOutcome =null;
-			String reviewerComment = null;
+			
+			//Invalid Case
 			if(destinationReviewerId == 0)
 				throw new Exception("destinationReviewerId id sent 0, its invalid");
 			
+			//All Approvals
+			
+			//Moving from researcher to PI
 			if(CURR_STATE == SystemConstant.STATE_DRAFT && FUTURE_STATE == SystemConstant.STATE_PI) {
 				
 				 destinationRbId = -1;
 			
 				 createRbStudyAppForFirstTime_PI(studyApp, destinationReviewerId, destinationRbId);
 			}
+			
+			
+			// Approved By PI - moving from PI to Gatekeeper
 			else if(CURR_STATE == SystemConstant.STATE_PI && FUTURE_STATE == SystemConstant.STATE_GATEKEEPER) {
 				//te tulhe pahana padin
 				//TODO >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> connect to reviewBoard to get gatekeeper board id and assigned user
@@ -167,6 +177,8 @@ public RbStudyApplication createRbStudyAppForNextState(RbStudyApplication currRb
 				repository.save(currRbStudyApp);
 				
 			}
+			
+			// Approved By GateKeeper - moving from Gatekeeper to ReviewBoard
 			else if(CURR_STATE == SystemConstant.STATE_GATEKEEPER && FUTURE_STATE == SystemConstant.STATE_REVIEWBOARD) {
 				//te tulhe pahana padin
 				//TODO
@@ -183,14 +195,69 @@ public RbStudyApplication createRbStudyAppForNextState(RbStudyApplication currRb
 				repository.save(currRbStudyApp);
 				
 			}
-			else if(CURR_STATE == SystemConstant.STATE_REVIEWBOARD && FUTURE_STATE == SystemConstant.STATE_RETURN_TO_RESEARCHER) {
+			
+			// Approved updated in studyApp and sent back to Reseacher
+			else if(CURR_STATE == SystemConstant.STATE_REVIEWBOARD && FUTURE_STATE == SystemConstant.STATE_RETURN_TO_RESEARCHER && reviewOutcome!= null && reviewOutcome.equals(SystemConstant.REVIEW_OUTCOME_APPROVED)) {
 				//te tulhe pahana padin
 				//TODO
-				if(reviewOutcome!= null && reviewOutcome.equals(SystemConstant.REVIEW_OUTCOME_APPROVED)) {
+				
 					studyApplicationService.callStudyAppServiceForUpdate(studyAppId, SystemConstant.STUDY_APP_STATUS_APPROVED);
-				}
+					
+					RbStudyApplication currRbStudyApp = findByRbStudyAppId(currentRbStudyAppId);
+					currRbStudyApp.setTaskStatus(SystemConstant.TASK_STATUS_COMPLETE);
+					currRbStudyApp.setReviewerOutcome(SystemConstant.REVIEW_OUTCOME_APPROVED);
+				
+					repository.save(currRbStudyApp);
 				
 			}
+			
+			
+			
+			//All rejections 
+			else if(reviewOutcome!= null && reviewOutcome.equals(SystemConstant.REVIEW_OUTCOME_REJECTED)){
+				
+				// Sending rejection from any state to researcher 
+				if(CURR_STATE == SystemConstant.STATE_PI || CURR_STATE == SystemConstant.STATE_GATEKEEPER || CURR_STATE == SystemConstant.STATE_REVIEWBOARD) {
+					studyApplicationService.callStudyAppServiceForUpdate(studyAppId, SystemConstant.STUDY_APP_STATUS_REJECTED);
+					
+					RbStudyApplication currRbStudyApp = findByRbStudyAppId(currentRbStudyAppId);
+					currRbStudyApp.setTaskStatus(SystemConstant.TASK_STATUS_COMPLETE);
+					currRbStudyApp.setReviewerOutcome(SystemConstant.REVIEW_OUTCOME_REJECTED);
+				
+					repository.save(currRbStudyApp);
+					
+				}
+				
+				
+			}
+			
+			//All corrections 
+			else if(reviewOutcome!= null && reviewOutcome.equals(SystemConstant.REVIEW_OUTCOME_CORRECTIONS)){
+				
+				// Sending rejection from any state to researcher 
+				if(CURR_STATE == SystemConstant.STATE_PI || CURR_STATE == SystemConstant.STATE_GATEKEEPER || CURR_STATE == SystemConstant.STATE_REVIEWBOARD) {
+					studyApplicationService.callStudyAppServiceForUpdate(studyAppId, SystemConstant.STUDY_APP_STATUS_CORRECTIONS);
+					
+					RbStudyApplication currRbStudyApp = findByRbStudyAppId(currentRbStudyAppId);
+					currRbStudyApp.setTaskStatus(SystemConstant.TASK_STATUS_COMPLETE);
+					currRbStudyApp.setReviewerOutcome(SystemConstant.REVIEW_OUTCOME_CORRECTIONS);
+					
+					//reviewers comments updated
+					currRbStudyApp.setReviewerComment(comments);
+					repository.save(currRbStudyApp);
+					
+					
+					//search for StudyDataForm and create new row with round incrment by 1, isLock = false and dynamicTableId = "";
+					int studyDataFormId = currRbStudyApp.getStudyDataFormId();
+					int newStudyDataForm = studyDataFormService.createNewRowInStudyDatForm(studyDataFormId);
+					studyApplicationService.updateCurrentStudyDataForm(currRbStudyApp.getStudyAppId(), newStudyDataForm);
+				
+				}
+				
+				
+			}
+			
+			
 	
 		}
 		else {
@@ -257,6 +324,7 @@ public RbStudyApplication createRbStudyAppForNextState(RbStudyApplication currRb
 		int destinationRbId  = -1;
 		int currentRbStudyAppId = -1;
 		
+		String comments = null;
 		StudyContacts PIContact = studyContactsService.getStudyContactByType(rbStudyApp.getStudyAppId(), SystemConstant.TYPE_PRINCIPAL_INVESTIGATOR);
 		
 		if(currRBId == -1 && PIContact.getUserId() == reviewerId) {
@@ -267,7 +335,7 @@ public RbStudyApplication createRbStudyAppForNextState(RbStudyApplication currRb
 			destinationRbId  = SystemConstant.REVIEWBOARD_GATEKEEPER_ID;
 			currentRbStudyAppId = rbStudyAppId;
 			
-			findAndSendRbStudyAppToNextState(rbStudyApp.getStudyAppId(), CURR_STATE, FUTURE_STATE, destinationReviewerId, destinationRbId, currentRbStudyAppId, SystemConstant.REVIEW_OUTCOME_APPROVED);
+			findAndSendRbStudyAppToNextState(rbStudyApp.getStudyAppId(), CURR_STATE, FUTURE_STATE, destinationReviewerId, destinationRbId, currentRbStudyAppId, SystemConstant.REVIEW_OUTCOME_APPROVED , comments);
 			
 		}
 		else if(currRBId == SystemConstant.REVIEWBOARD_GATEKEEPER_ID && SystemConstant.REVIEWBOARD_GATEKEEPER_USERID == reviewerId) {
@@ -278,7 +346,18 @@ public RbStudyApplication createRbStudyAppForNextState(RbStudyApplication currRb
 			destinationRbId  = SystemConstant.REVIEWBOARD_IRB_ID;
 			currentRbStudyAppId = rbStudyAppId;
 			
-			findAndSendRbStudyAppToNextState(rbStudyApp.getStudyAppId(), CURR_STATE, FUTURE_STATE, destinationReviewerId, destinationRbId, currentRbStudyAppId, SystemConstant.REVIEW_OUTCOME_APPROVED);
+			findAndSendRbStudyAppToNextState(rbStudyApp.getStudyAppId(), CURR_STATE, FUTURE_STATE, destinationReviewerId, destinationRbId, currentRbStudyAppId, SystemConstant.REVIEW_OUTCOME_APPROVED, comments);
+			
+		}
+		else if(currRBId == SystemConstant.REVIEWBOARD_IRB_ID && SystemConstant.REVIEWBOARD_IRB_USERID == reviewerId) {
+			
+			CURR_STATE = SystemConstant.STATE_REVIEWBOARD;
+			FUTURE_STATE = SystemConstant.STATE_RETURN_TO_RESEARCHER;
+			destinationReviewerId = -1;
+			destinationRbId  = -1;
+			currentRbStudyAppId = rbStudyAppId;
+			
+			findAndSendRbStudyAppToNextState(rbStudyApp.getStudyAppId(), CURR_STATE, FUTURE_STATE, destinationReviewerId, destinationRbId, currentRbStudyAppId, SystemConstant.REVIEW_OUTCOME_APPROVED, comments);
 			
 		}
 		else {
@@ -289,16 +368,74 @@ public RbStudyApplication createRbStudyAppForNextState(RbStudyApplication currRb
 		
 	}
 	
-	private void studyOutcomeReject(int rbStudyAppId,int reviewerId) {
+	private void studyOutcomeReject(int rbStudyAppId,int reviewerId) throws Exception {
 		
 		//rdStudyApp obj 
+		
+		RbStudyApplication rbStudyApp = findByRbStudyAppId(rbStudyAppId);
+		int currRBId = rbStudyApp.getRbId();
+		
+		int CURR_STATE = 0;
+		int FUTURE_STATE = 0;
+		int destinationReviewerId = -1;
+		int destinationRbId  = -1;
+		int currentRbStudyAppId = -1;
+		String comments = null;
+		
+		if(currRBId == -1) {
+			CURR_STATE = SystemConstant.STATE_PI;
+		}
+		else if(currRBId == SystemConstant.REVIEWBOARD_GATEKEEPER_ID){
+			CURR_STATE = SystemConstant.STATE_GATEKEEPER;
+		}
+		else{
+			CURR_STATE = SystemConstant.STATE_REVIEWBOARD;
+		}
+		
+		FUTURE_STATE = SystemConstant.STATE_RETURN_TO_RESEARCHER;
+		destinationReviewerId = -1;
+		currentRbStudyAppId = rbStudyAppId;
+		
+		findAndSendRbStudyAppToNextState(rbStudyApp.getStudyAppId(), CURR_STATE, FUTURE_STATE, destinationReviewerId, destinationRbId, currentRbStudyAppId, SystemConstant.REVIEW_OUTCOME_REJECTED, comments);
+		
+		
+		
 		
 		
 	}
 	
-	private void studyOutcomeCorrection(int rbStudyAppId,int reviewerId, String comments) {
+	private void studyOutcomeCorrection(int rbStudyAppId,int reviewerId, String comments) throws Exception {
 		
 		//rdStudyApp obj 
+		
+		RbStudyApplication rbStudyApp = findByRbStudyAppId(rbStudyAppId);
+		int currRBId = rbStudyApp.getRbId();
+		
+		int CURR_STATE = 0;
+		int FUTURE_STATE = 0;
+		int destinationReviewerId = -1;
+		int destinationRbId  = -1;
+		int currentRbStudyAppId = -1;
+		
+		
+		if(currRBId == -1) {
+			CURR_STATE = SystemConstant.STATE_PI;
+		}
+		else if(currRBId == SystemConstant.REVIEWBOARD_GATEKEEPER_ID){
+			CURR_STATE = SystemConstant.STATE_GATEKEEPER;
+		}
+		else if(currRBId == SystemConstant.REVIEWBOARD_IRB_ID){
+			CURR_STATE = SystemConstant.STATE_REVIEWBOARD;
+		}
+		
+		FUTURE_STATE = SystemConstant.STATE_RETURN_TO_RESEARCHER;
+		destinationReviewerId = -1;
+		currentRbStudyAppId = rbStudyAppId;
+		
+		findAndSendRbStudyAppToNextState(rbStudyApp.getStudyAppId(), CURR_STATE, FUTURE_STATE, destinationReviewerId, destinationRbId, currentRbStudyAppId, SystemConstant.REVIEW_OUTCOME_CORRECTIONS, comments);
+		
+		
+		
 		
 		
 	}

@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.mongodb.core.aggregation.ComparisonOperators.Eq;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
+import org.springframework.hateoas.mediatype.alps.Doc;
 import org.bson.types.ObjectId;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.mongodb.BasicDBObject;
@@ -33,6 +34,7 @@ import static com.mongodb.client.model.Filters.lt;
 import static com.mongodb.client.model.Filters.eq;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -41,6 +43,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.function.Consumer;
@@ -438,7 +441,7 @@ public class MongoListCollections {
 	      	}
 	        System.out.println("questionList = " + questionList);  
 	          
-            
+        }  
         }
 //            BasicDBObject query = new BasicDBObject();
 //            query.put("_id", dynamicTableDataId);
@@ -464,5 +467,75 @@ public class MongoListCollections {
 //        }
     	
     	
+        
+        
+        public static int getAndInsertNewRowInDynamicTable(String dynamicTableName,Integer oldDynamicTableDataId) throws Exception {
+        	
+
+        	System.out.println("Inside class : MongoListCollections and method : insertdbColumnNamesInDynamicTable()");
+        	Logger mongoLogger = Logger.getLogger("org.mongodb.driver");
+        	mongoLogger.setLevel(Level.SEVERE);
+
+        	//for new row insertion in dynamic Table
+        	ArrayList<Document> newRowDocumentList = new ArrayList<Document>(); 
+
+        	Integer newDynamicTableRowIDValue =null;
+
+        	try (MongoClient mongoClient = MongoClients.create("mongodb://localhost:27017")) {
+        		MongoDatabase database = mongoClient.getDatabase("test");
+
+        		MongoCollection<Document> allDyanamicTableRows = database.getCollection(dynamicTableName);
+
+        		FindIterable<Document> oldDynamicTableDataRow = allDyanamicTableRows.find(eq("_id",oldDynamicTableDataId));
+
+        		Document oldRowKeyValueDocument = null;
+//        		Document newRowKeyValueDocument = null;
+        		for (Document currDocument : oldDynamicTableDataRow) {
+        			if(currDocument != null) {
+        				oldRowKeyValueDocument = currDocument;
+        				break;
+        			}
+        		}
+        	
+        		
+        		Document newRowKeyValueDocument = new Document();
+            	
+            	
+        		
+        		Set<String> oldRowKeySet =  oldRowKeyValueDocument.keySet();
+        		for (String key : oldRowKeySet) {
+        			if(key.equals("_id")) {
+        				newDynamicTableRowIDValue = (Integer) getNextSequence("customSequences");
+        				newRowKeyValueDocument.append("_id",  newDynamicTableRowIDValue);
+        			}
+        			else if(key.equals("isLock")) {
+
+        				newRowKeyValueDocument.append(key, "disabled"); 
+        			}
+
+        			else if(key.equals("createdDate")) {
+
+        				newRowKeyValueDocument.append(key, new Date()); 
+        			}
+        			else if(key.equals("modifiedDate")) {
+
+        				newRowKeyValueDocument.append(key, new Date()); 
+        			}
+        			else {
+        				newRowKeyValueDocument.append(key, oldRowKeyValueDocument.get(key));
+        			}
+
+
+
+
+        		} 
+        		
+        		newRowDocumentList.add(newRowKeyValueDocument);
+        		allDyanamicTableRows.insertMany(newRowDocumentList);
+
+        	}
+
+        	return newDynamicTableRowIDValue;  
+
     }
 }

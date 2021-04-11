@@ -300,7 +300,8 @@ public class StudyApplicationResource {
 				int destinationRbId = -1; 
 				int currentRbStudyAppId = 0;
 				String reviewOutcome = null;
-				rbStudyApplicationService.findAndSendRbStudyAppToNextState(studyAppId, SystemConstant.STATE_DRAFT, SystemConstant.STATE_PI, PIUserId, destinationRbId, currentRbStudyAppId, reviewOutcome);
+				String comments = null;
+				rbStudyApplicationService.findAndSendRbStudyAppToNextState(studyAppId, SystemConstant.STATE_DRAFT, SystemConstant.STATE_PI, PIUserId, destinationRbId, currentRbStudyAppId, reviewOutcome, comments);
 				System.out.println("Sent to Principal Investigator");
 				String updateStatus = "Sent to Principal Investigator";
 				studyApplicationService.callStudyAppServiceForUpdate(studyAppId,updateStatus);

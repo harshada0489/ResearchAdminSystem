@@ -360,12 +360,12 @@ public int getTheCountOfQuestionPages(String systemFormIdString) {
 		return studyApp;
 	}
 	
-	public void updateCurrentStudyDataForm(int studyAppId, int systemFormDataId) throws Exception {
-		if(studyAppId>0 && systemFormDataId>0) {
+	public void updateCurrentStudyDataForm(int studyAppId, int studyFormDataId) throws Exception {
+		if(studyAppId>0 && studyFormDataId>0) {
 			StudyApplication studyApp = findByAppId(studyAppId);
 			if(studyApp != null) {
 				
-				studyApp.setCurrentStudyDataFormId(systemFormDataId);
+				studyApp.setCurrentStudyDataFormId(studyFormDataId);
 				studyApplicationRepository.save(studyApp);
 				
 			}else {
