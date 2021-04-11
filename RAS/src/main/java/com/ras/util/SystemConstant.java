@@ -15,13 +15,34 @@ public class SystemConstant {
 	 public static Integer TYPE_REVIEW = 4;
 	 
 	 
+	 public static int STATE_DRAFT = 1000;
+	 public static int STATE_PI = 2000;
+	 public static int STATE_GATEKEEPER = 3000;
+	 public static int STATE_REVIEWBOARD = 4000;
+	 public static int STATE_RETURN_TO_RESEARCHER = 5000;
+	 
+	 
+	 public static int TASK_STATUS_UNREAD = 10;
+	 public static int TASK_STATUS_IN_PROGRESS = 20;
+	 public static int TASK_STATUS_COMPLETE = 30;
+	 
+	 
+	 public static String REVIEW_OUTCOME_APPROVED = "Approved";
+	 public static String REVIEW_OUTCOME_REJECTED = "Rejected";
+	 public static String REVIEW_OUTCOME_CORRECTIONS = "Corrections";
 	 
 	 
 	 
+	 public static int  REVIEWBOARD_GATEKEEPER_ID = 5;
+	 public static int REVIEWBOARD_GATEKEEPER_USERID = 1;
+	 public static int REVIEWBOARD_IRB_ID = 10;
+	 public static int REVIEWBOARD_IRB_USERID = 4;
 	 
 	 
 	 
-	 
+
+	 public static String STUDY_APP_STATUS_APPROVED = "Study Approved";
+	 public static String STUDY_APP_STATUS_REJECTED = "Study Rejected";
 	 
 	 
 	 

@@ -14,6 +14,10 @@ public class RbStudyApplication {
 	@Id
 	private int id;
 	
+	private int studyAppId;
+	
+	private int studyDataFormId;
+	
 	private String studyTitle;
 	
 	private String oneWordIdentifier;
@@ -38,7 +42,15 @@ public class RbStudyApplication {
 	
 	private int rbId;
 	
-	private String type;
+	private int componentType;
+	
+	private int taskStatus;
+	
+	private int reviewerId;
+	
+	private String reviewerOutcome;
+	
+	private String reviewerComment;
 	
 	private String status;
 	
@@ -51,13 +63,16 @@ public class RbStudyApplication {
 		// TODO Auto-generated constructor stub
 	}
 	
-	
 
 
-	public RbStudyApplication(String studyTitle, String oneWordIdentifier, String gender, int age,
-			int noOfHumanRequired, String typeOfAnimal, int noOfAnimalRequired, String filter1, String filter2,
-			String researcherID, int creatorId, int rbId, String type) {
+
+public RbStudyApplication(int studyAppId, int studyDataFormId, String studyTitle, String oneWordIdentifier,
+			String gender, int age, int noOfHumanRequired, String typeOfAnimal, int noOfAnimalRequired, String filter1,
+			String filter2, String researcherID, int creatorId, int rbId, int componentType,
+			int taskStatus, int reviewerId, String reviewerOutcome, String  reviewerComment, String status, Date createdDate, Date modifiedDate) {
 		super();
+		this.studyAppId = studyAppId;
+		this.studyDataFormId = studyDataFormId;
 		this.studyTitle = studyTitle;
 		this.oneWordIdentifier = oneWordIdentifier;
 		this.gender = gender;
@@ -70,8 +85,44 @@ public class RbStudyApplication {
 		this.researcherID = researcherID;
 		this.creatorId = creatorId;
 		this.rbId = rbId;
-		this.type = type;
+		this.componentType = componentType;
+		this.taskStatus = taskStatus;
+		this.reviewerId = reviewerId;
+		this.reviewerOutcome = reviewerOutcome;
+		this.reviewerComment = reviewerComment;
+		this.status = status;
+		this.createdDate = createdDate;
+		this.modifiedDate = modifiedDate;
 	}
+
+
+
+
+//	public RbStudyApplication(String studyTitle, String oneWordIdentifier, String gender, int age,
+//			int noOfHumanRequired, String typeOfAnimal, int noOfAnimalRequired, String filter1, String filter2,
+//			String researcherID, int creatorId, int rbId, String type, int componentType, int taskStatus,
+//			int reviewerId, String status, Date createdDate, Date modifiedDate) {
+//		super();
+//		this.studyTitle = studyTitle;
+//		this.oneWordIdentifier = oneWordIdentifier;
+//		this.gender = gender;
+//		this.age = age;
+//		NoOfHumanRequired = noOfHumanRequired;
+//		this.typeOfAnimal = typeOfAnimal;
+//		NoOfAnimalRequired = noOfAnimalRequired;
+//		this.filter1 = filter1;
+//		this.filter2 = filter2;
+//		this.researcherID = researcherID;
+//		this.creatorId = creatorId;
+//		this.rbId = rbId;
+//		this.type = type;
+//		this.componentType = componentType;
+//		this.taskStatus = taskStatus;
+//		this.reviewerId = reviewerId;
+//		this.status = status;
+//		this.createdDate = createdDate;
+//		this.modifiedDate = modifiedDate;
+//	}
 
 
 
@@ -206,16 +257,6 @@ public class RbStudyApplication {
 	}
 
 
-	public String getType() {
-		return type;
-	}
-
-
-	public void setType(String type) {
-		this.type = type;
-	}
-
-
 	public String getStatus() {
 		return status;
 	}
@@ -244,6 +285,111 @@ public class RbStudyApplication {
 	public void setModifiedDate(Date modifiedDate) {
 		this.modifiedDate = modifiedDate;
 	}
+
+
+
+
+
+
+
+
+
+	public int getTaskStatus() {
+		return taskStatus;
+	}
+
+
+
+
+	public void setTaskStatus(int taskStatus) {
+		this.taskStatus = taskStatus;
+	}
+
+
+
+
+	public int getReviewerId() {
+		return reviewerId;
+	}
+
+
+
+
+	public void setReviewerId(int reviewerId) {
+		this.reviewerId = reviewerId;
+	}
+
+
+
+
+	public int getStudyAppId() {
+		return studyAppId;
+	}
+
+
+
+
+	public void setStudyAppId(int studyAppId) {
+		this.studyAppId = studyAppId;
+	}
+
+
+
+
+	public int getStudyDataFormId() {
+		return studyDataFormId;
+	}
+
+
+
+
+	public void setStudyDataFormId(int studyDataFormId) {
+		this.studyDataFormId = studyDataFormId;
+	}
+
+
+
+
+	public int getComponentType() {
+		return componentType;
+	}
+
+
+
+
+	public void setComponentType(int componentType) {
+		this.componentType = componentType;
+	}
+
+
+
+
+	public String getReviewerOutcome() {
+		return reviewerOutcome;
+	}
+
+
+
+
+	public void setReviewerOutcome(String reviewerOutcome) {
+		this.reviewerOutcome = reviewerOutcome;
+	}
+
+
+
+
+	public String getReviewerComment() {
+		return reviewerComment;
+	}
+
+
+
+
+	public void setReviewerComment(String reviewerComment) {
+		this.reviewerComment = reviewerComment;
+	}
+	
+	
 	
 	
 

@@ -68,8 +68,8 @@ public class StudyContactsService {
 		return tList;
 	}
 	
-	public StudyContacts getStudyContactWithStudyAppIdAndPrincipalInvestigator(Integer studyAppId, Integer PI ) {
-		StudyContacts studyContact = repository.findByStudyAppIdAndType(studyAppId, PI);
+	public StudyContacts getStudyContactByType(Integer studyAppId, int type ) {
+		StudyContacts studyContact = repository.findByStudyAppIdAndType(studyAppId, type);
 		return studyContact;
 		
 	}

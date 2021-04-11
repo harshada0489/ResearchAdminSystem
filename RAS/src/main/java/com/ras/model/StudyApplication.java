@@ -50,6 +50,8 @@ public class StudyApplication {
 	private String researcherID;
 	
 	
+	private int currentStudyDataFormId;
+	
 	private int creatorId;
 	
 	private String status;
@@ -66,7 +68,7 @@ public class StudyApplication {
 
 	public StudyApplication(int id, String studyTitle, String oneWordIdentifier, String gender, int age,
 			int noOfHumanRequired, String typeOfAnimal, int noOfAnimalRequired, String filter1, String filter2,
-			String researcherID, int creatorId, String status, Date createdDate, Date modifiedDate) {
+			String researcherID, int creatorId, int currentStudyDataFormId, String status, Date createdDate, Date modifiedDate) {
 		super();
 		this.id = id;
 		this.studyTitle = studyTitle;
@@ -80,6 +82,7 @@ public class StudyApplication {
 		this.filter2 = filter2;
 		this.researcherID = researcherID;
 		this.creatorId = creatorId;
+		this.currentStudyDataFormId = currentStudyDataFormId;
 		this.status = status;
 		this.createdDate = createdDate;
 		this.modifiedDate = modifiedDate;
@@ -236,6 +239,16 @@ public class StudyApplication {
 	}
 	
 	
+
+	public int getCurrentStudyDataFormId() {
+		return currentStudyDataFormId;
+	}
+
+
+	public void setCurrentStudyDataFormId(int currentStudyDataFormId) {
+		this.currentStudyDataFormId = currentStudyDataFormId;
+	}
+
 
 	@Override
 	public String toString() {

@@ -103,9 +103,9 @@ public class StudyDataFormService {
 		repository.save(studyDataForm);
 	}
 	
-public StudyDataForm getStudyDataFormObj(String studyDataFormIdString) {
+public StudyDataForm getStudyDataFormObj(int studyDataFormId) {
 	StudyDataForm studyDataForm = null;
-	Integer studyDataFormId = Integer.parseInt(studyDataFormIdString);
+//	Integer studyDataFormId = Integer.parseInt(studyDataFormIdString);
 	Optional<StudyDataForm> db = repository.findById(studyDataFormId);
 	if(db.isPresent()) {
 		studyDataForm = db.get();
@@ -122,6 +122,18 @@ public StudyDataForm getStudyDataFormObjByStudyId(Integer studyAppId) {
 	
 }
 
+public StudyDataForm getCurrentStudyDataForm(Integer currentStudyDataFormId) {
+	StudyDataForm studyDataForm =null;
+	Optional<StudyDataForm> db =repository.findById(currentStudyDataFormId);
+	if(db.isPresent()) {
+		 studyDataForm = db.get();
+
+	}
+	
+	return studyDataForm;
+	
+}
+
 public void updateIsLock(Integer studyAppId) {
 	System.out.println("In class: StudyDataFormService and method: updateIsLock()");
 	StudyDataForm studyDataForm =getStudyDataFormObjByStudyId(studyAppId);
@@ -129,6 +141,12 @@ public void updateIsLock(Integer studyAppId) {
 	studyDataForm.setLock(true);
 	repository.save(studyDataForm);
 	
+}
+
+public StudyDataForm fetchStudyDataForm(int studyDataFormId){
+	StudyDataForm studyDataForm = null;
+	studyDataForm = getStudyDataFormObj(studyDataFormId);
+	return studyDataForm;
 }
 
 }

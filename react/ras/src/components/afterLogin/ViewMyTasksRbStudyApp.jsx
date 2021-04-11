@@ -4,9 +4,14 @@ import axios from 'axios';
 
 import AuthService from "../../services/auth.service";
 
-var API_URL = "http://localhost:8080/ras/viewMyStudyForm"
 
-class StudyAppView extends React.Component{
+
+var API_URL = "http://localhost:8080/ras/viewMyRbTasksForm"
+
+// var API_URL = "http://localhost:8080/ras/viewMyStudyForm"
+
+
+class ViewMyTasksRbStudyApp extends React.Component{
     constructor(props){
         super(props);
         this.state = {
@@ -20,7 +25,8 @@ class StudyAppView extends React.Component{
             answerMapList  : [],
              items : [{test: "testing"}],
              returnItemsList:[],
-
+             loggedInUserId: AuthService.getCurrentUser().id,
+            decision:[],
              disabled:""
 
 
@@ -34,6 +40,9 @@ class StudyAppView extends React.Component{
 
         this.endOfForm = this.endOfForm.bind(this);
         this.nextForm = this.nextForm.bind(this);
+        this.reviewerDecisionApprove = this.reviewerDecisionApprove.bind(this);
+        this.reviewerDecisionReject = this.reviewerDecisionReject.bind(this);
+        this.reviewerDecisionCorrection = this.reviewerDecisionCorrection.bind(this);
 
 }
 
@@ -50,6 +59,52 @@ handleChange = (e) => {
     // console.log("answerMapList in this state = ", this.state.answerMapList);
 }
 
+
+reviewerDecisionApprove(){
+    console.log("Inside method Approve");
+
+//reviewerOutcome
+//reviewerComment
+
+    axios.post(API_URL + "/reviewOutcome/approved/" + this.state.loggedInUserId  +"/"+ this.state.id)
+    .then(
+        response => {
+            console.log(response.data);
+            // this.setState({
+            //     qAndAList : response.data
+            // });
+            // this.setState({questionList : response.data.questionList,
+            //     countOfPage : response.data.pageList,
+            //     currentPage : response.data.questionList[0].page,
+                
+            // });
+        
+            // this.setState(prevState => ({
+            //     answerMapList: {
+            //         ...prevState.answerMapList,
+            //         "studyId" : response.data.questionList[0].studyId,
+            //         "studyAppDataId" : response.data.questionList[0].studyAppDataId,
+            //         "studyDataFormId" : response.data.questionList[0].studyDataFormId,
+                    
+            //         "creatorId" : AuthService.getCurrentUser().id
+            //     },
+            // }));
+            // // window.location.reload();
+            
+            // console.log("qAndAList=",this.state.qAndAList);
+        }
+    )
+
+
+}
+
+reviewerDecisionReject(){
+    console.log("Inside method reviewerDecisionReject");
+}
+
+reviewerDecisionCorrection(){
+    console.log("Inside method reviewerDecisionCorrection");
+}
 
 
 
@@ -103,7 +158,7 @@ var nextPage = parseInt(this.state.currentPage) + 1;
 
 this.props.history.push({
 
-    pathname: "/viewMyStudyForm/viewPage/" + nextPage + "/studyApp/view/" + this.state.id,
+    pathname: "/viewMyRbTasksForm/viewPage/" + nextPage + "/studyApp/view/" + this.state.id,
     // state: { detail: response.data }
 })
 
@@ -182,64 +237,12 @@ nextForm(){
         
         this.props.history.push({
         
-            pathname: "/viewMyStudyForm/viewPage/" + nextPage + "/studyApp/view/" + this.state.id,
+            pathname: "/viewMyRbTasksForm/viewPage/" + nextPage + "/studyApp/view/" + this.state.id,
             // state: { detail: response.data }
         })
     
     
     }
-
-
-// nextForm(){
-    
-//     console.log("next form button answerMapList in this state = ", this.state.answerMapList);
-    
-//     var nextPage = parseInt(this.state.currentPage) + 1;
-//      console.log("nextPage value ==================== ", nextPage);
-    
-//      axios.post(API_URL + "/page/" + nextPage + "/studyApp/view/" + this.state.id)
-//         .then(
-//             response => {
-//                 console.log(response.data);
-//                 this.setState({
-//                     qAndAList : response.data
-//                 });
-//                 this.setState({questionList : response.data.questionList,
-//                     countOfPage : response.data.pageList,
-//                     currentPage : response.data.questionList[0].page,
-                    
-//                 });
-            
-//                 this.setState(prevState => ({
-//                     answerMapList: {
-//                         ...prevState.answerMapList,
-//                         "studyId" : response.data.questionList[0].studyId,
-//                         "studyAppDataId" : response.data.questionList[0].studyAppDataId,
-//                         "studyDataFormId" : response.data.questionList[0].studyDataFormId,
-                        
-//                         "creatorId" : AuthService.getCurrentUser().id
-//                     },
-//                 }));
-//                 // window.location.reload();
-                
-//                 console.log("qAndAList=",this.state.qAndAList);
-//             }
-//         )
-    
-    
-    
-//         console.log("after to API call in componentDidMount()");
-    
-//     this.props.history.push({
-    
-//         pathname: "/viewMyStudyForm/viewPage/" + nextPage + "/studyApp/view/" + this.state.id,
-//         // state: { detail: response.data }
-//     })
-    
-    
-//     }
-
-
 
 getData(){
 
@@ -251,22 +254,6 @@ getData(){
         currentPage: nextPage
      })
 
-            // this.setState({questionList : this.props.location.state.detail.questionList,
-            //     countOfPage : this.props.location.state.detail.pageList,
-            //     currentPage : this.props.location.state.detail.questionList[0].page,
-            // });
-
-            // this.setState(prevState => ({
-            //     answerMapList: {
-            //         ...prevState.answerMapList,
-            //         "studyId" : this.props.location.state.detail.questionList[0].studyId,
-            //         "studyAppDataId" : this.props.location.state.detail.questionList[0].studyAppDataId,
-            //         "studyDataFormId" : this.props.location.state.detail.questionList[0].studyDataFormId,
-            //         "creatorId" : AuthService.getCurrentUser().id
-                    
-            //         // "page" : this.props.location.state.detail.questionList[0].page,
-            //     },
-            // }));
 
   }
 
@@ -370,11 +357,32 @@ const showSubmitOrNextButton = () => {
 if(disabled){
     if(currPage == totalPages){
         console.log("Inside if condition")
+
         return (
+            <div>
+            <div className="card-footer text-center">          
+                <button type="button" onClick={this.disabled_endOfForm} className="btn btn-primary text-center">Do it Later </button>                              
+            </div>
+
 
             <div className="card-footer text-center">          
-                         <button type="button" onClick={this.disabled_endOfForm} className="btn btn-primary text-center">Go to Profile Page </button>                              
+                &nbsp; <button type="button" onClick={this.reviewerDecisionApprove} className="btn btn-primary text-center">Approve </button>                              
+
+                &nbsp; <button type="button"  onClick={this.reviewerDecisionReject} className="btn btn-primary text-center">Reject</button>                              
+
+                &nbsp; <button type="button" onClick={this.reviewerDecisionCorrection} className="btn btn-primary text-center">Send for corrections</button>                              
             </div>
+
+            <div className="card-footer text-center">    
+            <div className="col-75">
+                                                    <input type="textarea" name="corrections"  id="corrections"
+                                                    onChange={this.handleChange}
+                                                    />
+                                                </div>
+            </div>
+
+            </div>
+            
         )
 
 
@@ -486,4 +494,4 @@ return(
 
 
 
-export default StudyAppView;
+export default ViewMyTasksRbStudyApp;
