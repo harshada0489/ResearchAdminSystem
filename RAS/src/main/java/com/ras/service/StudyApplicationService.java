@@ -213,10 +213,22 @@ public int getTheCountOfQuestionPages(String systemFormIdString) {
 		return studyDataForm;
 	}
 	
-	public StudyDataForm searchforDataIdByStudyId(Integer studyAppId) {
-		StudyDataForm studyDataForm = null;
-		studyDataForm = studyDataFormService.getStudyDataFormObjByStudyId(studyAppId);
-		return studyDataForm;
+	public StudyDataForm searchforCurrentDataIdByStudyId(Integer studyAppId) {
+		// 1. Fetch studyAppplication Object
+		// 2. Get currentStudyDataFormId from above object
+		//3. search by id in StudyDataForm 
+		StudyApplication studyApp = findByAppId(studyAppId);
+		if(studyApp !=null) {	
+			int currentStudyDataFormId = studyApp.getCurrentStudyDataFormId();
+			StudyDataForm studyDataForm = studyDataFormService.fetchStudyDataForm(currentStudyDataFormId);
+				if(studyDataForm != null) {
+					return studyDataForm;
+				}
+				else {
+					System.out.println("Cannot find studyDataForm...");
+				}
+		}
+		return null;
 	}
 	
 	public StudyDataForm getCurrentStudyDataForm(Integer studyAppId) {
@@ -297,7 +309,7 @@ public int getTheCountOfQuestionPages(String systemFormIdString) {
 	
 	public List<StudyApplication> getAllStudyApp(Integer creatorId){
 		System.out.println("Inside class: SystemFormService and method: getAllDBForms() ");
-		List<StudyApplication> dbAllForms = studyApplicationRepository.findByCreatorId(creatorId);
+		List<StudyApplication> dbAllForms = studyApplicationRepository.findByCreatorIdOrderByIdDesc(creatorId);
 		return dbAllForms;
 	}
 	
@@ -307,6 +319,24 @@ public int getTheCountOfQuestionPages(String systemFormIdString) {
 		// Get List of Rb Applications using userId
 		
 		List<RbStudyApplication> rbAppsByReviewer = rbStudyApplicationService.getRbAppsByReviewer(userId);
+		
+		if(!(rbAppsByReviewer.isEmpty())) {
+			for(int curr=0; curr<rbAppsByReviewer.size(); curr++) {
+				RbStudyApplication rbStudyApplication = rbAppsByReviewer.get(curr);
+				int taskStatus = rbStudyApplication.getTaskStatus();
+				if(SystemConstant.TASK_STATUS_UNREAD == taskStatus) {
+					rbStudyApplication.setTaskStausForFrontEnd(SystemConstant.TASK_UNREAD);
+				}
+				else if(SystemConstant.TASK_STATUS_IN_PROGRESS == taskStatus) {
+					rbStudyApplication.setTaskStausForFrontEnd(SystemConstant.TASK_IN_PROGRESS);
+				}
+				else if(SystemConstant.TASK_STATUS_COMPLETE == taskStatus) {
+					rbStudyApplication.setTaskStausForFrontEnd(SystemConstant.TASK_COMPLETE);
+				}
+				
+			}
+		}
+		
 		
 		return rbAppsByReviewer;
 	}

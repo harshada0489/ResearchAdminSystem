@@ -34,6 +34,7 @@ import ViewMyTasksRbStudyApp from './components/afterLogin/ViewMyTasksRbStudyApp
 
 import {SideBar} from './components/SideBar/SideBar';
 
+
 class App extends Component {
   constructor(props) {
     super(props);
@@ -140,8 +141,8 @@ class App extends Component {
 
 
 
-        <div className="container mt-3">
-          
+        <div id ="container" className="container mt-3">
+        {/* <div className="mt-3"> */}
           <Switch>
             <Route exact path={["/", "/home"]} component={Home} />
             <Route exact path="/login" component={Login} />

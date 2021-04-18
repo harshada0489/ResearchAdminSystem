@@ -13,6 +13,7 @@ import AuthService from "../../services/auth.service";
 
 import TaskList from "../afterLogin/taskList"
 import { NotificationContainer, NotificationManager } from 'react-notifications';
+import { boolean } from 'yup';
 
  var API_URL= "http://localhost:8080/ras/questionDetails"
  var GO_TO_BACK_PAGE_URL = "http://localhost:8080/ras/questionDetails/goToBackPage"
@@ -35,7 +36,7 @@ export default class QuestionPage extends React.Component {
 
         this.goToPrevPage = this.goToPrevPage.bind(this);
         this.endOfForm = this.endOfForm.bind(this);
-
+        // this.hasDuplicates = this.hasDuplicates.bind(this);
     }
 
     goToPrevPage(e) {
@@ -115,6 +116,16 @@ export default class QuestionPage extends React.Component {
     }
 
     
+    // hasDuplicates(array) {
+    //     console.log("inside method hasDuplicates = " , array);
+    //     if((new Set(array)).size !== array.length){
+    //         return true;
+    //     }
+    //     else{
+    //         return false;
+    //     }
+
+    // }
 
      
 
@@ -127,18 +138,42 @@ export default class QuestionPage extends React.Component {
         console.log("this.state.taskList[0].answerType = ", this.state.taskList[0].answerType=== '');
         // console.log("this.state.taskList[0] has blank value? = ", this.state.taskList[i].question === '' || this.state.taskList[i].questionNumber ==='' || this.state.taskList[i].answerType ==='' || this.state.tasklist[i].dbColumnName ==='');
         
+
+        const newArrayList = [];
+
+
         for(var i=0; i<this.state.taskList.length; i++)
         {
                 if(this.state.taskList[i].questionText === '' || this.state.taskList[i].questionNumber ==='' || this.state.taskList[i].answerType ==='' || this.state.taskList[i].dbColumnName ==='')
                 {
                     NotificationManager.warning("Please Fill up Required Field.Please Check Label name , Question Number Field and Input Type Field");
                     return false;
+                }else{
+                    newArrayList.push(this.state.taskList[i].questionNumber);
                 }
+            
+
+               
+
         }
 
-        // let data = { formData: this.state.taskList }
+        console.log("newArrayList", newArrayList);
 
-        console.log("this.state.taskList =", this.state.taskList);
+
+        var retVal = "";
+        if((new Set(newArrayList)).size !== newArrayList.length){
+            retVal = true;
+        }
+        else{
+            retVal = false;
+        }
+        console.log("retVal" , retVal);
+        if(retVal){
+            NotificationManager.warning("Question numbers are duplicate");
+            return false;
+        }else{
+
+            console.log("this.state.taskList =", this.state.taskList);
         console.log("this.state.systemFormDetails =", this.state.systemFormDetails);
         // axios.defaults.headers.common["Authorization"] = localStorage.getItem('token');
         axios.post(API_URL +"/" + this.state.systemFormDetails.formId +"/Page/" + this.state.systemFormDetails.pageNumber, this.state.taskList).then(response => {
@@ -168,6 +203,12 @@ export default class QuestionPage extends React.Component {
             else NotificationManager.error("Something Went Wrong");
             this.setState({ errors: error })
         });
+
+
+        }
+
+
+        
     }
     clickOnDelete(record) {
         this.setState({

@@ -62,11 +62,6 @@ class StudySideQuesionPage extends React.Component {
                 .catch(error =>{
                 console.log(error)
                 })
-                
-                // this.props.history.push({
-                //     pathname: "/profile"
-                // })
-                // window.location.reload();
             }
             
 
@@ -114,8 +109,7 @@ class StudySideQuesionPage extends React.Component {
                     "studyAppDataId" : this.props.location.state.detail.questionList[0].studyAppDataId,
                     "studyDataFormId" : this.props.location.state.detail.questionList[0].studyDataFormId,
                     "creatorId": AuthService.getCurrentUser().id
-                    
-                    // "page" : this.props.location.state.detail.questionList[0].page,
+
                 },
             }));
 
@@ -143,16 +137,11 @@ class StudySideQuesionPage extends React.Component {
         console.log(" Inside method componentMount() start");
 
         this.getData();
-        // this.getQuestionList();
-
         console.log(" Inside method componentMount() end");
-    
       }
 
     render(){
         console.log("question List in this state = ", this.state.questionList);
-        // console.log("count of Pages in this state = ", this.state.countOfPage);
-        // console.log("current Pages in this state = ", this.state.currentPage);
     
        let currPage = this.state.currentPage;
        let totalPages = this.state.countOfPage;

@@ -324,7 +324,7 @@ public class StudyApplicationResource {
 		StudyDataForm studyDataForm = null;
 		
 				
-				studyDataForm = studyApplicationService.searchforDataIdByStudyId(studyAppId);
+				studyDataForm = studyApplicationService.searchforCurrentDataIdByStudyId(studyAppId);
 
 				String dynamicTableName = studyDataForm.getDynamicTableName();
 				Integer dynamicTableDataId = studyDataForm.getDynamicTableDataId();
@@ -397,7 +397,7 @@ public class StudyApplicationResource {
 		StudyDataForm studyDataForm = null;
 		
 				
-				studyDataForm = studyApplicationService.searchforDataIdByStudyId(studyAppId);
+				studyDataForm = studyApplicationService.searchforCurrentDataIdByStudyId(studyAppId);
 
 				String dynamicTableName = studyDataForm.getDynamicTableName();
 				Integer dynamicTableDataId = studyDataForm.getDynamicTableDataId();
@@ -455,7 +455,7 @@ public class StudyApplicationResource {
 		StudyDataForm studyDataForm = null;
 		
 				
-				studyDataForm = studyApplicationService.searchforDataIdByStudyId(studyAppId);
+				studyDataForm = studyApplicationService.searchforCurrentDataIdByStudyId(studyAppId);
 
 				String dynamicTableName = studyDataForm.getDynamicTableName();
 				Integer dynamicTableDataId = studyDataForm.getDynamicTableDataId();

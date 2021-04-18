@@ -26,6 +26,10 @@ public class SystemConstant {
 	 public static int TASK_STATUS_IN_PROGRESS = 20;
 	 public static int TASK_STATUS_COMPLETE = 30;
 	 
+	 public static String TASK_UNREAD = "Unread";
+	 public static String TASK_IN_PROGRESS = "InProgress";
+	 public static String TASK_COMPLETE = "Complete";
+	 
 	 
 	 public static String REVIEW_OUTCOME_APPROVED = "Approved";
 	 public static String REVIEW_OUTCOME_REJECTED = "Rejected";
@@ -34,9 +38,9 @@ public class SystemConstant {
 	 
 	 
 	 public static int  REVIEWBOARD_GATEKEEPER_ID = 5;
-	 public static int REVIEWBOARD_GATEKEEPER_USERID = 1;
+	 public static int REVIEWBOARD_GATEKEEPER_USERID = 5;
 	 public static int REVIEWBOARD_IRB_ID = 10;
-	 public static int REVIEWBOARD_IRB_USERID = 4;
+	 public static int REVIEWBOARD_IRB_USERID = 6;
 	 
 	 
 	 

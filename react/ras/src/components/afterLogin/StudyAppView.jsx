@@ -47,6 +47,8 @@ handleChange = (e) => {
             [e.target.id]: e.target.value,
         },
     }));
+
+    console.log('in handle change'+e.target);
     // console.log("answerMapList in this state = ", this.state.answerMapList);
 }
 

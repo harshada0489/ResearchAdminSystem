@@ -83,11 +83,17 @@ export default class Login extends Component {
       });
     }
   }
+componentDidMount(){  
+    var element = document.getElementById("container");
+    element.classList.remove("container");
+}
 
   render() {
     return (
       <div className="col-md-12">
+        
         <div className="card card-container">
+          <div className="login-text"  ><h4 > Login </h4></div>
         {/* <div className="image"> */}
              <img src={loginImg} alt="profile-img"
             className="profile-img-card"/>
