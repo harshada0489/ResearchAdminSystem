@@ -54,7 +54,7 @@ class ViewMyStudyApp extends React.Component {
                     <h3>My Tasks</h3>
                     {this.state.message && <div class="alert alert-success">{this.state.message}</div>}
                     <div className="container">
-                        <table className="table">
+                        <table className="table task">
                             <thead>
                                 <tr>
                                     <th>Rb Id</th>
@@ -64,16 +64,18 @@ class ViewMyStudyApp extends React.Component {
                                     <th>Outcome</th> 
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody className= "highlight" >
                                 {
                                     this.state.myTasks.map(
                                         formDetails =>
-                                            <tr key={formDetails.id}>
+                                        
+                                            <tr key={formDetails.id} >
+                                               
                                                 <td>
                                                     <Link to = {"viewMyRbTasksForm/viewPage/"+ this.state.currentPage +"/studyApp/view/" + formDetails.id}>{formDetails.id}</Link>
                                                 </td>
                                                 <td>{formDetails.studyTitle}</td>
-                                                <td>{formDetails.taskStatus}</td>
+                                                <td>{formDetails.taskStausForFrontEnd}</td>
                                                 <td> Round Todo </td>
                                                 <td>{formDetails.reviewerOutcome}</td>
                                                 {/* <td>{formDetails.reviewerOutcome}</td> */}
@@ -96,11 +98,11 @@ class ViewMyStudyApp extends React.Component {
 
 
 
-
+                
                 <h3>My Study Applications</h3>
                 {this.state.message && <div class="alert alert-success">{this.state.message}</div>}
                 <div className="container">
-                    <table className="table">
+                    <table className="table task">
                         <thead>
                             <tr>
                                 <th>Id</th>
@@ -133,6 +135,7 @@ class ViewMyStudyApp extends React.Component {
                             <button className="btn btn-success" onClick={this.createStudyHandler}> + </button>
                         </div> */}
                 </div>
+                
             </div>
         );
     }

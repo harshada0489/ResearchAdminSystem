@@ -268,7 +268,7 @@ public RbStudyApplication createRbStudyAppForNextState(RbStudyApplication currRb
 	}
 	
 	public List<RbStudyApplication> getRbAppsByReviewer(int reviewerId){
-		List<RbStudyApplication> rbStudyApplications = repository.findByReviewerId(reviewerId);
+		List<RbStudyApplication> rbStudyApplications = repository.findByReviewerIdOrderByIdDesc(reviewerId);
 		return rbStudyApplications;
 	}
 	

@@ -14,6 +14,6 @@ public interface StudyApplicationRepository extends MongoRepository<StudyApplica
 
 	Optional<StudyApplication> findByStudyTitle(String studyTitle);
 	
-	List<StudyApplication> findByCreatorId(Integer creatorId);
+	List<StudyApplication> findByCreatorIdOrderByIdDesc(Integer creatorId);
 	
 }

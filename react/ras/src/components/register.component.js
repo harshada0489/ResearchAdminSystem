@@ -224,10 +224,17 @@ export default class Register extends Component {
     }
   }
 
+  componentDidMount(){  
+    var element = document.getElementById("container");
+    element.classList.remove("container");
+}
+
   render() {
     return (
       <div className="col-md-12">
         <div className="card card-container">
+        <div className="login-text"  ><h4 > Register </h4></div>
+
         <img src={loginImg} alt="profile-img"
             className="profile-img-card"/>
 

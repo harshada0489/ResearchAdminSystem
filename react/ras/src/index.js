@@ -6,10 +6,20 @@ import reportWebVitals from './reportWebVitals';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { BrowserRouter } from "react-router-dom";
 
-ReactDOM.render(
+import Background from './images/lab.jpeg';
+
+var sectionStyle = {
+    width: "100%",
+    height: "400%",
+    backgroundImage: `url(${Background})`
+  };
+
+ReactDOM.render( 
     <BrowserRouter>
+    <div style={ sectionStyle }>
         <App />
-        </BrowserRouter>
+    </div>
+    </BrowserRouter>
 , document.getElementById('root'));
 
 // If you want to start measuring performance in your app, pass a function

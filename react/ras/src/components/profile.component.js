@@ -58,11 +58,12 @@ export default class Profile extends Component {
   
 
               <div>
-                  <div className="diff-action">
-                     <button type="button" onClick={this.systemFormHandler} className="btn">
+                  {/* <div className="diff-action"> */}
+                  <button className="btn btn-success" onClick={this.systemFormHandler}> View All System Form </button>
+                     {/* <button type="button" onClick={this.systemFormHandler} className="btn">
                      System Form
-                     </button>
-                 </div>
+                     </button> */}
+                 {/* </div> */}
 
                  
               </div> 
@@ -79,8 +80,8 @@ export default class Profile extends Component {
             </h3>
           </header>
   
-  
-                 <div>
+          <ViewMyStudyApp />
+                 {/* <div>
                   <div className="diff-action">
                      <button type="button" onClick={null} className="btn">
                      Review Study
@@ -93,7 +94,7 @@ export default class Profile extends Component {
                      </button>
                  </div>
                  
-              </div> 
+              </div>  */}
         </div>
       );
     }

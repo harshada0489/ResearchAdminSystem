@@ -48,8 +48,8 @@ public class SystemFormResource {
 	}
 	
 	
-	  @DeleteMapping("/systemForm/{id}")
-	  public ResponseEntity<Void> deleteForm(@PathVariable String id) {
+	  @DeleteMapping("/systemForm/delete/{id}")
+	  public ResponseEntity<Void> deleteForm(@PathVariable int id) {
 
 		  System.out.println("id = " + id);
 	    Optional<SystemForm> form = (Optional<SystemForm>) service.deleteById(id);

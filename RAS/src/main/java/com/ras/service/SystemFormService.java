@@ -38,7 +38,7 @@ public class SystemFormService {
 		return dbAllForms;
 	}
 	
-	  public Optional<SystemForm> deleteById(String id) {
+	  public Optional<SystemForm> deleteById(int id) {
 		  Optional<SystemForm> form = repository.findById(id);
 		  
 		  if(form.isPresent()) {

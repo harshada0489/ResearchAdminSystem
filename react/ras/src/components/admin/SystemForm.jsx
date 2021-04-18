@@ -68,7 +68,7 @@ class SystemForm extends React.Component{
     }
 
     handleClickDelete(id){
-        axios.delete(`${API_URL}/${id}`)
+        axios.delete(`${API_URL}/delete/${id}`)
         .then(
             response => {
                 this.setState({ message: `Delete of course ${id} Successful` })
@@ -105,13 +105,14 @@ class SystemForm extends React.Component{
                 <h3>All System Forms</h3>
                 {this.state.message && <div class="alert alert-success">{this.state.message}</div>}
                 <div className="container">
-                    <table className="table">
+                    <table className="table task">
                         <thead>
                             <tr>
                                 <th>Id</th>
                                 <th>Form Name</th>
                                 <th>Form Description</th>
-                                <th>Actions</th>
+                                <th>Actions 1 </th>
+                                <th>Actions 2 </th>
                             </tr>
                         </thead>
                         <tbody>

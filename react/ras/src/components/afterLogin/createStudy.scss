@@ -40,8 +40,20 @@
   
   .container {
     border-radius: 5px;
-    background-color: #f2f2f2;
+    border-color: rgb(99, 101, 102);
+    background-color: #fafafa;
     padding: 20px;
+
+  }
+
+  .task{
+    border-style: ridge;
+    border-color: #d5b1f1;
+  }
+  
+  .jumbotron{
+    // border-style: ridge;
+    background-color: rgb(209, 223, 231);
   }
   
   .col-25 {

@@ -78,6 +78,12 @@ reviewerDecisionApprove(){
     .then(
         response => {
             console.log(response.data);
+            
+            this.props.history.push({
+                pathname: "/profile"
+            })
+            
+            
         }
     )
 
@@ -91,6 +97,10 @@ reviewerDecisionReject(){
     .then(
         response => {
             console.log(response.data);
+
+            this.props.history.push({
+                pathname: "/profile"
+            })
         }
     )
 
@@ -104,6 +114,10 @@ reviewerDecisionCorrection(){
     .then(
         response => {
             console.log(response.data);
+
+            this.props.history.push({
+                pathname: "/profile"
+            })
         }
     )
 

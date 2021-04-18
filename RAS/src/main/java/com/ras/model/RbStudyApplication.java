@@ -58,6 +58,8 @@ public class RbStudyApplication {
 	
 	private Date modifiedDate;
 
+	//not for storing in backend -- only useful to show its value in frontend 
+	private String taskStausForFrontEnd;
 	
 	public RbStudyApplication() {
 		// TODO Auto-generated constructor stub
@@ -387,6 +389,20 @@ public RbStudyApplication(int studyAppId, int studyDataFormId, String studyTitle
 
 	public void setReviewerComment(String reviewerComment) {
 		this.reviewerComment = reviewerComment;
+	}
+
+
+
+
+	public String getTaskStausForFrontEnd() {
+		return taskStausForFrontEnd;
+	}
+
+
+
+
+	public void setTaskStausForFrontEnd(String taskStausForFrontEnd) {
+		this.taskStausForFrontEnd = taskStausForFrontEnd;
 	}
 	
 	
