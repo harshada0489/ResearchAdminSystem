@@ -176,6 +176,12 @@ public RbStudyApplication createRbStudyAppForNextState(RbStudyApplication currRb
 			
 				repository.save(currRbStudyApp);
 				
+				
+				
+				System.out.println(SystemConstant.SENT_TO_GATEKEEPER);
+				String updateStatus = SystemConstant.SENT_TO_GATEKEEPER;
+				studyApplicationService.callStudyAppServiceForUpdate(studyAppId,updateStatus);
+				
 			}
 			
 			// Approved By GateKeeper - moving from Gatekeeper to ReviewBoard
@@ -194,11 +200,17 @@ public RbStudyApplication createRbStudyAppForNextState(RbStudyApplication currRb
 			
 				repository.save(currRbStudyApp);
 				
+				
+				System.out.println(SystemConstant.SENT_TO_IRB);
+				String updateStatus = SystemConstant.SENT_TO_IRB;
+				studyApplicationService.callStudyAppServiceForUpdate(studyAppId,updateStatus);
+				
+				
 			}
 			
 			// Approved updated in studyApp and sent back to Reseacher
 			else if(CURR_STATE == SystemConstant.STATE_REVIEWBOARD && FUTURE_STATE == SystemConstant.STATE_RETURN_TO_RESEARCHER && reviewOutcome!= null && reviewOutcome.equals(SystemConstant.REVIEW_OUTCOME_APPROVED)) {
-				//te tulhe pahana padin
+				
 				//TODO
 				
 					studyApplicationService.callStudyAppServiceForUpdate(studyAppId, SystemConstant.STUDY_APP_STATUS_APPROVED);
@@ -268,7 +280,7 @@ public RbStudyApplication createRbStudyAppForNextState(RbStudyApplication currRb
 	}
 	
 	public List<RbStudyApplication> getRbAppsByReviewer(int reviewerId){
-		List<RbStudyApplication> rbStudyApplications = repository.findByReviewerIdOrderByIdDesc(reviewerId);
+		List<RbStudyApplication> rbStudyApplications = repository.findByReviewerIdOrderByTaskStatus(reviewerId);
 		return rbStudyApplications;
 	}
 	
@@ -448,6 +460,17 @@ public RbStudyApplication createRbStudyAppForNextState(RbStudyApplication currRb
 			
 		}
 		
+	}
+	
+	public RbStudyApplication getComments(int studyAppId) {
+		RbStudyApplication rbStudyApp = null;
+		List<RbStudyApplication> rbStudyAppList = repository.findByStudyAppIdOrderByIdDesc(studyAppId);
+		
+		if(rbStudyAppList.size()>0) {
+			 rbStudyApp = rbStudyAppList.get(0);
+		}
+		
+		return rbStudyApp;
 	}
 	
 }

@@ -1,5 +1,6 @@
 package com.ras.model.payload.response;
 
+import java.util.Date;
 import java.util.List;
 
 public class JwtResponse {
@@ -8,13 +9,15 @@ public class JwtResponse {
 	private String id;
 	private String username;
 	private String email;
+	private Date lastLoginTime;
 	private List<String> roles;
 
-	public JwtResponse(String accessToken, String id, String username, String email, List<String> roles) {
+	public JwtResponse(String accessToken, String id, String username, String email, Date lastLoginTime, List<String> roles) {
 		this.token = accessToken;
 		this.id = id;
 		this.username = username;
 		this.email = email;
+		this.lastLoginTime = lastLoginTime;
 		this.roles = roles;
 	}
 
@@ -61,4 +64,14 @@ public class JwtResponse {
 	public List<String> getRoles() {
 		return roles;
 	}
+
+	public Date getLastLoginTime() {
+		return lastLoginTime;
+	}
+
+	public void setLastLoginTime(Date lastLoginTime) {
+		this.lastLoginTime = lastLoginTime;
+	}
+	
+	
 }

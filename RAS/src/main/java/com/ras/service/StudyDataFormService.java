@@ -2,6 +2,7 @@ package com.ras.service;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -116,7 +117,12 @@ public StudyDataForm getStudyDataFormObj(int studyDataFormId) {
 
 
 public StudyDataForm getStudyDataFormObjByStudyId(Integer studyAppId) {
-	StudyDataForm studyDataForm =repository.findByStudyAppId(studyAppId);
+	List<StudyDataForm> studyDataFormList =repository.findByStudyAppIdOrderByIdDesc(studyAppId);
+	StudyDataForm studyDataForm = null;
+	
+	if(studyDataFormList.size()>0 ) {
+		studyDataForm = studyDataFormList.get(0);
+	}
 	
 	return studyDataForm;
 	

@@ -50,6 +50,11 @@ public class SystemConstant {
 	 public static String STUDY_APP_STATUS_CORRECTIONS = "Study Needs Corrections";
 	 
 	 
+	 public static String SENT_TO_PRINCIPAL_INVESTIGATOR = "Sent to Principal Investigator";
+	 public static String SENT_TO_GATEKEEPER = "Sent to Gatekeeper";
+	 public static String SENT_TO_IRB = "Sent to IRB";
+	
+	 
 	 
 	 
 	 

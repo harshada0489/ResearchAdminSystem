@@ -62,11 +62,7 @@ handleChange = (e) => {
 }
 
 
-handleCommentChange = (e) => {
-    this.setState({
-        correctionComment : e.target.value
-    })
-}
+
 
 reviewerDecisionApprove(){
     console.log("Inside method Approve");
@@ -106,11 +102,25 @@ reviewerDecisionReject(){
 
 }
 
+
+handleCommentChange = (e) => {
+    this.setState({
+        correctionComment : e.target.value
+    })
+}
+
+
 reviewerDecisionCorrection(){
     console.log("Inside method reviewerDecisionCorrection = ", this.state.correctionComment);
-
-    axios.post(API_URL + "/reviewOutcome/correction/" + this.state.loggedInUserId  +"/"+ this.state.id,
-    this.state.correctionComment)
+axios({
+    method:'post',
+    url : API_URL + "/reviewOutcome/correction/" + this.state.loggedInUserId  +"/"+ this.state.id,
+    data:{
+        correctionComment: this.state.correctionComment
+    }
+})
+    // axios.post(API_URL + "/reviewOutcome/correction/" + this.state.loggedInUserId  +"/"+ this.state.id,
+    // this.state.correctionComment)
     .then(
         response => {
             console.log(response.data);

@@ -1,6 +1,7 @@
 package com.ras.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -32,5 +33,14 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 		List<User> uList = userRepository.findAll();
 		
 		return uList;
+	}
+	
+	public User getUserById( int userId) {
+		Optional<User> db = userRepository.findById(userId);
+		User user = null;
+		if(db.isPresent()) {
+			user = db.get();
+		}
+		return user;
 	}
 }

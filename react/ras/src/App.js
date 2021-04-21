@@ -31,6 +31,7 @@ import ViewMyStudyApp from './components/afterLogin/ViewMyStudyApp';
 
 import ViewMyTasksRbStudyApp from './components/afterLogin/ViewMyTasksRbStudyApp';
 
+import ViewComments from './components/afterLogin//ViewComments';
 
 import {SideBar} from './components/SideBar/SideBar';
 
@@ -161,11 +162,17 @@ class App extends Component {
             <Route path="/viewMyStudyApp" component={ViewMyStudyApp} />
             <Route path="/createForm" component={CreateForm} />
             <Route path="/form/edit/:id" component={FormDetailsEdit} />
-            <Route path="/form/view/:id" component={FormDetailsView} />
+            <Route path="/form/view/:id/edit/:edit" component={FormDetailsView} />
 
             <Route path="/viewMyStudyForm/viewPage/:currentPage/studyApp/view/:id" component={StudyAppView} />
-            <Route path="/viewMyRbTasksForm/viewPage/:currentPage/studyApp/view/:id" component={ViewMyTasksRbStudyApp} />            
+            <Route path="/viewMyRbTasksForm/viewPage/:currentPage/studyApp/view/:id" component={ViewMyTasksRbStudyApp} />  
+
+            <Route path="/viewMyStudyForm/viewComments/:id" component={ViewComments} />            
             
+
+            
+
+
           </Switch>
         </div>
 

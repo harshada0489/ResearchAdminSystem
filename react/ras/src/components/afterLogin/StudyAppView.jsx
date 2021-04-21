@@ -192,56 +192,6 @@ nextForm(){
     }
 
 
-// nextForm(){
-    
-//     console.log("next form button answerMapList in this state = ", this.state.answerMapList);
-    
-//     var nextPage = parseInt(this.state.currentPage) + 1;
-//      console.log("nextPage value ==================== ", nextPage);
-    
-//      axios.post(API_URL + "/page/" + nextPage + "/studyApp/view/" + this.state.id)
-//         .then(
-//             response => {
-//                 console.log(response.data);
-//                 this.setState({
-//                     qAndAList : response.data
-//                 });
-//                 this.setState({questionList : response.data.questionList,
-//                     countOfPage : response.data.pageList,
-//                     currentPage : response.data.questionList[0].page,
-                    
-//                 });
-            
-//                 this.setState(prevState => ({
-//                     answerMapList: {
-//                         ...prevState.answerMapList,
-//                         "studyId" : response.data.questionList[0].studyId,
-//                         "studyAppDataId" : response.data.questionList[0].studyAppDataId,
-//                         "studyDataFormId" : response.data.questionList[0].studyDataFormId,
-                        
-//                         "creatorId" : AuthService.getCurrentUser().id
-//                     },
-//                 }));
-//                 // window.location.reload();
-                
-//                 console.log("qAndAList=",this.state.qAndAList);
-//             }
-//         )
-    
-    
-    
-//         console.log("after to API call in componentDidMount()");
-    
-//     this.props.history.push({
-    
-//         pathname: "/viewMyStudyForm/viewPage/" + nextPage + "/studyApp/view/" + this.state.id,
-//         // state: { detail: response.data }
-//     })
-    
-    
-//     }
-
-
 
 getData(){
 
@@ -252,24 +202,6 @@ getData(){
     this.setState({
         currentPage: nextPage
      })
-
-            // this.setState({questionList : this.props.location.state.detail.questionList,
-            //     countOfPage : this.props.location.state.detail.pageList,
-            //     currentPage : this.props.location.state.detail.questionList[0].page,
-            // });
-
-            // this.setState(prevState => ({
-            //     answerMapList: {
-            //         ...prevState.answerMapList,
-            //         "studyId" : this.props.location.state.detail.questionList[0].studyId,
-            //         "studyAppDataId" : this.props.location.state.detail.questionList[0].studyAppDataId,
-            //         "studyDataFormId" : this.props.location.state.detail.questionList[0].studyDataFormId,
-            //         "creatorId" : AuthService.getCurrentUser().id
-                    
-            //         // "page" : this.props.location.state.detail.questionList[0].page,
-            //     },
-            // }));
-
   }
 
   preFilledanswerList(qsize){
