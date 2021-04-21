@@ -61,6 +61,16 @@ public class RbStudyApplication {
 	//not for storing in backend -- only useful to show its value in frontend 
 	private String taskStausForFrontEnd;
 	
+	//not for storing in backend -- only useful to show its value in frontend 
+	private int roundForFrontEnd;
+	
+	//not for storing in backend -- only useful to show its value in frontend 
+	private String PIForFrontEnd;
+	
+	//not for storing in backend -- only useful to show its value in frontend 
+	private String studyAuthorForFrontEnd;
+		
+	
 	public RbStudyApplication() {
 		// TODO Auto-generated constructor stub
 	}
@@ -404,9 +414,51 @@ public RbStudyApplication(int studyAppId, int studyDataFormId, String studyTitle
 	public void setTaskStausForFrontEnd(String taskStausForFrontEnd) {
 		this.taskStausForFrontEnd = taskStausForFrontEnd;
 	}
-	
-	
-	
-	
+
+
+
+
+	public int getRoundForFrontEnd() {
+		return roundForFrontEnd;
+	}
+
+
+
+
+	public void setRoundForFrontEnd(int roundForFrontEnd) {
+		this.roundForFrontEnd = roundForFrontEnd;
+	}
+
+
+
+
+	public String getPIForFrontEnd() {
+		return PIForFrontEnd;
+	}
+
+
+
+
+	public void setPIForFrontEnd(String pIForFrontEnd) {
+		PIForFrontEnd = pIForFrontEnd;
+	}
+
+
+
+
+	public String getStudyAuthorForFrontEnd() {
+		return studyAuthorForFrontEnd;
+	}
+
+
+
+
+	public void setStudyAuthorForFrontEnd(String studyAuthorForFrontEnd) {
+		this.studyAuthorForFrontEnd = studyAuthorForFrontEnd;
+	}
+
+
+
+
 
 }

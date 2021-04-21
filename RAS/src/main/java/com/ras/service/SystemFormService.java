@@ -53,8 +53,8 @@ public class SystemFormService {
 	    
 		  }
 
-	  public Optional<SystemForm> findById(String id) {
-		  Optional<SystemForm> form = repository.findById(id); 
+	  public Optional<SystemForm> findById(int systemFormId) {
+		  Optional<SystemForm> form = repository.findById(systemFormId); 
 		  
 		    if (form.isPresent()) {
 		      return form;
@@ -167,7 +167,18 @@ public class SystemFormService {
 		 
 		  return hmap;
 	  }
+	 
 	  
+	  public SystemForm viewSystemForm(int systemFormId) {
+		  SystemForm sysForm = null;
+		 Optional<SystemForm> db = findById(systemFormId);
+		 if(db.isPresent()) {
+			 sysForm = db.get();
+			 
+			 
+		 }
+		return sysForm;  
+	  }
 
 	  
 }

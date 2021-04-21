@@ -54,8 +54,17 @@
   .jumbotron{
     // border-style: ridge;
     background-color: rgb(209, 223, 231);
+
+    .lastLoginTime{
+      position: relative;
+      text-align: right;
+     }
   }
   
+
+
+
+
   .col-25 {
     float: left;
     width: 25%;
@@ -102,26 +111,3 @@
     float: right;
   }
 
-//   .col-25 {
-//     float: left;
-//     width: 25%;
-//     margin-top: 6px;
-//   }
-  
-//   .col-75 {
-//     float: left;
-//     width: 75%;
-//     margin-top: 6px;
-//   }
-
-//   .row:after {
-//     // content: "";
-//     display: table;
-//     clear: both;
-//   }
-
-//   label {
-//       padding: 12px 12px 12px 0;
-//       display:inline-block
-//   }
- 

@@ -71,9 +71,14 @@ public class StudyApplicationResource {
 		
 		List<RbStudyApplication> myTasks = studyApplicationService.getMyTask(creatorId);
 		
+		HashMap<String, Integer> countTaskStatus = new HashMap <>();
+		
+		countTaskStatus = studyApplicationService.getCountofMyTaskStatus(myTasks);
+		
 		
 		responseMap.put("MyStudyApp",allForms);
 		responseMap.put("myTasks",myTasks);
+		responseMap.put("countTaskStatus",countTaskStatus);
 		
 		return ResponseEntity.ok(responseMap);
 //		return allForms ;
@@ -302,8 +307,8 @@ public class StudyApplicationResource {
 				String reviewOutcome = null;
 				String comments = null;
 				rbStudyApplicationService.findAndSendRbStudyAppToNextState(studyAppId, SystemConstant.STATE_DRAFT, SystemConstant.STATE_PI, PIUserId, destinationRbId, currentRbStudyAppId, reviewOutcome, comments);
-				System.out.println("Sent to Principal Investigator");
-				String updateStatus = "Sent to Principal Investigator";
+				System.out.println(SystemConstant.SENT_TO_PRINCIPAL_INVESTIGATOR);
+				String updateStatus = SystemConstant.SENT_TO_PRINCIPAL_INVESTIGATOR;
 				studyApplicationService.callStudyAppServiceForUpdate(studyAppId,updateStatus);
 			
 		}
@@ -535,7 +540,16 @@ public class StudyApplicationResource {
 
 	
 	
-	
+	@GetMapping("/viewMyStudyForm/studyView/comments/{studyAppId}")
+	public ResponseEntity<?> viewMyStudyAppComments(@PathVariable Integer studyAppId){
+		System.out.println("Inside class:StudyApplicationResource method: viewMyStudyAppComments() = " + studyAppId);
+		
+		HashMap<String,Object> hmap = new HashMap<>();
+		RbStudyApplication rbStudyApplication = rbStudyApplicationService.getComments(studyAppId);
+		System.out.println("rbStudyApplication.getReviewerComment() = " + rbStudyApplication.getReviewerComment());
+		hmap.put("comments", rbStudyApplication.getReviewerComment());
+		return ResponseEntity.ok(hmap);
+	}
 	
 	
 	

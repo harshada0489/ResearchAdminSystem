@@ -14,6 +14,9 @@ public interface RbStudyApplicationRepository extends MongoRepository<RbStudyApp
 	
 	List<RbStudyApplication> findByCreatorIdOrderByIdDesc(Integer creatorId);
 	
-	List<RbStudyApplication> findByReviewerIdOrderByIdDesc(Integer reviewerId);
+	List<RbStudyApplication> findByReviewerIdOrderByTaskStatus(Integer reviewerId);
+	
+	List<RbStudyApplication> findByStudyAppIdOrderByIdDesc(Integer studyAppId);
+	
 	
 }

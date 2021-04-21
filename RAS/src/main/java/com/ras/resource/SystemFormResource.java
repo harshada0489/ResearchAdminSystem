@@ -19,9 +19,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ras.model.FormDetails;
+import com.ras.model.LoginHistory;
 import com.ras.model.SystemForm;
 import com.ras.model.payload.response.MessageResponse;
 import com.ras.repository.SystemFormRepository;
+import com.ras.service.LoginHistoryService;
 import com.ras.service.PageService;
 import com.ras.service.SystemFormService;
 
@@ -37,6 +39,8 @@ public class SystemFormResource {
 	@Autowired
 	PageService pageService;
 	
+	@Autowired
+	LoginHistoryService loginHistoryService; 
 	
 	
 	@GetMapping("/systemForm")
@@ -63,20 +67,32 @@ public class SystemFormResource {
 	 
 	  
 	  @GetMapping("/systemForm/edit/{id}")
-	  public String editFormDetails(@PathVariable String id){
+	  public ResponseEntity<?> editFormDetails(@PathVariable int id){
 		  // SystemForm edit page 
 		  System.out.println("Inside class: SystemFormResource and method: editFormDetails() , id = " + id);
-			
+		  HashMap<String,Object> returnMap= new HashMap<String,Object>();
+		  SystemForm sysForm = service.viewSystemForm(id);
+		  if(sysForm != null) {
+			  returnMap.put("systemForm", sysForm);
+			  returnMap.put("disabled", false);
+			  
+		  }
 		  
-		  
-			return "Successful" ;
+			return ResponseEntity.ok(returnMap) ;
 	  }
 	  
 	  @GetMapping("/systemForm/view/{id}")
-	  public String viewFormDetails(@PathVariable String id){
+	  public ResponseEntity<?> viewFormDetails(@PathVariable int id){
 		  System.out.println("Inside class: SystemFormResource and method: viewFormDetails() , id = " + id);
-			
-			return "Successful" ;
+		  HashMap<String,Object> returnMap= new HashMap<String,Object>();
+		  SystemForm sysForm = service.viewSystemForm(id);
+		  if(sysForm != null) {
+			  returnMap.put("systemForm", sysForm);
+			  returnMap.put("disabled", true);
+			  
+		  }
+		  
+			return ResponseEntity.ok(returnMap) ;
 	  }
 	  
 	  
@@ -128,7 +144,7 @@ public class SystemFormResource {
 			 
 	  }
 	  
-	  
+ 
 	
 //	--------------------------------------------------------------------------------------------------------------------------
 	  

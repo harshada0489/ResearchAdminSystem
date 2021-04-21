@@ -323,7 +323,49 @@ public int getTheCountOfQuestionPages(String systemFormIdString) {
 		if(!(rbAppsByReviewer.isEmpty())) {
 			for(int curr=0; curr<rbAppsByReviewer.size(); curr++) {
 				RbStudyApplication rbStudyApplication = rbAppsByReviewer.get(curr);
+				
+				
+				int studyDataFormId = rbStudyApplication.getStudyDataFormId();
+				
+				
+				StudyDataForm studyDataForm = studyDataFormService.getStudyDataFormObj(studyDataFormId);
+				
+				//get contactDetails list from studydataform id
+				// search for PI user - i.e type 1
+				// search for study author  user - i.e type 2
+				List<StudyContacts> contactList= null;
+				contactList = studyContactsService.getStudyContactByStudyDataFormId(studyDataForm.getId());
+				if(contactList.size()>0) {
+					for(int index = 0; index < contactList.size(); index++) {
+						StudyContacts studyContacts = contactList.get(index);
+						if(studyContacts.getType() == SystemConstant.TYPE_PRINCIPAL_INVESTIGATOR) {
+							int PIUserId = studyContacts.getUserId();
+							User user = userService.getUserById(PIUserId);
+							if(user != null) {
+								String username = user.getUsername();
+								rbStudyApplication.setPIForFrontEnd(username);
+							}
+							
+						}
+						if(studyContacts.getType() == SystemConstant.TYPE_STUDY_AUTOR) {
+							int studyAuthorUserId = studyContacts.getUserId();
+							User user = userService.getUserById(studyAuthorUserId);
+							if(user != null) {
+								String username = user.getUsername();
+								rbStudyApplication.setStudyAuthorForFrontEnd(username);
+							}
+						}
+						
+					}
+				}
+				
+				
+				int round = studyDataForm.getRound();
+				
+				rbStudyApplication.setRoundForFrontEnd(round);
+				
 				int taskStatus = rbStudyApplication.getTaskStatus();
+				
 				if(SystemConstant.TASK_STATUS_UNREAD == taskStatus) {
 					rbStudyApplication.setTaskStausForFrontEnd(SystemConstant.TASK_UNREAD);
 				}
@@ -404,4 +446,38 @@ public int getTheCountOfQuestionPages(String systemFormIdString) {
 		}
 	}
 	
+	
+	
+	 public static int TASK_STATUS_UNREAD = 10;
+	 public static int TASK_STATUS_IN_PROGRESS = 20;
+	 public static int TASK_STATUS_COMPLETE = 30;
+	 
+	 
+	
+	public HashMap<String, Integer> getCountofMyTaskStatus(List<RbStudyApplication> myTasks){
+		 int unReadCount = 0;
+		 int inProgressCount = 0;
+		 int completeCount = 0;
+		 
+		HashMap<String, Integer> countTaskStatus = new HashMap<>();
+		for(int curr= 0; curr< myTasks.size(); curr++) {
+			RbStudyApplication rbStudyApp = myTasks.get(curr);
+			if(rbStudyApp.getTaskStatus() == SystemConstant.TASK_STATUS_UNREAD) {
+				unReadCount++;
+			}
+			if(rbStudyApp.getTaskStatus() == SystemConstant.TASK_STATUS_IN_PROGRESS) {
+				inProgressCount++;
+			}
+			if(rbStudyApp.getTaskStatus() == SystemConstant.TASK_STATUS_COMPLETE) {
+				completeCount++;
+			}
+		}
+		
+		countTaskStatus.put("unReadCount", unReadCount);
+		countTaskStatus.put("inProgressCount", inProgressCount);
+		countTaskStatus.put("completeCount", completeCount);
+		
+		
+		return countTaskStatus;
+	}
 }

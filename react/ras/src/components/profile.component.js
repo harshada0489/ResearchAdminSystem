@@ -6,6 +6,10 @@ import  CreateStudy  from './afterLogin/createStudy';
 import {SideBar} from './SideBar/SideBar';
 
 import ViewMyStudyApp from './afterLogin/ViewMyStudyApp';
+import axios from 'axios';
+
+const API_URL = "http://localhost:8080/api/auth"
+
 
 export default class Profile extends Component {
   constructor(props) {
@@ -41,10 +45,17 @@ export default class Profile extends Component {
       this.props.history.push("/viewSystemForm");
   }
 
+
+
+
   render() {
     const { currentUser } = this.state;
     console.log("Role = " , currentUser.roles);
     
+    let lastLogin = this.state.currentUser.lastLoginTime;
+    console.log ("render lastLoggedIn =  ", this.state.currentUser.lastLoginTime);
+
+
     if (currentUser.roles.includes('ROLE_ADMIN')) {
       return (
         <div className="container">
@@ -54,6 +65,7 @@ export default class Profile extends Component {
             <h3>
               Welcome <strong> {currentUser.username}</strong> 
             </h3>
+            <div className="lastLoginTime">Last Logged In {lastLogin} </div>
           </header>
   
 
@@ -78,6 +90,7 @@ export default class Profile extends Component {
             <h3>
               Welcome <strong> {currentUser.username}</strong> 
             </h3>
+            <div className="lastLoginTime">Last Logged In {lastLogin} </div>
           </header>
   
           <ViewMyStudyApp />
@@ -110,6 +123,7 @@ export default class Profile extends Component {
             <h3>
               Welcome <strong> {currentUser.username}</strong> 
             </h3>
+            <div className="lastLoginTime">Last Logged In {lastLogin} </div>
           </header>
 
           {/* <SideBar/> */}

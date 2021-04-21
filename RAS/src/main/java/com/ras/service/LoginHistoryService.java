@@ -1,8 +1,10 @@
 package com.ras.service;
 
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.annotation.Id;
 import org.springframework.stereotype.Service;
 
 import com.ras.model.LoginHistory;
@@ -29,8 +31,21 @@ public class LoginHistoryService {
 		int seq = nextSequenceService.getNextSequenceForloginHistoryIdSeq("customSequences");
 		System.out.println("loginHistoryId generated" + seq);
 		
+		
+
+		 
 		LoginHistory loginHistory = new LoginHistory(seq, userId, ipAddress, loginTime, null);
 		loginHistoryRepository.save(loginHistory);
 	
 	}
+	
+	public LoginHistory getLastLoggedIn(int userId) {
+		LoginHistory loginHistory = null;
+		List<LoginHistory> loginByUserList = loginHistoryRepository.findByUserIdOrderByIdDesc(userId);
+		if(loginByUserList.size()>1) {
+			loginHistory = loginByUserList.get(1);
+		}
+		return loginHistory;
+	}
+	
 }

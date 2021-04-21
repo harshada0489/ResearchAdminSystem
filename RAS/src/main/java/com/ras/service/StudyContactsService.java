@@ -74,4 +74,11 @@ public class StudyContactsService {
 		
 	}
 	
+	public List<StudyContacts> getStudyContactByStudyDataFormId(int studyDataFormId){
+		
+		 List<StudyContacts> studyContactsList = repository.findByStudyDataFormId(studyDataFormId);
+		
+		return studyContactsList;
+	}
+	
 }

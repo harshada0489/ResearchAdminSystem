@@ -252,10 +252,14 @@ public class RbStudyApplicationResource {
 	}
 	
 	@PostMapping("/viewMyRbTasksForm/reviewOutcome/correction/{reviewerId}/{rbStudyAppId}")
-	public ResponseEntity<?> DecisionOnRbAppOnCorrection(@PathVariable Integer reviewerId, @PathVariable Integer rbStudyAppId, String comments) throws Exception{
+	public ResponseEntity<?> DecisionOnRbAppOnCorrection(@PathVariable Integer reviewerId, @PathVariable Integer rbStudyAppId, @RequestBody Map commentMap) throws Exception{
 		System.out.println("Inside class:StudyApplicationResource method: DecisionOnRbApp()");
 		
 		String outcome= SystemConstant.REVIEW_OUTCOME_CORRECTIONS;
+		String comments= "";
+		if(commentMap.containsKey("correctionComment")) {
+			comments =commentMap.get("correctionComment").toString();
+		}
 		rbStudyApplicationService.studyOutcome(rbStudyAppId,reviewerId, outcome, comments);
 		
 		

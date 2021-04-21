@@ -80,7 +80,7 @@ class SystemForm extends React.Component{
 
     editFormClicked(id) {
         console.log('edit ' + id)
-      this.props.history.push("/form/edit/" + id); 
+      this.props.history.push("/form/view/" + id + "/edit/" + true); 
     }
 
     createFormClicked(event) {
@@ -120,7 +120,7 @@ class SystemForm extends React.Component{
                                 this.state.systemFormList.map(
                                     formDetails =>
                                         <tr key={formDetails.id}>
-                                            <td><Link to = {"/form/view/" + formDetails.id}>{formDetails.id}</Link>
+                                            <td><Link to = {"/form/view/" + formDetails.id +  "/edit/" + false}>{formDetails.id}</Link>
                                             </td>
                                             
                                             <td>{formDetails.formName}</td>

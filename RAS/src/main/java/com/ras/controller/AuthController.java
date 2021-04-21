@@ -1,6 +1,7 @@
 package com.ras.controller;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -18,12 +19,15 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ras.model.ERole;
+import com.ras.model.LoginHistory;
 import com.ras.model.Role;
 import com.ras.model.User;
 import com.ras.model.payload.request.LoginRequest;
@@ -76,12 +80,24 @@ public class AuthController {
 		String jwt = jwtUtils.generateJwtToken(authentication);
 		
 		UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();		
-		
+		LoginHistory loginHistory = null;
 		if(authentication.isAuthenticated()) {
 			Integer userId= userDetails.getId();
 			String ipAddress = request.getRemoteAddr();
 			Date loginTime = new Date();
 			loginHistoryService.insertLoginDetails(userId, ipAddress, loginTime);
+		
+			
+//			System.out.println("Inside class SystemFormResource and method getLastLoggedInUser(),  userId=" + userId);
+			HashMap<String,Object> hmap = new HashMap <>();
+			
+			loginHistory = loginHistoryService.getLastLoggedIn(userId);
+			if(loginHistory.getLoginTime() != null) {
+				hmap.put("lastLogin", loginHistory.getLoginTime());	
+			}else {
+				hmap.put("lastLogin", "logged in for 1st time");	
+			}
+			
 			
 		}
 		
@@ -93,7 +109,8 @@ public class AuthController {
 		return ResponseEntity.ok(new JwtResponse(jwt, 
 												 userDetails.getId()+"", 
 												 userDetails.getUsername(), 
-												 userDetails.getEmail(), 
+												 userDetails.getEmail(),
+												 loginHistory.getLoginTime(),
 												 roles));
 	}
 
@@ -172,4 +189,7 @@ public class AuthController {
 
 		return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
 	}
+	
+	  
+	
 }

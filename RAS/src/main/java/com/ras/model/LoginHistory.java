@@ -5,6 +5,7 @@ import java.util.Date;
 import javax.persistence.Entity;
 
 import org.springframework.context.annotation.Scope;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.stereotype.Component;
 
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Component;
 @Document(collection = "loginHistory")
 public class LoginHistory {
 
+	@Id
 	private int id;
 	 
 	private int userId;
