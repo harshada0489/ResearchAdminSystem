@@ -111,8 +111,8 @@ class SystemForm extends React.Component{
                                 <th>Id</th>
                                 <th>Form Name</th>
                                 <th>Form Description</th>
-                                <th>Actions 1 </th>
-                                <th>Actions 2 </th>
+                                <th>Actions </th>
+                                {/* <th>Actions 2 </th> */}
                             </tr>
                         </thead>
                         <tbody>
@@ -126,7 +126,7 @@ class SystemForm extends React.Component{
                                             <td>{formDetails.formName}</td>
                                             <td>{formDetails.formDescription}</td>
                                             
-                                            <td><button className="btn btn-success" onClick={() => this.editFormClicked(formDetails.id)}>Edit</button></td>
+                                            {/* <td><button className="btn btn-success" onClick={() => this.editFormClicked(formDetails.id)}>Edit</button></td> */}
                                             <td><button className="btn btn-warning" onClick={() => this.deleteFormClicked(formDetails.id)}>Delete</button></td>
                                         
                                         </tr>

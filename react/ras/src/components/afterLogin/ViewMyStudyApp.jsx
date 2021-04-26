@@ -14,7 +14,14 @@ import Chart from "react-google-charts";
 const API_URL = "http://localhost:8080/ras/viewMyStudyForm"
 
 
-
+var bgColors = { "Default": "#81b71a",
+                    "Blue": "#00B1E1",
+                    "Cyan": "#37BC9B",
+                    "Green": "#8CC152",
+                    "Red": "#E9573F",
+                    "Yellow": "#F6BB42",
+                    "Transparent" : "#FAFAFA"
+};
 
 class ViewMyStudyApp extends React.Component {
     constructor(props){
@@ -59,15 +66,9 @@ class ViewMyStudyApp extends React.Component {
         this.refreshCourses();
     }
 
+
+
     render(){
-
-
-       
-        
-
-
-
-
 
 
 
@@ -153,9 +154,11 @@ class ViewMyStudyApp extends React.Component {
                             <tbody className= "highlight" >
                                 {
                                     this.state.myTasks.map(
+                                        
                                         formDetails =>
                                         
-                                            <tr key={formDetails.id} >
+                                               
+                                            <tr className="highlighter" key={formDetails.id} style={formDetails.taskStausForFrontEnd === "Unread" ? {backgroundColor: bgColors.Red} : {backgroundColor: bgColors.Transparent} } > 
                                                
                                                 <td>
                                                     <Link to = {"viewMyRbTasksForm/viewPage/"+ this.state.currentPage +"/studyApp/view/" + formDetails.id}>{formDetails.id}</Link>
@@ -166,7 +169,7 @@ class ViewMyStudyApp extends React.Component {
                                                 <td>{formDetails.studyAuthorForFrontEnd} </td>
 
 
-                                                <td>{formDetails.taskStausForFrontEnd}</td>
+                                                <td >{formDetails.taskStausForFrontEnd}</td>
                                                 <td>{formDetails.roundForFrontEnd} </td>
                                                 <td>{formDetails.reviewerOutcome}</td>
                                                 {/* <td>{formDetails.reviewerOutcome}</td> */}
@@ -182,6 +185,8 @@ class ViewMyStudyApp extends React.Component {
                             {/* <div className="row">
                                 <button className="btn btn-success" onClick={this.createStudyHandler}> + </button>
                             </div> */}
+
+                            
                     </div>
 
 
@@ -236,7 +241,10 @@ class ViewMyStudyApp extends React.Component {
                 
             </div>
         );
+
+        
     }
+    
 }
 
 
