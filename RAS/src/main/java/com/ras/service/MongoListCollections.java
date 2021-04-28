@@ -422,7 +422,7 @@ public class MongoListCollections {
 	          for(Document docs : iterDoc) {
 	        	  System.out.println(docs);
 	        	  if(docs.containsKey("_id")) {
-	        		  if(docs.get("_id") == dynamicTableDataId) {
+	        		  if(docs.get("_id") != null && docs.get("_id").equals(dynamicTableDataId)) {
 
 	        			  for(HashMap<String, String> q : questionList) {
 	        					System.out.println("q =" + q);

@@ -64,6 +64,8 @@ class CreateStudy extends React.Component {
         event.preventDefault();
         console.log(this.state.currentUser);
         // this.state.researcherId = this.state.currentUser.id;
+
+
         if(this.state.filter1==="human"){
             console.log("Selected filter1 = human ");
             this.state.typeOfAnimal = "";
@@ -71,7 +73,7 @@ class CreateStudy extends React.Component {
         
               console.log(this.state);
         }
-        else if (this.state.filter2==="animal"){
+        else if (this.state.filter1==="animal"){
             console.log("Selected Study option1 = animal ");
             this.state.NoOfHumanRequired = "";
             this.state.age = "";
@@ -83,38 +85,31 @@ class CreateStudy extends React.Component {
             console.log('selected study is not human nor animal.');
         }
 
+        if(this.state.filter1==="" && this.state.filter2 === ""){
+
+        }else{
 
 
-        // axios.post(API_URL,this.state).then(response =>{
-        //     var resdata = response.data.questionList[0];
-        //     console.log(" rresponse ========= ", response.data.questionList[0]);
-          
-        //     this.props.history.push({
-        //         pathname: "/study/" + resdata.studyId + "/" + resdata.studyDataId+ "/" + resdata.systemFormId + "/" + resdata.page,
-        //         state: { detail: response.data }
-        //     })
-        //     window.location.reload();
-        // }
-        axios.post(API_URL,this.state).then(response =>{
-            var resdata = response.data;
-            console.log(" response ========= ", response.data);
-
-            this.props.history.push({
-                pathname: "/study/" + resdata.studyAppId + "/" + resdata.studyDataFormId+ "/" + "contactDetails",
-                state: { detail: response.data }
+            axios.post(API_URL,this.state).then(response =>{
+                var resdata = response.data;
+                console.log(" response ========= ", response.data);
+    
+                this.props.history.push({
+                    pathname: "/study/" + resdata.studyAppId + "/" + resdata.studyDataFormId+ "/" + "contactDetails",
+                    state: { detail: response.data }
+                }
+            )
+    
             }
-        )
-            // this.props.history.push({
-            //     pathname: "/study/" + resdata.studyId + "/" + resdata.studyDataId+ "/" + resdata.systemFormId + "/" + resdata.page,
-            //     state: { detail: response.data }
-            // }
-            // )
-            // window.location.reload();
+            )
+            .catch(error =>{
+              console.log(error)
+            })
+            
         }
-        )
-        .catch(error =>{
-          console.log(error)
-        })
+
+
+        
 
             }   
 

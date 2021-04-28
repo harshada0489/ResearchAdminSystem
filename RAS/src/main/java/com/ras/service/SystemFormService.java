@@ -34,7 +34,7 @@ public class SystemFormService {
 	
 	public List<SystemForm> getAllDBForms(){
 		System.out.println("Inside class: SystemFormService and method: getAllDBForms() ");
-		List<SystemForm> dbAllForms = repository.findByStatus("active");
+		List<SystemForm> dbAllForms = repository.findByStatusOrderByIdDesc("active");
 		return dbAllForms;
 	}
 	
