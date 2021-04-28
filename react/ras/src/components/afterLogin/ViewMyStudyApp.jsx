@@ -21,7 +21,8 @@ var bgColors = { "Default": "#81b71a",
                     "Red": "#B22222",
                     "Yellow": "#F6BB42",
                     "Transparent" : "#FAFAFA",
-                    "White" : "#FFFFFF"
+                    "White" : "#FFFFFF",
+                    "Black" : "#000000"
 };
 
 class ViewMyStudyApp extends React.Component {
@@ -159,7 +160,7 @@ class ViewMyStudyApp extends React.Component {
                                         formDetails =>
                                         
                                                
-                                            <tr className="highlighter" key={formDetails.id} style={formDetails.taskStausForFrontEnd === "Unread" ? {backgroundColor: bgColors.Red, color: bgColors.White } : {backgroundColor: bgColors.Transparent} } > 
+                                            <tr className="highlighter" key={formDetails.id} style={formDetails.taskStausForFrontEnd === "Unread" ? {backgroundColor: bgColors.Yellow, color: bgColors.Black } : {backgroundColor: bgColors.Transparent} } > 
                                                
                                                 <td>
                                                     <Link to = {"viewMyRbTasksForm/viewPage/"+ this.state.currentPage +"/studyApp/view/" + formDetails.id}>{formDetails.id}</Link>

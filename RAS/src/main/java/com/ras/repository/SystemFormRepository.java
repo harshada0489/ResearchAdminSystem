@@ -16,7 +16,7 @@ public interface SystemFormRepository extends MongoRepository<SystemForm, Intege
 	
 	Optional<SystemForm> findByFormName(String formName);
 	
-	List<SystemForm> findByStatus(String status);
+	List<SystemForm> findByStatusOrderByIdDesc(String status);
 	
 	List<SystemForm> findByFilterListOrderByIdDesc(String filterList);
 	

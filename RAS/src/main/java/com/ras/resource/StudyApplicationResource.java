@@ -392,7 +392,7 @@ public class StudyApplicationResource {
 	
 	@PostMapping("/viewMyStudyForm/nextPage/{currPage}/studyApp/view/{studyAppId}")
 	public ResponseEntity<?> viewNextPageStudyApp(@PathVariable Integer currPage, @PathVariable Integer studyAppId){
-		System.out.println("Inside class:StudyApplicationResource method: viewStudyApp()");
+		System.out.println("Inside class:StudyApplicationResource method: viewNextPageStudyApp()");
 		
 		
 		System.out.println("Inside class:StudyApplicationResource method: getNextPageQuestionList()");

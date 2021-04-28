@@ -402,11 +402,10 @@ if(disabled){
             </div>
 
             <div className="card-footer text-center">    
-            <div className="col-75">
-                                                    <input type="textarea" name="correctionComment"  id="correctionComment"
-                                                    onChange={this.handleCommentChange}
-                                                    />
-                                                </div>
+                <div className="col-75">
+                <h5>Comments (if any) <input type="textarea" name="correctionComment"  id="correctionComment" cols="100" rows="50" onChange={this.handleCommentChange} />
+                </h5>
+                </div>
             </div>
 
             </div>
